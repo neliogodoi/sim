@@ -1,0 +1,49 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(weddingId) {
+      return signedIn()
+        && exists(/databases/$(database)/documents/weddings/$(weddingId)/owners/$(request.auth.uid));
+    }
+
+    match /weddings/{weddingId} {
+      allow read: if true;
+      allow create: if signedIn();
+      allow update, delete: if isOwner(weddingId);
+
+      match /owners/{uid} {
+        allow read, write: if signedIn() && request.auth.uid == uid;
+      }
+
+      match /guests/{guestId} {
+        allow read: if isOwner(weddingId);
+        allow create, update: if true;
+        allow delete: if isOwner(weddingId);
+      }
+
+      match /scheduleItems/{itemId} {
+        allow read: if true;
+        allow write: if isOwner(weddingId);
+      }
+
+      match /giftLinks/{giftId} {
+        allow read: if true;
+        allow write: if isOwner(weddingId);
+      }
+
+      match /messages/{messageId} {
+        allow read: if isOwner(weddingId) || resource.data.isVisible == true;
+        allow create: if true;
+        allow update, delete: if isOwner(weddingId);
+      }
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "SIM - Seu Incrivel Momento",
+  "short_name": "SIM",
+  "theme_color": "#5f6f2f",
+  "background_color": "#fffdf8",
+  "display": "standalone",
+  "scope": "./",
+  "start_url": "./",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}
