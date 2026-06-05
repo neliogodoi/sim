@@ -91,7 +91,15 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             </div>
             <div class="compact-card-copy">
               <h2>{{ shortCoupleName(member) }}</h2>
-              <p>{{ sideLabel(member.side) }}{{ member.invitationStatus ? ' · ' + invitationLabel(member.invitationStatus) : '' }}</p>
+              <p>
+                {{ sideLabel(member.side) }}
+                @if (member.invitationStatus) {
+                  ·
+                  <span class="status-pill" [class.confirmed]="member.invitationStatus === 'accepted'">
+                    {{ invitationLabel(member.invitationStatus) }}
+                  </span>
+                }
+              </p>
               <a class="inline-link" [href]="groomsmenInviteUrl(member)" target="_blank" rel="noreferrer">Convite</a>
             </div>
           </article>

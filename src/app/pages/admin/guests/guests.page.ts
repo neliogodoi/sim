@@ -21,6 +21,8 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
       <section class="summary-card">
         <span>Total de convidados</span>
         <strong>{{ totalGuests(guests) }}</strong>
+        <span>Confirmados</span>
+        <strong>{{ confirmedGuests(guests) }}</strong>
       </section>
 
       @if (shouldShowForm(guests)) {
@@ -80,7 +82,12 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
               </button>
             </div>
             <h2>{{ guest.name }}</h2>
-            <p>{{ guest.rsvpStatus }} · {{ guest.guestCount }} pessoa(s)</p>
+            <p>
+              <span class="status-pill" [class.confirmed]="guest.rsvpStatus === 'confirmed'">
+                {{ rsvpLabel(guest.rsvpStatus) }}
+              </span>
+              · {{ guest.guestCount }} pessoa(s)
+            </p>
             <a class="inline-link" [href]="whatsappInviteLink(guest)" target="_blank" rel="noreferrer">Enviar convite</a>
           </article>
         } @empty {
@@ -174,6 +181,21 @@ export class GuestsPage {
 
   protected totalGuests(guests?: Guest[] | null): number {
     return (guests || []).reduce((total, guest) => total + (Number(guest.guestCount) || 1), 0);
+  }
+
+  protected confirmedGuests(guests?: Guest[] | null): number {
+    return (guests || [])
+      .filter((guest) => guest.rsvpStatus === 'confirmed')
+      .reduce((total, guest) => total + (Number(guest.guestCount) || 1), 0);
+  }
+
+  protected rsvpLabel(status: Guest['rsvpStatus']): string {
+    return {
+      pending: 'Pendente',
+      confirmed: 'Confirmado',
+      declined: 'Nao vai',
+      maybe: 'Talvez',
+    }[status];
   }
 
   protected whatsappInviteLink(guest: Guest): string {

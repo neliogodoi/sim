@@ -19,14 +19,13 @@ import { toDisplayImageUrl } from '../../../core/utils/image-url';
         @if (wedding?.coverImageUrl) {
           <img class="print-invite-cover" [src]="imageUrl(wedding?.coverImageUrl)" [alt]="wedding?.coupleNames || 'Casamento'" />
         }
-        <p class="eyebrow">Convite especial</p>
-        <h1>Você aceita ser nosso padrinho?</h1>
-        @if (member) {
-          <p class="invite-person-name">{{ coupleName(member) }}</p>
-        }
         <h2>{{ wedding?.coupleNames || 'Os noivos' }}</h2>
         @if (wedding?.eventDate) {
           <p class="print-invite-date">{{ wedding?.eventDate }}</p>
+        }
+        <p class="eyebrow">Convite especial</p>
+        @if (member) {
+          <h1 class="groomsmen-names">{{ shortCoupleName(member) }}</h1>
         }
         <p>
           Queremos ter você ainda mais perto nesse momento. Sua presença na nossa história é importante,
@@ -90,8 +89,12 @@ export class GroomsmenInvitePage {
     this.responseMessage.set(invitationStatus === 'accepted' ? 'Resposta registrada. Obrigado pelo sim!' : 'Resposta registrada.');
   }
 
-  protected coupleName(member: { firstName: string; secondName: string }): string {
-    return `${member.firstName} & ${member.secondName}`;
+  protected shortCoupleName(member: { firstName: string; secondName: string }): string {
+    return `${this.firstWord(member.firstName)} & ${this.firstWord(member.secondName)}`;
+  }
+
+  private firstWord(value: string): string {
+    return value.trim().split(/\s+/)[0] || value;
   }
 
 }
