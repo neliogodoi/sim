@@ -187,7 +187,7 @@ a {
 
 .print-invite-card {
   display: grid;
-  gap: 16px;
+  gap: 20px;
   max-width: 720px;
   margin: 0 auto;
   padding: 40px 28px;
@@ -206,7 +206,7 @@ a {
 }
 
 .print-invite-card .eyebrow {
-  margin: 0;
+  margin: 10px 0 0;
   color: var(--color-muted);
   font-weight: 800;
   text-transform: uppercase;
@@ -221,13 +221,14 @@ a {
 }
 
 .print-invite-card h2 {
-  margin: 0;
+  margin: 0 0 4px;
   font-family: var(--font-script);
   font-size: 2.8rem;
   font-weight: 400;
 }
 
 .print-invite-date {
+  margin: 0 0 10px;
   color: var(--color-muted);
   font-weight: 800;
 }
@@ -238,11 +239,89 @@ a {
   font-weight: 900;
 }
 
+.groomsmen-invite-card {
+  gap: 18px;
+}
+
+.groomsmen-invite-card .print-invite-cover {
+  max-height: 260px;
+}
+
+.groomsmen-invite-card .invite-couple-name {
+  margin-top: 6px;
+}
+
+.groomsmen-invite-card .print-invite-date {
+  margin-bottom: 22px;
+}
+
+.groomsmen-invite-card .eyebrow {
+  margin-top: 4px;
+  font-size: 0.9rem;
+}
+
+.groomsmen-question {
+  max-width: 480px;
+  margin: 0 auto;
+  font-size: clamp(1.55rem, 5vw, 2.15rem) !important;
+  line-height: 1.18;
+}
+
 .groomsmen-names {
+  max-width: 520px;
+  margin: 6px auto 20px;
   color: var(--color-text);
   font-family: var(--font-display) !important;
-  font-size: clamp(2.8rem, 12vw, 4.6rem) !important;
-  line-height: 1 !important;
+  font-size: clamp(2rem, 7vw, 2.85rem) !important;
+  line-height: 1.08 !important;
+}
+
+.groomsmen-invite-card .invite-message {
+  max-width: 460px;
+  margin: 12px auto 4px;
+  font-size: 1.04rem;
+  line-height: 1.7;
+}
+
+.special-person-invite-card {
+  gap: 18px;
+}
+
+.special-person-invite-card .print-invite-cover {
+  max-height: 260px;
+}
+
+.special-person-invite-card .print-invite-date {
+  margin-bottom: 22px;
+}
+
+.special-person-question {
+  max-width: 480px;
+  margin: 0 auto;
+  font-size: clamp(1.55rem, 5vw, 2.15rem) !important;
+  line-height: 1.18;
+}
+
+.special-person-name {
+  max-width: 520px;
+  margin: 6px auto 0;
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 7vw, 2.85rem);
+  line-height: 1.08;
+}
+
+.invite-role {
+  margin: -8px 0 12px;
+  color: var(--color-muted);
+  font-weight: 800;
+}
+
+.special-person-invite-card .invite-message {
+  max-width: 460px;
+  margin: 12px auto 4px;
+  font-size: 1.04rem;
+  line-height: 1.7;
 }
 
 .acceptance-actions {
@@ -472,7 +551,7 @@ a {
 
 .admin-list-card {
   position: relative;
-  padding: 14px 82px 14px 14px;
+  padding: 14px 120px 14px 14px;
 }
 
 .card-actions {
@@ -493,6 +572,7 @@ a {
   background: var(--color-surface-strong);
   color: var(--color-text);
   cursor: pointer;
+  text-decoration: none;
 }
 
 .icon-action svg {
@@ -516,7 +596,7 @@ a {
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   min-height: 92px;
-  padding: 12px 82px 12px 12px;
+  padding: 12px 120px 12px 12px;
 }
 
 .compact-person-card .card-actions {

@@ -15,21 +15,22 @@ import { toDisplayImageUrl } from '../../../core/utils/image-url';
     @let member = member$ | async;
 
     <main class="print-invite-page">
-      <section class="print-invite-card">
+      <section class="print-invite-card groomsmen-invite-card">
         @if (wedding?.coverImageUrl) {
           <img class="print-invite-cover" [src]="imageUrl(wedding?.coverImageUrl)" [alt]="wedding?.coupleNames || 'Casamento'" />
         }
-        <h2>{{ wedding?.coupleNames || 'Os noivos' }}</h2>
+        <h2 class="invite-couple-name">{{ wedding?.coupleNames || 'Os noivos' }}</h2>
         @if (wedding?.eventDate) {
           <p class="print-invite-date">{{ wedding?.eventDate }}</p>
         }
         <p class="eyebrow">Convite especial</p>
+        <h1 class="groomsmen-question">Vocês aceitam ser nossos padrinhos?</h1>
         @if (member) {
-          <h1 class="groomsmen-names">{{ shortCoupleName(member) }}</h1>
+          <p class="groomsmen-names">{{ shortCoupleName(member) }}</p>
         }
-        <p>
-          Queremos ter você ainda mais perto nesse momento. Sua presença na nossa história é importante,
-          e seria uma alegria contar com {{ member ? 'vocês' : 'você' }} como padrinho.
+        <p class="invite-message">
+          Queremos ter vocês ainda mais perto nesse momento. A presença de vocês na nossa história é importante,
+          e seria uma alegria contar com vocês como padrinhos.
         </p>
         <div class="acceptance-actions">
           <button class="acceptance-button" type="button" (click)="respond('accepted')">Sim</button>

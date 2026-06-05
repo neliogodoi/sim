@@ -65,6 +65,12 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
         @for (guest of guests; track guest.id) {
           <article class="info-card admin-list-card">
             <div class="card-actions">
+              <a class="icon-action" [href]="whatsappInviteLink(guest)" target="_blank" rel="noreferrer" aria-label="Enviar convite do convidado">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 6h16v12H4z" />
+                  <path d="m4 7 8 6 8-6" />
+                </svg>
+              </a>
               <button class="icon-action" type="button" (click)="editGuest(guest)" aria-label="Editar convidado">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z" />
@@ -88,7 +94,6 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
               </span>
               · {{ guest.guestCount }} pessoa(s)
             </p>
-            <a class="inline-link" [href]="whatsappInviteLink(guest)" target="_blank" rel="noreferrer">Enviar convite</a>
           </article>
         } @empty {
           <p>Nenhum convidado cadastrado ainda.</p>

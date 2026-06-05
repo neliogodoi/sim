@@ -89,6 +89,10 @@ export class WeddingService {
     );
   }
 
+  importantPerson$(personId: string, weddingId = DEFAULT_WEDDING_ID): Observable<ImportantPerson | undefined> {
+    return this.doc$<ImportantPerson>(`weddings/${weddingId}/importantPeople/${personId}`);
+  }
+
   vendors$(weddingId = DEFAULT_WEDDING_ID): Observable<Vendor[]> {
     return this.col$<Vendor>(`weddings/${weddingId}/vendors`).pipe(
       map((items) => items.sort((first, second) => first.sortOrder - second.sortOrder)),
@@ -221,6 +225,17 @@ export class WeddingService {
 
   deleteImportantPerson(personId: string, weddingId = DEFAULT_WEDDING_ID): Promise<void> {
     return this.deleteDoc(`weddings/${weddingId}/importantPeople/${personId}`);
+  }
+
+  updateImportantPersonInvitation(
+    personId: string,
+    invitationStatus: 'accepted' | 'declined',
+    weddingId = DEFAULT_WEDDING_ID,
+  ): Promise<void> {
+    return this.updateDoc(`weddings/${weddingId}/importantPeople/${personId}`, {
+      invitationStatus,
+      respondedAt: new Date().toISOString(),
+    });
   }
 
   saveVendor(vendor: Partial<Vendor>, weddingId = DEFAULT_WEDDING_ID): Promise<void> {

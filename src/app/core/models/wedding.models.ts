@@ -87,12 +87,27 @@ export interface EntranceSong {
   sortOrder: number;
 }
 
+export type ImportantPersonRole =
+  | 'parent'
+  | 'groomFather'
+  | 'groomMother'
+  | 'brideFather'
+  | 'brideMother'
+  | 'page'
+  | 'maid'
+  | 'family'
+  | 'other';
+
 export interface ImportantPerson {
   id: string;
   weddingId: string;
   name: string;
-  role: 'parent' | 'page' | 'maid' | 'family' | 'other';
+  secondName?: string;
+  role: ImportantPersonRole;
+  secondRole?: ImportantPersonRole | null;
   description?: string;
+  invitationStatus?: 'accepted' | 'declined';
+  respondedAt?: string;
   sortOrder: number;
 }
 

@@ -68,6 +68,12 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
         @for (member of members; track member.id) {
           <article class="info-card admin-list-card wedding-party-card compact-person-card">
             <div class="card-actions">
+              <a class="icon-action" [href]="groomsmenWhatsappInviteLink(member)" target="_blank" rel="noreferrer" aria-label="Enviar convite dos padrinhos">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 6h16v12H4z" />
+                  <path d="m4 7 8 6 8-6" />
+                </svg>
+              </a>
               <button class="icon-action" type="button" (click)="editMember(member)" aria-label="Editar padrinhos">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z" />
@@ -100,7 +106,6 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
                   </span>
                 }
               </p>
-              <a class="inline-link" [href]="groomsmenInviteUrl(member)" target="_blank" rel="noreferrer">Convite</a>
             </div>
           </article>
         } @empty {
@@ -233,6 +238,12 @@ export class WeddingPartyAdminPage {
 
 	protected groomsmenInviteUrl(member: WeddingPartyMember): string {
 		return `${window.location.origin}/${this.weddingContextService.currentAdminWeddingId()}/convite-padrinhos/${member.id}`;
+	}
+
+	protected groomsmenWhatsappInviteLink(member: WeddingPartyMember): string {
+		const invitationUrl = this.groomsmenInviteUrl(member);
+		const text = `${this.shortCoupleName(member)}! Tenho um convite especial para vocês:\n\n${invitationUrl}`;
+		return `https://wa.me/?text=${encodeURIComponent(text)}`;
 	}
 
 	protected invitationLabel(status: 'accepted' | 'declined'): string {

@@ -57,7 +57,15 @@ service cloud.firestore {
       }
 
       match /importantPeople/{personId} {
-        allow read, write: if isOwner(weddingId);
+        allow get: if isPublished(weddingId) || isOwner(weddingId);
+        allow list: if isOwner(weddingId);
+        allow create, delete: if isOwner(weddingId);
+        allow update: if isOwner(weddingId)
+          || (
+            isPublished(weddingId)
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['invitationStatus', 'respondedAt'])
+            && request.resource.data.invitationStatus in ['accepted', 'declined']
+          );
       }
 
       match /vendors/{vendorId} {
