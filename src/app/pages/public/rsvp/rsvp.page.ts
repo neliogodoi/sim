@@ -49,11 +49,10 @@ import { WeddingService } from '../../../core/services/wedding.service';
             <input name="name" [(ngModel)]="name" required />
           </label>
         }
-        <div class="acceptance-actions">
+        <div class="acceptance-actions rsvp-actions">
           <button class="acceptance-button" type="button" (click)="submit('confirmed')">Sim</button>
           <button class="acceptance-button ghost" type="button" (click)="submit('declined')">Não</button>
           <button class="acceptance-button ghost" type="button" (click)="submit('maybe')">Talvez</button>
-          <button class="acceptance-button ghost" type="button" (click)="print()">Imprimir</button>
         </div>
       </section>
 
