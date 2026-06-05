@@ -36,11 +36,6 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/public/album/album.page').then((m) => m.AlbumPage),
   },
   {
-    path: 'convite-padrinhos',
-    loadComponent: () =>
-      import('./pages/public/groomsmen-invite/groomsmen-invite.page').then((m) => m.GroomsmenInvitePage),
-  },
-  {
     path: 'convite-padrinhos/:memberId',
     loadComponent: () =>
       import('./pages/public/groomsmen-invite/groomsmen-invite.page').then((m) => m.GroomsmenInvitePage),
@@ -138,11 +133,6 @@ export const routes: Routes = [
   {
     path: ':slug/album',
     loadComponent: () => import('./pages/public/album/album.page').then((m) => m.AlbumPage),
-  },
-  {
-    path: ':slug/convite-padrinhos',
-    loadComponent: () =>
-      import('./pages/public/groomsmen-invite/groomsmen-invite.page').then((m) => m.GroomsmenInvitePage),
   },
   {
     path: ':slug/convite-padrinhos/:memberId',

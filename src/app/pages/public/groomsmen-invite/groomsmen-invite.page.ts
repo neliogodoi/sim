@@ -22,7 +22,7 @@ import { toDisplayImageUrl } from '../../../core/utils/image-url';
         <p class="eyebrow">Convite especial</p>
         <h1>Você aceita ser nosso padrinho?</h1>
         @if (member) {
-          <p class="invite-person-name">{{ shortCoupleName(member) }}</p>
+          <p class="invite-person-name">{{ coupleName(member) }}</p>
         }
         <h2>{{ wedding?.coupleNames || 'Os noivos' }}</h2>
         @if (wedding?.eventDate) {
@@ -30,7 +30,7 @@ import { toDisplayImageUrl } from '../../../core/utils/image-url';
         }
         <p>
           Queremos ter você ainda mais perto nesse momento. Sua presença na nossa história é importante,
-          e seria uma alegria contar com você como padrinho.
+          e seria uma alegria contar com {{ member ? 'vocês' : 'você' }} como padrinho.
         </p>
         <div class="acceptance-actions">
           <button class="acceptance-button" type="button" (click)="respond('accepted')">Sim</button>
@@ -80,19 +80,18 @@ export class GroomsmenInvitePage {
 
   protected async respond(invitationStatus: 'accepted' | 'declined'): Promise<void> {
     const memberId = this.route.snapshot.paramMap.get('memberId');
-    if (memberId) {
-      const weddingId = await firstValueFrom(this.weddingId$);
-      await this.weddingService.updateWeddingPartyInvitation(memberId, invitationStatus, weddingId);
+    if (!memberId) {
+      this.responseMessage.set('Convite individual nao encontrado.');
+      return;
     }
 
+    const weddingId = await firstValueFrom(this.weddingId$);
+    await this.weddingService.updateWeddingPartyInvitation(memberId, invitationStatus, weddingId);
     this.responseMessage.set(invitationStatus === 'accepted' ? 'Resposta registrada. Obrigado pelo sim!' : 'Resposta registrada.');
   }
 
-  protected shortCoupleName(member: { firstName: string; secondName: string }): string {
-    return `${this.firstWord(member.firstName)} & ${this.firstWord(member.secondName)}`;
+  protected coupleName(member: { firstName: string; secondName: string }): string {
+    return `${member.firstName} & ${member.secondName}`;
   }
 
-  private firstWord(value: string): string {
-    return value.trim().split(/\s+/)[0] || value;
-  }
 }
