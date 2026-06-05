@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { AdminWeddingBootstrapService } from '../../../core/services/admin-wedding-bootstrap.service';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -37,6 +38,7 @@ import { AuthService } from '../../../core/services/auth.service';
   `,
 })
 export class LoginPage {
+  private readonly adminWeddingBootstrapService = inject(AdminWeddingBootstrapService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
@@ -52,7 +54,9 @@ export class LoginPage {
   async loginWithGoogle(): Promise<void> {
     try {
       await this.authService.loginWithGoogle();
-      await this.router.navigateByUrl('/admin');
+      if (this.authService.currentUser()) {
+        await this.enterAdmin();
+      }
     } catch {
       this.error = 'Nao foi possivel entrar com Google.';
     }
@@ -61,7 +65,7 @@ export class LoginPage {
   async login(): Promise<void> {
     try {
       await this.authService.login(this.email, this.password);
-      await this.router.navigateByUrl('/admin');
+      await this.enterAdmin();
     } catch {
       this.error = 'Nao foi possivel entrar. Verifique email e senha.';
     }
@@ -70,7 +74,7 @@ export class LoginPage {
   async register(): Promise<void> {
     try {
       await this.authService.register(this.displayName, this.email, this.password);
-      await this.router.navigateByUrl('/admin');
+      await this.enterAdmin();
     } catch {
       this.error = 'Nao foi possivel criar o acesso. Verifique email e senha.';
     }
@@ -80,10 +84,15 @@ export class LoginPage {
     try {
       const result = await this.authService.completeRedirectLogin();
       if (result) {
-        await this.router.navigateByUrl('/admin');
+        await this.enterAdmin();
       }
     } catch {
       this.error = 'Nao foi possivel concluir o login com Google.';
     }
+  }
+
+  private async enterAdmin(): Promise<void> {
+    await this.adminWeddingBootstrapService.ensureWedding(this.authService.currentUser());
+    await this.router.navigateByUrl('/admin/configuracoes');
   }
 }

@@ -24,6 +24,10 @@ export class AuthService {
 
   readonly user$: Observable<User | null> = authState(this.auth);
 
+  currentUser(): User | null {
+    return this.auth.currentUser;
+  }
+
   async loginWithGoogle(): Promise<void> {
     try {
       await signInWithPopup(this.auth, this.googleProvider);
