@@ -13,18 +13,27 @@ import { WeddingService } from '../../../core/services/wedding.service';
   template: `
     <main class="public-page content-page">
       @let guest = guest$ | async;
+      @let wedding = wedding$ | async;
 
-      <h1>{{ guest ? 'Seu convite' : 'Confirmar presenca' }}</h1>
-      <p>{{ guest ? 'Confirme sua presenca para ajudar os noivos na organizacao.' : 'Informe seus dados para ajudar os noivos na organizacao.' }}</p>
-
-      <section class="print-invite-card compact-rsvp-card">
-        <p class="eyebrow">Convite</p>
+      <section class="print-invite-card guest-invite-card">
+        <h1>{{ wedding?.coupleNames || 'Noiva e Noivo' }}</h1>
+        @if (wedding?.eventDate) {
+          <p class="print-invite-date">{{ wedding?.eventDate }}</p>
+        }
+        @if (wedding?.ceremonyAddress || wedding?.receptionAddress) {
+          <p class="invite-location">{{ wedding?.ceremonyAddress || wedding?.receptionAddress }}</p>
+        }
+        <p class="invite-message">
+          É com muito carinho que convidamos você para celebrar conosco esse momento tão especial.
+        </p>
+        <p class="eyebrow">Convidado</p>
         <h2>{{ name || guest?.name || 'Convidado' }}</h2>
         @if (guest?.groupName) {
-          <p><strong>Família/Grupo:</strong> {{ guest?.groupName }}</p>
+          <p class="invite-group">Estendendo-se a {{ guest?.groupName }}</p>
         }
+        <p class="invite-help">Confirme sua presença para ajudar os noivos na organização.</p>
         <label>
-          Pessoas que irão
+          Número de pessoas
           <input
             type="number"
             min="1"
@@ -44,6 +53,7 @@ import { WeddingService } from '../../../core/services/wedding.service';
           <button class="acceptance-button" type="button" (click)="submit('confirmed')">Sim</button>
           <button class="acceptance-button ghost" type="button" (click)="submit('declined')">Não</button>
           <button class="acceptance-button ghost" type="button" (click)="submit('maybe')">Talvez</button>
+          <button class="acceptance-button ghost" type="button" (click)="print()">Imprimir</button>
         </div>
       </section>
 
@@ -66,6 +76,7 @@ export class RsvpPage {
   private readonly weddingContextService = inject(WeddingContextService);
   private readonly weddingService = inject(WeddingService);
   private readonly weddingId$ = this.weddingContextService.publicWeddingId$(this.route);
+  protected readonly wedding$ = this.weddingId$.pipe(switchMap((weddingId) => this.weddingService.wedding$(weddingId)));
   protected readonly guest$ = this.route.paramMap.pipe(
     switchMap((params) => {
       const guestId = params.get('guestId');

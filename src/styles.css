@@ -266,6 +266,45 @@ a {
   padding: 28px 20px;
 }
 
+.guest-invite-card {
+  max-width: 560px;
+  gap: 14px;
+}
+
+.guest-invite-card h1 {
+  color: var(--color-text);
+  font-family: var(--font-script);
+  font-size: clamp(2.6rem, 12vw, 4rem);
+  line-height: 0.95;
+}
+
+.guest-invite-card h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 9vw, 3rem);
+}
+
+.invite-location,
+.invite-group,
+.invite-help {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.invite-message {
+  max-width: 420px;
+  margin: 10px auto;
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  line-height: 1.5;
+}
+
+.guest-invite-card label {
+  max-width: 220px;
+  margin: 0 auto;
+  text-align: left;
+}
+
 .floating-print-action {
   position: fixed;
   right: 16px;
