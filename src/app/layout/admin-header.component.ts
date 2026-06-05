@@ -13,19 +13,6 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
           <path d="M10 20v-6h4v6" />
         </svg>
       </a>
-      <a routerLink="/admin/configuracoes" routerLinkActive="active" aria-label="Configuracoes">
-        <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="12" cy="12" r="3" />
-          <path d="M12 2.8v3" />
-          <path d="M12 18.2v3" />
-          <path d="m4.2 4.2 2.1 2.1" />
-          <path d="m17.7 17.7 2.1 2.1" />
-          <path d="M2.8 12h3" />
-          <path d="M18.2 12h3" />
-          <path d="m4.2 19.8 2.1-2.1" />
-          <path d="m17.7 6.3 2.1-2.1" />
-        </svg>
-      </a>
       <a routerLink="/admin/convidados" routerLinkActive="active" aria-label="Convidados">
         <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
           <circle cx="9" cy="8" r="3" />
