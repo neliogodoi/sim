@@ -21,9 +21,17 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
           <h2>Padrinhos</h2>
           <p>Casais e fotos dos padrinhos.</p>
         </a>
+        <a class="info-card link-card" routerLink="/admin/pessoas">
+          <h2>Pessoas importantes</h2>
+          <p>Pais, pajens, damas e familiares.</p>
+        </a>
         <a class="info-card link-card" routerLink="/admin/musicas">
           <h2>Musicas</h2>
           <p>Entradas e links das musicas.</p>
+        </a>
+        <a class="info-card link-card" routerLink="/admin/fornecedores">
+          <h2>Fornecedores</h2>
+          <p>Buffet, fotografia, espaco, lojas e contatos.</p>
         </a>
         <a class="info-card link-card" routerLink="/admin/recados">
           <h2>Recados</h2>

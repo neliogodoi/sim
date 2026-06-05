@@ -62,10 +62,21 @@ export const routes: Routes = [
       import('./pages/admin/wedding-party/wedding-party-admin.page').then((m) => m.WeddingPartyAdminPage),
   },
   {
+    path: 'admin/pessoas',
+    canActivate: [adminGuard],
+    loadComponent: () =>
+      import('./pages/admin/important-people/important-people-admin.page').then((m) => m.ImportantPeopleAdminPage),
+  },
+  {
     path: 'admin/musicas',
     canActivate: [adminGuard],
     loadComponent: () =>
       import('./pages/admin/entrance-songs/entrance-songs-admin.page').then((m) => m.EntranceSongsAdminPage),
+  },
+  {
+    path: 'admin/fornecedores',
+    canActivate: [adminGuard],
+    loadComponent: () => import('./pages/admin/vendors/vendors-admin.page').then((m) => m.VendorsAdminPage),
   },
   {
     path: 'admin/recados',

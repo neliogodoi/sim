@@ -22,7 +22,9 @@ import {
   GiftLink,
   Guest,
   GuestMessage,
+  ImportantPerson,
   ScheduleItem,
+  Vendor,
   Wedding,
   WeddingPartyMember,
 } from '../models/wedding.models';
@@ -69,6 +71,18 @@ export class WeddingService {
 
   entranceSongs$(weddingId = DEFAULT_WEDDING_ID): Observable<EntranceSong[]> {
     return this.col$<EntranceSong>(`weddings/${weddingId}/entranceSongs`).pipe(
+      map((items) => items.sort((first, second) => first.sortOrder - second.sortOrder)),
+    );
+  }
+
+  importantPeople$(weddingId = DEFAULT_WEDDING_ID): Observable<ImportantPerson[]> {
+    return this.col$<ImportantPerson>(`weddings/${weddingId}/importantPeople`).pipe(
+      map((items) => items.sort((first, second) => first.sortOrder - second.sortOrder)),
+    );
+  }
+
+  vendors$(weddingId = DEFAULT_WEDDING_ID): Observable<Vendor[]> {
+    return this.col$<Vendor>(`weddings/${weddingId}/vendors`).pipe(
       map((items) => items.sort((first, second) => first.sortOrder - second.sortOrder)),
     );
   }
@@ -176,6 +190,30 @@ export class WeddingService {
 
   deleteEntranceSong(songId: string, weddingId = DEFAULT_WEDDING_ID): Promise<void> {
     return this.deleteDoc(`weddings/${weddingId}/entranceSongs/${songId}`);
+  }
+
+  saveImportantPerson(person: Partial<ImportantPerson>, weddingId = DEFAULT_WEDDING_ID): Promise<void> {
+    if (person.id) {
+      return this.updateDoc(`weddings/${weddingId}/importantPeople/${person.id}`, person);
+    }
+
+    return this.addDoc(`weddings/${weddingId}/importantPeople`, person).then();
+  }
+
+  deleteImportantPerson(personId: string, weddingId = DEFAULT_WEDDING_ID): Promise<void> {
+    return this.deleteDoc(`weddings/${weddingId}/importantPeople/${personId}`);
+  }
+
+  saveVendor(vendor: Partial<Vendor>, weddingId = DEFAULT_WEDDING_ID): Promise<void> {
+    if (vendor.id) {
+      return this.updateDoc(`weddings/${weddingId}/vendors/${vendor.id}`, vendor);
+    }
+
+    return this.addDoc(`weddings/${weddingId}/vendors`, vendor).then();
+  }
+
+  deleteVendor(vendorId: string, weddingId = DEFAULT_WEDDING_ID): Promise<void> {
+    return this.deleteDoc(`weddings/${weddingId}/vendors/${vendorId}`);
   }
 
   addMessage(message: Omit<GuestMessage, 'id'>, weddingId = DEFAULT_WEDDING_ID): Promise<string> {

@@ -49,6 +49,14 @@ service cloud.firestore {
         allow write: if isOwner(weddingId);
       }
 
+      match /importantPeople/{personId} {
+        allow read, write: if isOwner(weddingId);
+      }
+
+      match /vendors/{vendorId} {
+        allow read, write: if isOwner(weddingId);
+      }
+
       match /messages/{messageId} {
         allow read: if isOwner(weddingId) || (isPublished(weddingId) && resource.data.isVisible == true);
         allow create: if isPublished(weddingId);

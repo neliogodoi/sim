@@ -82,6 +82,27 @@ export interface EntranceSong {
   sortOrder: number;
 }
 
+export interface ImportantPerson {
+  id: string;
+  weddingId: string;
+  name: string;
+  role: 'parent' | 'page' | 'maid' | 'family' | 'other';
+  description?: string;
+  sortOrder: number;
+}
+
+export interface Vendor {
+  id: string;
+  weddingId: string;
+  name: string;
+  category: 'buffet' | 'photography' | 'venue' | 'store' | 'decor' | 'music' | 'other';
+  contactName?: string;
+  phone?: string;
+  url?: string;
+  notes?: string;
+  sortOrder: number;
+}
+
 export interface GuestMessage {
   id: string;
   weddingId: string;
