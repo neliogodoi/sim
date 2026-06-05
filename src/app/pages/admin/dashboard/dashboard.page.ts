@@ -125,6 +125,38 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
           </svg>
           <span>Presentes</span>
         </a>
+        <a class="dashboard-shortcut" routerLink="/admin/agenda" aria-label="Agenda">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="4" y="5" width="16" height="15" rx="2" />
+            <path d="M8 3v4" />
+            <path d="M16 3v4" />
+            <path d="M4 10h16" />
+          </svg>
+          <span>Agenda</span>
+        </a>
+        <a class="dashboard-shortcut" routerLink="/admin/padrinhos" aria-label="Padrinhos">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.7A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z" />
+          </svg>
+          <span>Padrinhos</span>
+        </a>
+        <a class="dashboard-shortcut" routerLink="/admin/pessoas" aria-label="Pessoas importantes">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="7" r="3" />
+            <path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6" />
+          </svg>
+          <span>Pessoas</span>
+        </a>
+        <a class="dashboard-shortcut" routerLink="/admin/fornecedores" aria-label="Fornecedores">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 9h16" />
+            <path d="M6 9V5h12v4" />
+            <path d="M6 9v10h12V9" />
+            <path d="M9 13h6" />
+            <path d="M9 16h4" />
+          </svg>
+          <span>Fornec.</span>
+        </a>
         <a class="dashboard-shortcut" routerLink="/admin/mais" aria-label="Mais">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="5" cy="12" r="1.4" />
