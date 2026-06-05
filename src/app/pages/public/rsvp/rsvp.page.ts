@@ -1,5 +1,6 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom, of, switchMap } from 'rxjs';
@@ -72,6 +73,7 @@ import { WeddingService } from '../../../core/services/wedding.service';
 })
 export class RsvpPage {
   private readonly route = inject(ActivatedRoute);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly weddingContextService = inject(WeddingContextService);
   private readonly weddingService = inject(WeddingService);
   private readonly weddingId$ = this.weddingContextService.publicWeddingId$(this.route);
@@ -93,6 +95,18 @@ export class RsvpPage {
   protected guestCount = 1;
   protected guestCountChanged = false;
   protected readonly saved = signal(false);
+
+  constructor() {
+    this.guest$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((guest) => {
+      if (!guest || this.guestCountChanged) {
+        return;
+      }
+
+      this.name = guest.name;
+      this.phone = guest.phone || '';
+      this.guestCount = guest.guestCount || 1;
+    });
+  }
 
   async submit(status: 'confirmed' | 'declined' | 'maybe'): Promise<void> {
     const guest = await firstValueFrom(this.guest$);
