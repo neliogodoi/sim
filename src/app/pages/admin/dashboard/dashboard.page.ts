@@ -179,13 +179,6 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
         </section>
       }
 
-      @if (!weddings?.length) {
-        <section class="form-card">
-          <h2>Nenhum casamento encontrado</h2>
-          <p>Use o botão + para criar um casamento.</p>
-        </section>
-      }
-
     </main>
   `,
 })
@@ -196,7 +189,9 @@ export class DashboardPage {
   private readonly weddingService = inject(WeddingService);
 
   protected readonly weddings$: Observable<Wedding[]> = authState(this.auth).pipe(
-    switchMap((user) => (user ? this.weddingService.weddingsByOwner$(user.uid) : of([]))),
+    switchMap((user) =>
+      user ? this.weddingService.weddingsByOwner$(user.uid, this.weddingContextService.currentAdminWeddingId()) : of([]),
+    ),
   );
   protected readonly activeWedding$ = this.weddingContextService.activeWeddingId$.pipe(
     switchMap((weddingId) => this.weddingService.wedding$(weddingId)),

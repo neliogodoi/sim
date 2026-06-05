@@ -1,6 +1,5 @@
 import { Injectable, inject } from '@angular/core';
 import { User } from '@angular/fire/auth';
-import { firstValueFrom, take } from 'rxjs';
 
 import { WeddingContextService } from './wedding-context.service';
 import { WeddingService } from './wedding.service';
@@ -17,8 +16,10 @@ export class AdminWeddingBootstrapService {
       throw new Error('Usuario nao autenticado.');
     }
 
-    const weddings = await firstValueFrom(this.weddingService.weddingsByOwner$(user.uid).pipe(take(1)));
-    const existingWedding = weddings[0];
+    const activeWeddingId = this.weddingContextService.currentAdminWeddingId();
+    const weddings = await this.weddingService.getWeddingsByOwner(user.uid, activeWeddingId);
+    const existingWedding =
+      weddings.find((wedding) => wedding.id === activeWeddingId || wedding.slug === activeWeddingId) || weddings[0];
 
     if (existingWedding) {
       const weddingId = existingWedding.slug || existingWedding.id;

@@ -3,7 +3,6 @@ export type RsvpStatus = 'pending' | 'confirmed' | 'declined' | 'maybe';
 export interface Wedding {
   id: string;
   slug?: string;
-  ownerIds?: string[];
   status?: 'draft' | 'published';
   coupleNames: string;
   eventDate: string;

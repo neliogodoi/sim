@@ -10,12 +10,14 @@ import {
   deleteDoc as deleteFirestoreDoc,
   doc,
   docData,
+  getDoc,
+  getDocs,
   query,
   setDoc as setFirestoreDoc,
   updateDoc as updateFirestoreDoc,
   where,
 } from '@angular/fire/firestore';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Observable, catchError, from, map, of } from 'rxjs';
 
 import {
   EntranceSong,
@@ -33,6 +35,12 @@ export const DEFAULT_WEDDING_ID = 'default';
 
 type QueryFn<T extends DocumentData = DocumentData> = (ref: CollectionReference<T>) => Query<T>;
 
+interface UserWeddingRef {
+  weddingId: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -43,8 +51,32 @@ export class WeddingService {
     return this.doc$<Wedding>(`weddings/${weddingId}`);
   }
 
-  weddingsByOwner$(uid: string): Observable<Wedding[]> {
-    return this.col$<Wedding>('weddings', (ref) => query(ref, where('ownerIds', 'array-contains', uid)));
+  weddingsByOwner$(uid: string, preferredWeddingId = DEFAULT_WEDDING_ID): Observable<Wedding[]> {
+    return from(this.getWeddingsByOwner(uid, preferredWeddingId)).pipe(catchError(() => of([])));
+  }
+
+  async getWeddingsByOwner(uid: string, preferredWeddingId = DEFAULT_WEDDING_ID): Promise<Wedding[]> {
+    const weddingIds = new Set<string>();
+
+    if (preferredWeddingId && (await this.isOwner(uid, preferredWeddingId))) {
+      weddingIds.add(preferredWeddingId);
+      await this.trySaveUserWeddingRef(uid, preferredWeddingId);
+    }
+
+    const indexedWeddingIds = await this.getIndexedWeddingIds(uid);
+    indexedWeddingIds.forEach((weddingId) => weddingIds.add(weddingId));
+
+    const weddings = await Promise.all(
+      [...weddingIds].map(async (weddingId) => {
+        if (!(await this.isOwner(uid, weddingId))) {
+          return undefined;
+        }
+
+        return this.getWedding(weddingId);
+      }),
+    );
+
+    return weddings.filter((wedding): wedding is Wedding => !!wedding);
   }
 
   guests$(weddingId = DEFAULT_WEDDING_ID): Observable<Guest[]> {
@@ -110,10 +142,15 @@ export class WeddingService {
   }
 
   async ensureOwner(uid: string, weddingId = DEFAULT_WEDDING_ID): Promise<void> {
+    const now = new Date().toISOString();
+
     await this.setDoc(`weddings/${weddingId}/owners/${uid}`, {
       uid,
-      createdAt: new Date().toISOString(),
+      weddingId,
+      createdAt: now,
+      updatedAt: now,
     });
+    await this.saveUserWeddingRef(uid, weddingId, now);
   }
 
   async createWedding(weddingId: string, ownerUid: string, wedding: Partial<Wedding>): Promise<void> {
@@ -121,7 +158,6 @@ export class WeddingService {
     await this.setDoc(`weddings/${weddingId}`, {
       ...wedding,
       slug: weddingId,
-      ownerIds: [ownerUid],
       status: wedding.status || 'published',
       createdAt,
       updatedAt: createdAt,
@@ -297,6 +333,48 @@ export class WeddingService {
   private async deleteDoc(path: string): Promise<void> {
     const ref = doc(this.firestore, path);
     await deleteFirestoreDoc(ref);
+  }
+
+  private async getIndexedWeddingIds(uid: string): Promise<string[]> {
+    try {
+      const snapshot = await getDocs(collection(this.firestore, `userWeddings/${uid}/weddings`));
+      return snapshot.docs.map((weddingDoc) => {
+        const data = weddingDoc.data() as UserWeddingRef;
+        return data.weddingId || weddingDoc.id;
+      });
+    } catch {
+      return [];
+    }
+  }
+
+  private async isOwner(uid: string, weddingId: string): Promise<boolean> {
+    try {
+      const snapshot = await getDoc(doc(this.firestore, `weddings/${weddingId}/owners/${uid}`));
+      return snapshot.exists();
+    } catch {
+      return false;
+    }
+  }
+
+  private async getWedding(weddingId: string): Promise<Wedding | undefined> {
+    const snapshot = await getDoc(doc(this.firestore, `weddings/${weddingId}`));
+    return snapshot.exists() ? ({ id: snapshot.id, ...snapshot.data() } as Wedding) : undefined;
+  }
+
+  private saveUserWeddingRef(uid: string, weddingId: string, createdAt = new Date().toISOString()): Promise<void> {
+    return this.setDoc(`userWeddings/${uid}/weddings/${weddingId}`, {
+      weddingId,
+      createdAt,
+      updatedAt: new Date().toISOString(),
+    });
+  }
+
+  private async trySaveUserWeddingRef(uid: string, weddingId: string): Promise<void> {
+    try {
+      await this.saveUserWeddingRef(uid, weddingId);
+    } catch {
+      return;
+    }
   }
 
   private cleanData(data: DocumentData): DocumentData {

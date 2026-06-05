@@ -79,6 +79,18 @@ service cloud.firestore {
       }
     }
 
+    match /userWeddings/{uid} {
+      allow read, write: if false;
+
+      match /weddings/{weddingId} {
+        allow read: if signedIn() && request.auth.uid == uid;
+        allow create, update: if signedIn()
+          && (request.auth.uid == uid || isOwner(weddingId))
+          && request.resource.data.weddingId == weddingId;
+        allow delete: if signedIn() && (request.auth.uid == uid || isOwner(weddingId));
+      }
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }
