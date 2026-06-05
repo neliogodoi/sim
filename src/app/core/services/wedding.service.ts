@@ -73,6 +73,10 @@ export class WeddingService {
     );
   }
 
+  weddingPartyMember$(memberId: string, weddingId = DEFAULT_WEDDING_ID): Observable<WeddingPartyMember | undefined> {
+    return this.doc$<WeddingPartyMember>(`weddings/${weddingId}/weddingParty/${memberId}`);
+  }
+
   entranceSongs$(weddingId = DEFAULT_WEDDING_ID): Observable<EntranceSong[]> {
     return this.col$<EntranceSong>(`weddings/${weddingId}/entranceSongs`).pipe(
       map((items) => items.sort((first, second) => first.sortOrder - second.sortOrder)),
@@ -182,6 +186,17 @@ export class WeddingService {
 
   deleteWeddingPartyMember(memberId: string, weddingId = DEFAULT_WEDDING_ID): Promise<void> {
     return this.deleteDoc(`weddings/${weddingId}/weddingParty/${memberId}`);
+  }
+
+  updateWeddingPartyInvitation(
+    memberId: string,
+    invitationStatus: 'accepted' | 'declined',
+    weddingId = DEFAULT_WEDDING_ID,
+  ): Promise<void> {
+    return this.updateDoc(`weddings/${weddingId}/weddingParty/${memberId}`, {
+      invitationStatus,
+      respondedAt: new Date().toISOString(),
+    });
   }
 
   saveEntranceSong(song: Partial<EntranceSong>, weddingId = DEFAULT_WEDDING_ID): Promise<void> {

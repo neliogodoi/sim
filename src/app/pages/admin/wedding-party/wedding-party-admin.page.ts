@@ -91,7 +91,8 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             </div>
             <div class="compact-card-copy">
               <h2>{{ shortCoupleName(member) }}</h2>
-              <p>{{ sideLabel(member.side) }}</p>
+              <p>{{ sideLabel(member.side) }}{{ member.invitationStatus ? ' · ' + invitationLabel(member.invitationStatus) : '' }}</p>
+              <a class="inline-link" [href]="groomsmenInviteUrl(member)" target="_blank" rel="noreferrer">Convite</a>
             </div>
           </article>
         } @empty {
@@ -220,6 +221,14 @@ export class WeddingPartyAdminPage {
 
 	protected shortCoupleName(member: WeddingPartyMember): string {
 		return `${this.firstWord(member.firstName)} & ${this.firstWord(member.secondName)}`;
+	}
+
+	protected groomsmenInviteUrl(member: WeddingPartyMember): string {
+		return `${window.location.origin}/${this.weddingContextService.currentAdminWeddingId()}/convite-padrinhos/${member.id}`;
+	}
+
+	protected invitationLabel(status: 'accepted' | 'declined'): string {
+		return status === 'accepted' ? 'Aceitou' : 'Nao aceitou';
 	}
 
 	private firstWord(value: string): string {

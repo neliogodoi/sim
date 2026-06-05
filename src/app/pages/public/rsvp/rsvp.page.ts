@@ -4,13 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom, of, switchMap } from 'rxjs';
 
-import { PublicNavComponent } from '../../../layout/public-nav.component';
 import { WeddingContextService } from '../../../core/services/wedding-context.service';
 import { WeddingService } from '../../../core/services/wedding.service';
 
 @Component({
   selector: 'app-rsvp-page',
-  imports: [AsyncPipe, FormsModule, PublicNavComponent],
+  imports: [AsyncPipe, FormsModule],
   template: `
     <main class="public-page content-page">
       @let guest = guest$ | async;
@@ -18,36 +17,48 @@ import { WeddingService } from '../../../core/services/wedding.service';
       <h1>{{ guest ? 'Seu convite' : 'Confirmar presenca' }}</h1>
       <p>{{ guest ? 'Confirme sua presenca para ajudar os noivos na organizacao.' : 'Informe seus dados para ajudar os noivos na organizacao.' }}</p>
 
-      <form class="form-card" (ngSubmit)="submit()">
+      <section class="print-invite-card compact-rsvp-card">
+        <p class="eyebrow">Convite</p>
+        <h2>{{ name || guest?.name || 'Convidado' }}</h2>
+        @if (guest?.groupName) {
+          <p><strong>Família/Grupo:</strong> {{ guest?.groupName }}</p>
+        }
         <label>
-          Nome
-          <input name="name" [(ngModel)]="name" [placeholder]="guest?.name || ''" required />
+          Pessoas que irão
+          <input
+            type="number"
+            min="1"
+            name="guestCount"
+            [(ngModel)]="guestCount"
+            [placeholder]="guest?.guestCount?.toString() || '1'"
+            (ngModelChange)="guestCountChanged = true"
+          />
         </label>
-        <label>
-          Telefone
-          <input name="phone" [(ngModel)]="phone" />
-        </label>
-        <label>
-          Resposta
-          <select name="status" [(ngModel)]="status">
-            <option value="confirmed">Vou</option>
-            <option value="declined">Nao vou</option>
-            <option value="maybe">Talvez</option>
-          </select>
-        </label>
-        <label>
-          Quantidade de pessoas
-          <input type="number" min="1" name="guestCount" [(ngModel)]="guestCount" />
-        </label>
-        <button class="primary-action" type="submit">Enviar resposta</button>
-      </form>
+        @if (!guest) {
+          <label>
+            Nome
+            <input name="name" [(ngModel)]="name" required />
+          </label>
+        }
+        <div class="acceptance-actions">
+          <button class="acceptance-button" type="button" (click)="submit('confirmed')">Sim</button>
+          <button class="acceptance-button ghost" type="button" (click)="submit('declined')">Não</button>
+          <button class="acceptance-button ghost" type="button" (click)="submit('maybe')">Talvez</button>
+        </div>
+      </section>
 
       @if (saved()) {
         <p class="success-state">Resposta enviada. Obrigado!</p>
       }
-    </main>
 
-    <app-public-nav />
+      <button class="floating-print-action" type="button" (click)="print()" aria-label="Gerar PDF ou imprimir">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 8V4h10v4" />
+          <path d="M6 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-1" />
+          <path d="M7 14h10v6H7z" />
+        </svg>
+      </button>
+    </main>
   `,
 })
 export class RsvpPage {
@@ -70,13 +81,14 @@ export class RsvpPage {
   protected phone = '';
   protected status: 'confirmed' | 'declined' | 'maybe' = 'confirmed';
   protected guestCount = 1;
+  protected guestCountChanged = false;
   protected readonly saved = signal(false);
 
-  async submit(): Promise<void> {
+  async submit(status: 'confirmed' | 'declined' | 'maybe'): Promise<void> {
     const guest = await firstValueFrom(this.guest$);
     const name = this.name.trim() || guest?.name || '';
     const phone = this.phone.trim() || guest?.phone || '';
-    const guestCount = Number(this.guestCount) || guest?.guestCount || 1;
+    const guestCount = this.guestCountChanged ? Number(this.guestCount) || 1 : guest?.guestCount || Number(this.guestCount) || 1;
 
     if (!name) {
       return;
@@ -90,7 +102,7 @@ export class RsvpPage {
       phone,
       groupName: guest?.groupName || '',
       guestCount,
-      rsvpStatus: this.status,
+      rsvpStatus: status,
       rsvpCompanions: Math.max(0, guestCount - 1),
     };
 
@@ -100,5 +112,9 @@ export class RsvpPage {
       await this.weddingService.addGuest(payload, weddingId);
     }
     this.saved.set(true);
+  }
+
+  protected print(): void {
+    window.print();
   }
 }

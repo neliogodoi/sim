@@ -72,6 +72,8 @@ export interface WeddingPartyMember {
   firstName: string;
   secondName: string;
   side: 'bride' | 'groom' | 'couple';
+  invitationStatus?: 'accepted' | 'declined';
+  respondedAt?: string;
   photoUrl?: string;
   sortOrder: number;
 }
