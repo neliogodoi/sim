@@ -1,7 +1,10 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import QRCode from 'qrcode';
+import { switchMap } from 'rxjs';
 
+import { WeddingContextService } from '../../../core/services/wedding-context.service';
 import { WeddingService } from '../../../core/services/wedding.service';
 import { PublicNavComponent } from '../../../layout/public-nav.component';
 
@@ -33,9 +36,12 @@ import { PublicNavComponent } from '../../../layout/public-nav.component';
   `,
 })
 export class AlbumPage {
+  private readonly route = inject(ActivatedRoute);
+  private readonly weddingContextService = inject(WeddingContextService);
   private readonly weddingService = inject(WeddingService);
 
-  protected readonly wedding$ = this.weddingService.wedding$();
+  protected readonly weddingId$ = this.weddingContextService.publicWeddingId$(this.route);
+  protected readonly wedding$ = this.weddingId$.pipe(switchMap((weddingId) => this.weddingService.wedding$(weddingId)));
   protected readonly qrCodeUrl = signal('');
 
   constructor() {

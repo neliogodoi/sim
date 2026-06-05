@@ -10,8 +10,12 @@ service cloud.firestore {
         && exists(/databases/$(database)/documents/weddings/$(weddingId)/owners/$(request.auth.uid));
     }
 
+    function isPublished(weddingId) {
+      return get(/databases/$(database)/documents/weddings/$(weddingId)).data.status == 'published';
+    }
+
     match /weddings/{weddingId} {
-      allow read: if true;
+      allow read: if resource.data.status == 'published' || isOwner(weddingId);
       allow create: if signedIn();
       allow update, delete: if isOwner(weddingId);
 
@@ -21,23 +25,33 @@ service cloud.firestore {
 
       match /guests/{guestId} {
         allow read: if isOwner(weddingId);
-        allow create, update: if true;
+        allow create, update: if isPublished(weddingId) || isOwner(weddingId);
         allow delete: if isOwner(weddingId);
       }
 
       match /scheduleItems/{itemId} {
-        allow read: if true;
+        allow read: if isPublished(weddingId) || isOwner(weddingId);
         allow write: if isOwner(weddingId);
       }
 
       match /giftLinks/{giftId} {
-        allow read: if true;
+        allow read: if isPublished(weddingId) || isOwner(weddingId);
+        allow write: if isOwner(weddingId);
+      }
+
+      match /weddingParty/{memberId} {
+        allow read: if isPublished(weddingId) || isOwner(weddingId);
+        allow write: if isOwner(weddingId);
+      }
+
+      match /entranceSongs/{songId} {
+        allow read: if isPublished(weddingId) || isOwner(weddingId);
         allow write: if isOwner(weddingId);
       }
 
       match /messages/{messageId} {
-        allow read: if isOwner(weddingId) || resource.data.isVisible == true;
-        allow create: if true;
+        allow read: if isOwner(weddingId) || (isPublished(weddingId) && resource.data.isVisible == true);
+        allow create: if isPublished(weddingId);
         allow update, delete: if isOwner(weddingId);
       }
     }

@@ -1,8 +1,10 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { switchMap } from 'rxjs';
 
 import { PublicNavComponent } from '../../../layout/public-nav.component';
+import { WeddingContextService } from '../../../core/services/wedding-context.service';
 import { WeddingService } from '../../../core/services/wedding.service';
 import { toDisplayImageUrl } from '../../../core/utils/image-url';
 
@@ -34,7 +36,7 @@ import { toDisplayImageUrl } from '../../../core/utils/image-url';
               'Estamos preparando esse momento com muito carinho e queremos viver cada detalhe ao lado de pessoas especiais.'
           }}
         </p>
-        <a class="primary-action" routerLink="/confirmar-presenca">Confirmar presenca</a>
+        <a class="primary-action" [routerLink]="confirmPresenceLink()">Confirmar presenca</a>
       </section>
     </main>
 
@@ -42,9 +44,17 @@ import { toDisplayImageUrl } from '../../../core/utils/image-url';
   `,
 })
 export class HomePage {
+  private readonly route = inject(ActivatedRoute);
+  private readonly weddingContextService = inject(WeddingContextService);
   private readonly weddingService = inject(WeddingService);
 
-  protected readonly wedding$ = this.weddingService.wedding$();
+  protected readonly weddingId$ = this.weddingContextService.publicWeddingId$(this.route);
+  protected readonly wedding$ = this.weddingId$.pipe(switchMap((weddingId) => this.weddingService.wedding$(weddingId)));
+
+  protected confirmPresenceLink(): string[] {
+    const slug = this.route.snapshot.paramMap.get('slug');
+    return slug ? ['/', slug, 'confirmar-presenca'] : ['/', 'confirmar-presenca'];
+  }
 
   protected imageUrl(url?: string): string {
     return toDisplayImageUrl(url);

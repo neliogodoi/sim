@@ -1,7 +1,11 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { Auth, authState } from '@angular/fire/auth';
 import { FormsModule } from '@angular/forms';
+import { firstValueFrom, switchMap } from 'rxjs';
 
+import { Guest } from '../../../core/models/wedding.models';
+import { WeddingContextService } from '../../../core/services/wedding-context.service';
 import { WeddingService } from '../../../core/services/wedding.service';
 import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 
@@ -14,42 +18,64 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 
     <main class="admin-page">
       <h1>Convidados</h1>
-      <form class="form-card" (ngSubmit)="addGuest()">
-        <label>
-          Nome
-          <input name="name" [(ngModel)]="name" required />
-        </label>
-        <label>
-          Telefone
-          <input name="phone" [(ngModel)]="phone" />
-        </label>
-        <label>
-          Grupo ou familia
-          <input name="groupName" [(ngModel)]="groupName" />
-        </label>
-        <label>
-          Quantidade
-          <input type="number" min="1" name="guestCount" [(ngModel)]="guestCount" />
-        </label>
-        <label>
-          Status
-          <select name="rsvpStatus" [(ngModel)]="rsvpStatus">
-            <option value="pending">Pendente</option>
-            <option value="confirmed">Confirmado</option>
-            <option value="declined">Nao vai</option>
-            <option value="maybe">Talvez</option>
-          </select>
-        </label>
-        <button class="primary-action" type="submit">{{ editingGuestId ? 'Salvar convidado' : 'Adicionar convidado' }}</button>
-      </form>
+      @if (shouldShowForm(guests)) {
+        <form class="form-card" (ngSubmit)="addGuest()">
+          <label>
+            Nome
+            <input name="name" [(ngModel)]="name" required />
+          </label>
+          <label>
+            Telefone
+            <input name="phone" [(ngModel)]="phone" />
+          </label>
+          <label>
+            Grupo ou familia
+            <input name="groupName" [(ngModel)]="groupName" />
+          </label>
+          <label>
+            Quantidade
+            <input type="number" min="1" name="guestCount" [(ngModel)]="guestCount" />
+          </label>
+          <label>
+            Status
+            <select name="rsvpStatus" [(ngModel)]="rsvpStatus">
+              <option value="pending">Pendente</option>
+              <option value="confirmed">Confirmado</option>
+              <option value="declined">Nao vai</option>
+              <option value="maybe">Talvez</option>
+            </select>
+          </label>
+          <button class="primary-action" type="submit">{{ editingGuestId ? 'Salvar convidado' : 'Adicionar convidado' }}</button>
+          @if (guests?.length) {
+            <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
+          }
+        </form>
+      } @else {
+        <button class="primary-action form-toggle-action" type="button" (click)="openForm()">Adicionar convidado</button>
+      }
 
       <div class="list-stack">
         @for (guest of guests; track guest.id) {
-          <article class="info-card">
+          <article class="info-card admin-list-card">
+            <div class="card-actions">
+              <button class="icon-action" type="button" (click)="editGuest(guest)" aria-label="Editar convidado">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z" />
+                  <path d="m14 6 4 4" />
+                </svg>
+              </button>
+              <button class="icon-action" type="button" (click)="removeGuest(guest.id)" aria-label="Remover convidado">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 7h14" />
+                  <path d="M9 7V5h6v2" />
+                  <path d="M8 10v8" />
+                  <path d="M16 10v8" />
+                  <path d="M6.5 7 7 21h10l.5-14" />
+                </svg>
+              </button>
+            </div>
             <h2>{{ guest.name }}</h2>
             <p>{{ guest.rsvpStatus }} · {{ guest.guestCount }} pessoa(s)</p>
-            <button class="secondary-action" type="button" (click)="editGuest(guest)">Editar</button>
-            <button class="secondary-action" type="button" (click)="removeGuest(guest.id)">Remover</button>
           </article>
         } @empty {
           <p>Nenhum convidado cadastrado ainda.</p>
@@ -59,23 +85,33 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
   `,
 })
 export class GuestsPage {
+  private readonly auth = inject(Auth);
+  private readonly weddingContextService = inject(WeddingContextService);
   private readonly weddingService = inject(WeddingService);
 
-  protected readonly guests$ = this.weddingService.guests$();
+  protected readonly weddingId$ = this.weddingContextService.activeWeddingId$;
+  protected readonly guests$ = this.weddingId$.pipe(switchMap((weddingId) => this.weddingService.guests$(weddingId)));
   protected name = '';
   protected phone = '';
   protected groupName = '';
   protected guestCount = 1;
   protected rsvpStatus: 'pending' | 'confirmed' | 'declined' | 'maybe' = 'pending';
   protected editingGuestId = '';
+  protected formExpanded = false;
 
   async addGuest(): Promise<void> {
     if (!this.name.trim()) {
       return;
     }
 
+    const weddingId = await firstValueFrom(this.weddingId$);
+    const user = await firstValueFrom(authState(this.auth));
+    if (user) {
+      await this.weddingService.ensureOwner(user.uid, weddingId);
+    }
+
     const payload = {
-      weddingId: 'default',
+      weddingId,
       name: this.name.trim(),
       phone: this.phone.trim(),
       groupName: this.groupName.trim(),
@@ -84,9 +120,9 @@ export class GuestsPage {
     };
 
     if (this.editingGuestId) {
-      await this.weddingService.updateGuest(this.editingGuestId, payload);
+      await this.weddingService.updateGuest(this.editingGuestId, payload, weddingId);
     } else {
-      await this.weddingService.addGuest(payload);
+      await this.weddingService.addGuest(payload, weddingId);
     }
 
     this.name = '';
@@ -95,16 +131,11 @@ export class GuestsPage {
     this.guestCount = 1;
     this.rsvpStatus = 'pending';
     this.editingGuestId = '';
+    this.formExpanded = false;
   }
 
-  editGuest(guest: {
-    id: string;
-    name: string;
-    phone?: string;
-    groupName?: string;
-    guestCount: number;
-    rsvpStatus: 'pending' | 'confirmed' | 'declined' | 'maybe';
-  }): void {
+  editGuest(guest: Guest): void {
+    this.formExpanded = true;
     this.editingGuestId = guest.id;
     this.name = guest.name;
     this.phone = guest.phone || '';
@@ -114,6 +145,24 @@ export class GuestsPage {
   }
 
   removeGuest(guestId: string): Promise<void> {
-    return this.weddingService.deleteGuest(guestId);
+    return this.weddingService.deleteGuest(guestId, this.weddingContextService.currentAdminWeddingId());
+  }
+
+  protected openForm(): void {
+    this.formExpanded = true;
+  }
+
+  protected closeForm(): void {
+    this.name = '';
+    this.phone = '';
+    this.groupName = '';
+    this.guestCount = 1;
+    this.rsvpStatus = 'pending';
+    this.editingGuestId = '';
+    this.formExpanded = false;
+  }
+
+  protected shouldShowForm(guests?: Guest[] | null): boolean {
+    return !guests?.length || this.formExpanded || !!this.editingGuestId;
   }
 }

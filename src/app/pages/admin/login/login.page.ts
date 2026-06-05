@@ -52,7 +52,7 @@ export class LoginPage {
   async loginWithGoogle(): Promise<void> {
     try {
       await this.authService.loginWithGoogle();
-      await this.router.navigateByUrl('/admin/configuracoes');
+      await this.router.navigateByUrl('/admin');
     } catch {
       this.error = 'Nao foi possivel entrar com Google.';
     }
@@ -70,7 +70,7 @@ export class LoginPage {
   async register(): Promise<void> {
     try {
       await this.authService.register(this.displayName, this.email, this.password);
-      await this.router.navigateByUrl('/admin/configuracoes');
+      await this.router.navigateByUrl('/admin');
     } catch {
       this.error = 'Nao foi possivel criar o acesso. Verifique email e senha.';
     }
@@ -80,7 +80,7 @@ export class LoginPage {
     try {
       const result = await this.authService.completeRedirectLogin();
       if (result) {
-        await this.router.navigateByUrl('/admin/configuracoes');
+        await this.router.navigateByUrl('/admin');
       }
     } catch {
       this.error = 'Nao foi possivel concluir o login com Google.';

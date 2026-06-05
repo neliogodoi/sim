@@ -24,6 +24,18 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/public/gifts/gifts.page').then((m) => m.GiftsPage),
   },
   {
+    path: 'padrinhos',
+    loadComponent: () => import('./pages/public/wedding-party/wedding-party.page').then((m) => m.WeddingPartyPage),
+  },
+  {
+    path: 'musicas',
+    loadComponent: () => import('./pages/public/entrance-songs/entrance-songs.page').then((m) => m.EntranceSongsPage),
+  },
+  {
+    path: 'mais',
+    loadComponent: () => import('./pages/public/more/more.page').then((m) => m.MorePage),
+  },
+  {
     path: 'recados',
     loadComponent: () => import('./pages/public/messages/messages.page').then((m) => m.MessagesPage),
   },
@@ -56,6 +68,18 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/admin/gifts/gifts-admin.page').then((m) => m.GiftsAdminPage),
   },
   {
+    path: 'admin/padrinhos',
+    canActivate: [adminGuard],
+    loadComponent: () =>
+      import('./pages/admin/wedding-party/wedding-party-admin.page').then((m) => m.WeddingPartyAdminPage),
+  },
+  {
+    path: 'admin/musicas',
+    canActivate: [adminGuard],
+    loadComponent: () =>
+      import('./pages/admin/entrance-songs/entrance-songs-admin.page').then((m) => m.EntranceSongsAdminPage),
+  },
+  {
     path: 'admin/recados',
     canActivate: [adminGuard],
     loadComponent: () => import('./pages/admin/messages/messages-admin.page').then((m) => m.MessagesAdminPage),
@@ -64,6 +88,46 @@ export const routes: Routes = [
     path: 'admin/configuracoes',
     canActivate: [adminGuard],
     loadComponent: () => import('./pages/admin/settings/settings.page').then((m) => m.SettingsPage),
+  },
+  {
+    path: ':slug',
+    loadComponent: () => import('./pages/public/home/home.page').then((m) => m.HomePage),
+  },
+  {
+    path: ':slug/confirmar-presenca',
+    loadComponent: () => import('./pages/public/rsvp/rsvp.page').then((m) => m.RsvpPage),
+  },
+  {
+    path: ':slug/local',
+    loadComponent: () => import('./pages/public/location/location.page').then((m) => m.LocationPage),
+  },
+  {
+    path: ':slug/agenda',
+    loadComponent: () => import('./pages/public/schedule/schedule.page').then((m) => m.SchedulePage),
+  },
+  {
+    path: ':slug/presentes',
+    loadComponent: () => import('./pages/public/gifts/gifts.page').then((m) => m.GiftsPage),
+  },
+  {
+    path: ':slug/padrinhos',
+    loadComponent: () => import('./pages/public/wedding-party/wedding-party.page').then((m) => m.WeddingPartyPage),
+  },
+  {
+    path: ':slug/musicas',
+    loadComponent: () => import('./pages/public/entrance-songs/entrance-songs.page').then((m) => m.EntranceSongsPage),
+  },
+  {
+    path: ':slug/mais',
+    loadComponent: () => import('./pages/public/more/more.page').then((m) => m.MorePage),
+  },
+  {
+    path: ':slug/recados',
+    loadComponent: () => import('./pages/public/messages/messages.page').then((m) => m.MessagesPage),
+  },
+  {
+    path: ':slug/album',
+    loadComponent: () => import('./pages/public/album/album.page').then((m) => m.AlbumPage),
   },
   {
     path: '**',

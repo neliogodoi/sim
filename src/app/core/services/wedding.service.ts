@@ -17,7 +17,15 @@ import {
 } from '@angular/fire/firestore';
 import { Observable, catchError, map, of } from 'rxjs';
 
-import { GiftLink, Guest, GuestMessage, ScheduleItem, Wedding } from '../models/wedding.models';
+import {
+  EntranceSong,
+  GiftLink,
+  Guest,
+  GuestMessage,
+  ScheduleItem,
+  Wedding,
+  WeddingPartyMember,
+} from '../models/wedding.models';
 
 export const DEFAULT_WEDDING_ID = 'default';
 
@@ -33,6 +41,10 @@ export class WeddingService {
     return this.doc$<Wedding>(`weddings/${weddingId}`);
   }
 
+  weddingsByOwner$(uid: string): Observable<Wedding[]> {
+    return this.col$<Wedding>('weddings', (ref) => query(ref, where('ownerIds', 'array-contains', uid)));
+  }
+
   guests$(weddingId = DEFAULT_WEDDING_ID): Observable<Guest[]> {
     return this.col$<Guest>(`weddings/${weddingId}/guests`);
   }
@@ -45,6 +57,18 @@ export class WeddingService {
 
   gifts$(weddingId = DEFAULT_WEDDING_ID): Observable<GiftLink[]> {
     return this.col$<GiftLink>(`weddings/${weddingId}/giftLinks`).pipe(
+      map((items) => items.sort((first, second) => first.sortOrder - second.sortOrder)),
+    );
+  }
+
+  weddingParty$(weddingId = DEFAULT_WEDDING_ID): Observable<WeddingPartyMember[]> {
+    return this.col$<WeddingPartyMember>(`weddings/${weddingId}/weddingParty`).pipe(
+      map((items) => items.sort((first, second) => first.sortOrder - second.sortOrder)),
+    );
+  }
+
+  entranceSongs$(weddingId = DEFAULT_WEDDING_ID): Observable<EntranceSong[]> {
+    return this.col$<EntranceSong>(`weddings/${weddingId}/entranceSongs`).pipe(
       map((items) => items.sort((first, second) => first.sortOrder - second.sortOrder)),
     );
   }
@@ -66,9 +90,23 @@ export class WeddingService {
     });
   }
 
+  async createWedding(weddingId: string, ownerUid: string, wedding: Partial<Wedding>): Promise<void> {
+    const createdAt = new Date().toISOString();
+    await this.setDoc(`weddings/${weddingId}`, {
+      ...wedding,
+      slug: weddingId,
+      ownerIds: [ownerUid],
+      status: wedding.status || 'published',
+      createdAt,
+      updatedAt: createdAt,
+    });
+    await this.ensureOwner(ownerUid, weddingId);
+  }
+
   saveWedding(wedding: Partial<Wedding>, weddingId = DEFAULT_WEDDING_ID): Promise<void> {
     return this.setDoc(`weddings/${weddingId}`, {
       ...wedding,
+      slug: wedding.slug || weddingId,
       updatedAt: new Date().toISOString(),
     });
   }
@@ -116,6 +154,30 @@ export class WeddingService {
     return this.deleteDoc(`weddings/${weddingId}/giftLinks/${giftId}`);
   }
 
+  saveWeddingPartyMember(member: Partial<WeddingPartyMember>, weddingId = DEFAULT_WEDDING_ID): Promise<void> {
+    if (member.id) {
+      return this.updateDoc(`weddings/${weddingId}/weddingParty/${member.id}`, member);
+    }
+
+    return this.addDoc(`weddings/${weddingId}/weddingParty`, member).then();
+  }
+
+  deleteWeddingPartyMember(memberId: string, weddingId = DEFAULT_WEDDING_ID): Promise<void> {
+    return this.deleteDoc(`weddings/${weddingId}/weddingParty/${memberId}`);
+  }
+
+  saveEntranceSong(song: Partial<EntranceSong>, weddingId = DEFAULT_WEDDING_ID): Promise<void> {
+    if (song.id) {
+      return this.updateDoc(`weddings/${weddingId}/entranceSongs/${song.id}`, song);
+    }
+
+    return this.addDoc(`weddings/${weddingId}/entranceSongs`, song).then();
+  }
+
+  deleteEntranceSong(songId: string, weddingId = DEFAULT_WEDDING_ID): Promise<void> {
+    return this.deleteDoc(`weddings/${weddingId}/entranceSongs/${songId}`);
+  }
+
   addMessage(message: Omit<GuestMessage, 'id'>, weddingId = DEFAULT_WEDDING_ID): Promise<string> {
     return this.addDoc(`weddings/${weddingId}/messages`, {
       ...message,
@@ -151,17 +213,21 @@ export class WeddingService {
 
   private async addDoc(path: string, data: DocumentData): Promise<string> {
     const ref = collection(this.firestore, path);
-    const result = await addFirestoreDoc(ref, data);
+    const result = await addFirestoreDoc(ref, this.cleanData(data));
     return result.id;
   }
 
   private async updateDoc(path: string, data: DocumentData): Promise<void> {
     const ref = doc(this.firestore, path);
-    await updateFirestoreDoc(ref, data);
+    await updateFirestoreDoc(ref, this.cleanData(data));
   }
 
   private async deleteDoc(path: string): Promise<void> {
     const ref = doc(this.firestore, path);
     await deleteFirestoreDoc(ref);
+  }
+
+  private cleanData(data: DocumentData): DocumentData {
+    return Object.fromEntries(Object.entries(data).filter(([, value]) => value !== undefined));
   }
 }

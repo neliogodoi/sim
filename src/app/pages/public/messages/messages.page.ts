@@ -1,7 +1,10 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { firstValueFrom, switchMap } from 'rxjs';
 
+import { WeddingContextService } from '../../../core/services/wedding-context.service';
 import { WeddingService } from '../../../core/services/wedding.service';
 import { PublicNavComponent } from '../../../layout/public-nav.component';
 
@@ -41,9 +44,14 @@ import { PublicNavComponent } from '../../../layout/public-nav.component';
   `,
 })
 export class MessagesPage {
+  private readonly route = inject(ActivatedRoute);
+  private readonly weddingContextService = inject(WeddingContextService);
   private readonly weddingService = inject(WeddingService);
 
-  protected readonly messages$ = this.weddingService.publicMessages$();
+  protected readonly weddingId$ = this.weddingContextService.publicWeddingId$(this.route);
+  protected readonly messages$ = this.weddingId$.pipe(
+    switchMap((weddingId) => this.weddingService.publicMessages$(weddingId)),
+  );
   protected guestName = '';
   protected content = '';
 
@@ -52,12 +60,13 @@ export class MessagesPage {
       return;
     }
 
+    const weddingId = await firstValueFrom(this.weddingId$);
     await this.weddingService.addMessage({
-      weddingId: 'default',
+      weddingId,
       guestName: this.guestName.trim(),
       content: this.content.trim(),
       isVisible: true,
-    });
+    }, weddingId);
 
     this.guestName = '';
     this.content = '';

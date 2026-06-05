@@ -2,6 +2,9 @@ export type RsvpStatus = 'pending' | 'confirmed' | 'declined' | 'maybe';
 
 export interface Wedding {
   id: string;
+  slug?: string;
+  ownerIds?: string[];
+  status?: 'draft' | 'published';
   coupleNames: string;
   eventDate: string;
   coverImageUrl?: string;
@@ -57,6 +60,25 @@ export interface GiftLink {
   description?: string;
   url: string;
   type: 'store' | 'pix' | 'quota' | 'other';
+  sortOrder: number;
+}
+
+export interface WeddingPartyMember {
+  id: string;
+  weddingId: string;
+  firstName: string;
+  secondName: string;
+  side: 'bride' | 'groom' | 'couple';
+  photoUrl?: string;
+  sortOrder: number;
+}
+
+export interface EntranceSong {
+  id: string;
+  weddingId: string;
+  moment: string;
+  songTitle: string;
+  url?: string;
   sortOrder: number;
 }
 

@@ -1,7 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 
 import { PublicNavComponent } from '../../../layout/public-nav.component';
+import { WeddingContextService } from '../../../core/services/wedding-context.service';
 import { WeddingService } from '../../../core/services/wedding.service';
 
 @Component({
@@ -45,7 +48,10 @@ import { WeddingService } from '../../../core/services/wedding.service';
   `,
 })
 export class RsvpPage {
+  private readonly route = inject(ActivatedRoute);
+  private readonly weddingContextService = inject(WeddingContextService);
   private readonly weddingService = inject(WeddingService);
+  private readonly weddingId$ = this.weddingContextService.publicWeddingId$(this.route);
 
   protected name = '';
   protected phone = '';
@@ -58,15 +64,16 @@ export class RsvpPage {
       return;
     }
 
+    const weddingId = await firstValueFrom(this.weddingId$);
     await this.weddingService.addGuest({
-      weddingId: 'default',
+      weddingId,
       name: this.name.trim(),
       phone: this.phone.trim(),
       groupName: '',
       guestCount: Number(this.guestCount) || 1,
       rsvpStatus: this.status,
       rsvpCompanions: Math.max(0, (Number(this.guestCount) || 1) - 1),
-    });
+    }, weddingId);
     this.saved.set(true);
   }
 }

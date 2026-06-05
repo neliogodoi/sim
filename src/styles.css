@@ -260,6 +260,95 @@ a {
   object-fit: cover;
 }
 
+.person-photo {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.admin-list-card {
+  position: relative;
+  padding: 18px 92px 18px 18px;
+}
+
+.card-actions {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.icon-action {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface-strong);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.icon-action svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.inline-link {
+  color: var(--color-text);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.compact-person-card {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  min-height: 112px;
+  padding: 18px 92px 18px 18px;
+}
+
+.compact-person-card .card-actions {
+  top: 12px;
+  right: 12px;
+}
+
+.compact-card-copy {
+  min-width: 0;
+}
+
+.compact-card-copy h2 {
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.compact-card-copy p {
+  margin-top: 6px;
+  font-size: 0.95rem;
+}
+
+.compact-card-media {
+  display: grid;
+  place-items: center;
+}
+
+.compact-card-media .person-photo {
+  width: 72px;
+  height: 72px;
+}
+
+.form-toggle-action {
+  width: 100%;
+}
+
 .muted-state {
   margin: 0;
   color: var(--color-muted);
@@ -382,43 +471,52 @@ textarea {
   box-shadow: 0 12px 36px rgba(var(--color-shadow), 0.16);
 }
 
-.admin-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 16px 24px;
-  border-bottom: 1px solid var(--color-border);
-  background: var(--color-surface-strong);
+.admin-nav {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(48px, 1fr);
+  gap: 0;
+  min-height: calc(64px + env(safe-area-inset-bottom));
+  padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: 0 -10px 30px rgba(var(--color-shadow), 0.08);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
 }
 
-.admin-logo {
-  color: var(--color-primary);
-  font-weight: 900;
-}
-
-.admin-header nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+.admin-nav a,
+.admin-nav button {
+  display: grid;
+  place-items: center;
+  min-width: 48px;
+  min-height: 46px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
   color: var(--color-muted);
-  font-size: 0.92rem;
+  cursor: pointer;
 }
 
-.admin-header button {
-  min-height: 36px;
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  background: var(--color-surface-strong);
-  padding: 0 14px;
-  cursor: pointer;
+.admin-nav a.active {
+  background: color-mix(in srgb, var(--color-primary) 22%, transparent);
+  color: var(--color-text);
+}
+
+.admin-nav button {
+  color: var(--color-danger);
 }
 
 .admin-page,
 .admin-login {
   max-width: 960px;
   margin: 0 auto;
-  padding: 32px 20px;
+  padding: 32px 20px calc(92px + env(safe-area-inset-bottom));
 }
 
 .admin-login {
