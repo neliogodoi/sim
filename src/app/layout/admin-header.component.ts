@@ -1,7 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-
-import { AuthService } from '../core/services/auth.service';
+import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-admin-header',
@@ -36,14 +34,6 @@ import { AuthService } from '../core/services/auth.service';
           <path d="M17 14c2 .5 3.2 2 3.7 5" />
         </svg>
       </a>
-      <a routerLink="/admin/agenda" routerLinkActive="active" aria-label="Agenda">
-        <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <rect x="4" y="5" width="16" height="15" rx="2" />
-          <path d="M8 3v4" />
-          <path d="M16 3v4" />
-          <path d="M4 10h16" />
-        </svg>
-      </a>
       <a routerLink="/admin/presentes" routerLinkActive="active" aria-label="Presentes">
         <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M4 10h16v10H4z" />
@@ -53,41 +43,15 @@ import { AuthService } from '../core/services/auth.service';
           <path d="M12 6c2.8 0 4.2-3 2-3-1.6 0-2 3-2 3Z" />
         </svg>
       </a>
-      <a routerLink="/admin/padrinhos" routerLinkActive="active" aria-label="Padrinhos">
+      <a routerLink="/admin/mais" routerLinkActive="active" aria-label="Mais">
         <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.7A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z" />
+          <circle cx="5" cy="12" r="1.4" />
+          <circle cx="12" cy="12" r="1.4" />
+          <circle cx="19" cy="12" r="1.4" />
         </svg>
       </a>
-      <a routerLink="/admin/musicas" routerLinkActive="active" aria-label="Musicas">
-        <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M9 18V5l10-2v13" />
-          <circle cx="6" cy="18" r="3" />
-          <circle cx="16" cy="16" r="3" />
-        </svg>
-      </a>
-      <a routerLink="/admin/recados" routerLinkActive="active" aria-label="Recados">
-        <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M5 5h14v10H8l-3 3V5Z" />
-          <path d="M8 9h8" />
-          <path d="M8 12h5" />
-        </svg>
-      </a>
-      <button type="button" (click)="logout()" aria-label="Sair">
-        <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M10 6H6v12h4" />
-          <path d="M14 8l4 4-4 4" />
-          <path d="M8 12h10" />
-        </svg>
-      </button>
     </nav>
   `,
 })
 export class AdminHeaderComponent {
-  private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
-
-  async logout(): Promise<void> {
-    await this.authService.logout();
-    await this.router.navigateByUrl('/admin/login');
-  }
 }

@@ -73,6 +73,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/admin/messages/messages-admin.page').then((m) => m.MessagesAdminPage),
   },
   {
+    path: 'admin/mais',
+    canActivate: [adminGuard],
+    loadComponent: () => import('./pages/admin/more/more-admin.page').then((m) => m.MoreAdminPage),
+  },
+  {
     path: 'admin/configuracoes',
     canActivate: [adminGuard],
     loadComponent: () => import('./pages/admin/settings/settings.page').then((m) => m.SettingsPage),
