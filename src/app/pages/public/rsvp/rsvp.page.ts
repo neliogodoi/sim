@@ -1,7 +1,8 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, of, switchMap } from 'rxjs';
 
 import { PublicNavComponent } from '../../../layout/public-nav.component';
 import { WeddingContextService } from '../../../core/services/wedding-context.service';
@@ -9,16 +10,18 @@ import { WeddingService } from '../../../core/services/wedding.service';
 
 @Component({
   selector: 'app-rsvp-page',
-  imports: [FormsModule, PublicNavComponent],
+  imports: [AsyncPipe, FormsModule, PublicNavComponent],
   template: `
     <main class="public-page content-page">
-      <h1>Confirmar presenca</h1>
-      <p>Informe seus dados para ajudar os noivos na organizacao.</p>
+      @let guest = guest$ | async;
+
+      <h1>{{ guest ? 'Seu convite' : 'Confirmar presenca' }}</h1>
+      <p>{{ guest ? 'Confirme sua presenca para ajudar os noivos na organizacao.' : 'Informe seus dados para ajudar os noivos na organizacao.' }}</p>
 
       <form class="form-card" (ngSubmit)="submit()">
         <label>
           Nome
-          <input name="name" [(ngModel)]="name" required />
+          <input name="name" [(ngModel)]="name" [placeholder]="guest?.name || ''" required />
         </label>
         <label>
           Telefone
@@ -52,6 +55,16 @@ export class RsvpPage {
   private readonly weddingContextService = inject(WeddingContextService);
   private readonly weddingService = inject(WeddingService);
   private readonly weddingId$ = this.weddingContextService.publicWeddingId$(this.route);
+  protected readonly guest$ = this.route.paramMap.pipe(
+    switchMap((params) => {
+      const guestId = params.get('guestId');
+      if (!guestId) {
+        return of(undefined);
+      }
+
+      return this.weddingId$.pipe(switchMap((weddingId) => this.weddingService.guest$(guestId, weddingId)));
+    }),
+  );
 
   protected name = '';
   protected phone = '';
@@ -60,20 +73,32 @@ export class RsvpPage {
   protected readonly saved = signal(false);
 
   async submit(): Promise<void> {
-    if (!this.name.trim()) {
+    const guest = await firstValueFrom(this.guest$);
+    const name = this.name.trim() || guest?.name || '';
+    const phone = this.phone.trim() || guest?.phone || '';
+    const guestCount = Number(this.guestCount) || guest?.guestCount || 1;
+
+    if (!name) {
       return;
     }
 
     const weddingId = await firstValueFrom(this.weddingId$);
-    await this.weddingService.addGuest({
+    const guestId = this.route.snapshot.paramMap.get('guestId');
+    const payload = {
       weddingId,
-      name: this.name.trim(),
-      phone: this.phone.trim(),
-      groupName: '',
-      guestCount: Number(this.guestCount) || 1,
+      name,
+      phone,
+      groupName: guest?.groupName || '',
+      guestCount,
       rsvpStatus: this.status,
-      rsvpCompanions: Math.max(0, (Number(this.guestCount) || 1) - 1),
-    }, weddingId);
+      rsvpCompanions: Math.max(0, guestCount - 1),
+    };
+
+    if (guestId) {
+      await this.weddingService.updateGuest(guestId, payload, weddingId);
+    } else {
+      await this.weddingService.addGuest(payload, weddingId);
+    }
     this.saved.set(true);
   }
 }

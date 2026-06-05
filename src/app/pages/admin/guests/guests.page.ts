@@ -81,6 +81,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             </div>
             <h2>{{ guest.name }}</h2>
             <p>{{ guest.rsvpStatus }} · {{ guest.guestCount }} pessoa(s)</p>
+            <a class="inline-link" [href]="whatsappInviteLink(guest)" target="_blank" rel="noreferrer">Enviar convite</a>
           </article>
         } @empty {
           <p>Nenhum convidado cadastrado ainda.</p>
@@ -173,5 +174,11 @@ export class GuestsPage {
 
   protected totalGuests(guests?: Guest[] | null): number {
     return (guests || []).reduce((total, guest) => total + (Number(guest.guestCount) || 1), 0);
+  }
+
+  protected whatsappInviteLink(guest: Guest): string {
+    const invitationUrl = `${window.location.origin}/${this.weddingContextService.currentAdminWeddingId()}/convite/${guest.id}`;
+    const text = `Ola, ${guest.name}! Segue seu convite para confirmar presenca: ${invitationUrl}`;
+    return `https://wa.me/?text=${encodeURIComponent(text)}`;
   }
 }

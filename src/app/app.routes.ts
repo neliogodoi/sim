@@ -12,6 +12,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/public/rsvp/rsvp.page').then((m) => m.RsvpPage),
   },
   {
+    path: 'convite/:guestId',
+    loadComponent: () => import('./pages/public/rsvp/rsvp.page').then((m) => m.RsvpPage),
+  },
+  {
     path: 'local',
     loadComponent: () => import('./pages/public/location/location.page').then((m) => m.LocationPage),
   },
@@ -30,6 +34,11 @@ export const routes: Routes = [
   {
     path: 'album',
     loadComponent: () => import('./pages/public/album/album.page').then((m) => m.AlbumPage),
+  },
+  {
+    path: 'convite-padrinhos',
+    loadComponent: () =>
+      import('./pages/public/groomsmen-invite/groomsmen-invite.page').then((m) => m.GroomsmenInvitePage),
   },
   {
     path: 'admin/login',
@@ -102,6 +111,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/public/rsvp/rsvp.page').then((m) => m.RsvpPage),
   },
   {
+    path: ':slug/convite/:guestId',
+    loadComponent: () => import('./pages/public/rsvp/rsvp.page').then((m) => m.RsvpPage),
+  },
+  {
     path: ':slug/local',
     loadComponent: () => import('./pages/public/location/location.page').then((m) => m.LocationPage),
   },
@@ -120,6 +133,11 @@ export const routes: Routes = [
   {
     path: ':slug/album',
     loadComponent: () => import('./pages/public/album/album.page').then((m) => m.AlbumPage),
+  },
+  {
+    path: ':slug/convite-padrinhos',
+    loadComponent: () =>
+      import('./pages/public/groomsmen-invite/groomsmen-invite.page').then((m) => m.GroomsmenInvitePage),
   },
   {
     path: '**',

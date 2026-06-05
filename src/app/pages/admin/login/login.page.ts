@@ -53,19 +53,20 @@ export class LoginPage {
 
   async loginWithGoogle(): Promise<void> {
     try {
-      await this.authService.loginWithGoogle();
-      if (this.authService.currentUser()) {
-        await this.enterAdmin();
+      const user = await this.authService.loginWithGoogle();
+      if (user) {
+        await this.enterAdmin(user);
       }
-    } catch {
+    } catch (error) {
+      console.error(error);
       this.error = 'Nao foi possivel entrar com Google.';
     }
   }
 
   async login(): Promise<void> {
     try {
-      await this.authService.login(this.email, this.password);
-      await this.enterAdmin();
+      const user = await this.authService.login(this.email, this.password);
+      await this.enterAdmin(user);
     } catch {
       this.error = 'Nao foi possivel entrar. Verifique email e senha.';
     }
@@ -73,8 +74,8 @@ export class LoginPage {
 
   async register(): Promise<void> {
     try {
-      await this.authService.register(this.displayName, this.email, this.password);
-      await this.enterAdmin();
+      const user = await this.authService.register(this.displayName, this.email, this.password);
+      await this.enterAdmin(user);
     } catch {
       this.error = 'Nao foi possivel criar o acesso. Verifique email e senha.';
     }
@@ -84,15 +85,15 @@ export class LoginPage {
     try {
       const result = await this.authService.completeRedirectLogin();
       if (result) {
-        await this.enterAdmin();
+        await this.enterAdmin(result.user);
       }
     } catch {
       this.error = 'Nao foi possivel concluir o login com Google.';
     }
   }
 
-  private async enterAdmin(): Promise<void> {
-    await this.adminWeddingBootstrapService.ensureWedding(this.authService.currentUser());
+  private async enterAdmin(user = this.authService.currentUser()): Promise<void> {
+    await this.adminWeddingBootstrapService.ensureWedding(user);
     await this.router.navigateByUrl('/admin/configuracoes');
   }
 }

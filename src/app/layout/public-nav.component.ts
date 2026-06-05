@@ -13,12 +13,6 @@ import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
           <path d="M10 20v-6h4v6" />
         </svg>
       </a>
-      <a [routerLink]="link('confirmar-presenca')" routerLinkActive="active" aria-label="Confirmar presenca">
-        <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="12" cy="12" r="8" />
-          <path d="m8.5 12 2.4 2.4 4.8-5" />
-        </svg>
-      </a>
       <a [routerLink]="link('local')" routerLinkActive="active" aria-label="Local">
         <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M12 21s6-5.2 6-11a6 6 0 0 0-12 0c0 5.8 6 11 6 11Z" />

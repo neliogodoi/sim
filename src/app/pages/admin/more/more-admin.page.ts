@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
 import { AuthService } from '../../../core/services/auth.service';
+import { WeddingContextService } from '../../../core/services/wedding-context.service';
 import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 
 @Component({
@@ -20,6 +21,10 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
         <a class="info-card link-card" routerLink="/admin/padrinhos">
           <h2>Padrinhos</h2>
           <p>Casais e fotos dos padrinhos.</p>
+        </a>
+        <a class="info-card link-card" [href]="groomsmenInviteUrl()" target="_blank" rel="noreferrer">
+          <h2>Convite dos padrinhos</h2>
+          <p>Pagina especial para imprimir ou gerar PDF.</p>
         </a>
         <a class="info-card link-card" routerLink="/admin/pessoas">
           <h2>Pessoas importantes</h2>
@@ -45,9 +50,14 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 export class MoreAdminPage {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly weddingContextService = inject(WeddingContextService);
 
   protected async logout(): Promise<void> {
     await this.authService.logout();
     await this.router.navigateByUrl('/admin/login');
+  }
+
+  protected groomsmenInviteUrl(): string {
+    return `/${this.weddingContextService.currentAdminWeddingId()}/convite-padrinhos`;
   }
 }

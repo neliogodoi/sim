@@ -3,6 +3,7 @@ import {
   Auth,
   GoogleAuthProvider,
   User,
+  UserCredential,
   authState,
   createUserWithEmailAndPassword,
   getRedirectResult,
@@ -28,33 +29,36 @@ export class AuthService {
     return this.auth.currentUser;
   }
 
-  async loginWithGoogle(): Promise<void> {
+  async loginWithGoogle(): Promise<User | null> {
     try {
-      await signInWithPopup(this.auth, this.googleProvider);
+      const credential = await signInWithPopup(this.auth, this.googleProvider);
+      return credential.user;
     } catch (error: unknown) {
       if (this.shouldUseRedirectFallback(error)) {
         await signInWithRedirect(this.auth, this.googleProvider);
-        return;
+        return null;
       }
 
       throw error;
     }
   }
 
-  completeRedirectLogin(): Promise<unknown> {
+  completeRedirectLogin(): Promise<UserCredential | null> {
     return getRedirectResult(this.auth);
   }
 
-  async login(email: string, password: string): Promise<void> {
-    await signInWithEmailAndPassword(this.auth, email, password);
+  async login(email: string, password: string): Promise<User> {
+    const credential = await signInWithEmailAndPassword(this.auth, email, password);
+    return credential.user;
   }
 
-  async register(displayName: string, email: string, password: string): Promise<void> {
+  async register(displayName: string, email: string, password: string): Promise<User> {
     const credential = await createUserWithEmailAndPassword(this.auth, email, password);
     const normalizedName = displayName.trim();
     if (normalizedName) {
       await updateProfile(credential.user, { displayName: normalizedName });
     }
+    return credential.user;
   }
 
   logout(): Promise<void> {

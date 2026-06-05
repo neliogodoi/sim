@@ -79,6 +79,18 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
           Cor principal
           <input type="color" name="primary" [(ngModel)]="primary" />
         </label>
+        <label>
+          Cor secundaria
+          <input type="color" name="secondary" [(ngModel)]="secondary" />
+        </label>
+        <label>
+          Cor terciaria
+          <input type="color" name="tertiary" [(ngModel)]="tertiary" />
+        </label>
+        <label>
+          Branco / base
+          <input type="color" name="neutral" [(ngModel)]="neutral" />
+        </label>
         <button class="primary-action" type="submit">Salvar</button>
       </form>
     </main>
@@ -107,6 +119,9 @@ export class SettingsPage {
   protected receptionAddress = '';
   protected receptionMapUrl = '';
   protected primary = '#f2f2f2';
+  protected secondary = '#ffffff';
+  protected tertiary = '#eeeeee';
+  protected neutral = '#ffffff';
   protected isUploadingCover = false;
   protected uploadMessage = '';
   protected uploadError = '';
@@ -142,6 +157,9 @@ export class SettingsPage {
       receptionMapUrl: this.receptionMapUrl,
       theme: {
         primary: this.primary,
+        secondary: this.secondary,
+        tertiary: this.tertiary,
+        neutral: this.neutral,
       },
     }, weddingId);
   }
@@ -200,5 +218,8 @@ export class SettingsPage {
     this.receptionAddress = wedding.receptionAddress || '';
     this.receptionMapUrl = wedding.receptionMapUrl || '';
     this.primary = wedding.theme?.primary || this.primary;
+    this.secondary = wedding.theme?.secondary || this.secondary;
+    this.tertiary = wedding.theme?.tertiary || this.tertiary;
+    this.neutral = wedding.theme?.neutral || this.neutral;
   }
 }

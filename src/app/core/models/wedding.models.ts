@@ -21,6 +21,9 @@ export interface Wedding {
 
 export interface WeddingTheme {
   primary: string;
+  secondary?: string;
+  tertiary?: string;
+  neutral?: string;
   primaryContrast?: string;
   background?: string;
   surface?: string;

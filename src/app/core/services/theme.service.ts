@@ -16,7 +16,7 @@ export class ThemeService {
       }
 
       const root = document.documentElement;
-      this.applyPrimaryColor(root, theme.primary);
+      this.applyPalette(root, theme);
     });
   }
 
@@ -47,6 +47,28 @@ export class ThemeService {
     root.style.setProperty('--color-shadow', `${color.red}, ${color.green}, ${color.blue}`);
     root.style.setProperty('--color-qr-dark', this.rgbToHex(text));
     root.style.setProperty('--color-qr-light', this.rgbToHex(surface));
+  }
+
+  applyPalette(root: HTMLElement, palette: { primary: string; secondary?: string; tertiary?: string; neutral?: string }): void {
+    this.applyPrimaryColor(root, palette.primary);
+
+    const secondary = this.hexToRgb(palette.secondary || '') ?? this.hexToRgb('#ffffff');
+    const tertiary = this.hexToRgb(palette.tertiary || '') ?? this.hexToRgb('#eeeeee');
+    const neutral = this.hexToRgb(palette.neutral || '') ?? this.hexToRgb('#ffffff');
+
+    if (secondary) {
+      root.style.setProperty('--color-surface-strong', this.rgbToHex(secondary));
+      root.style.setProperty('--color-qr-light', this.rgbToHex(secondary));
+    }
+
+    if (tertiary) {
+      root.style.setProperty('--color-soft', this.rgbToHex(tertiary));
+      root.style.setProperty('--color-border', this.rgbToHex(this.mix(tertiary, { red: 255, green: 255, blue: 255 }, 0.45)));
+    }
+
+    if (neutral) {
+      root.style.setProperty('--color-surface', this.rgbToHex(neutral));
+    }
   }
 
   private hexToRgb(hex: string): Rgb | null {

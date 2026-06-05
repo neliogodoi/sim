@@ -51,6 +51,10 @@ export class WeddingService {
     return this.col$<Guest>(`weddings/${weddingId}/guests`);
   }
 
+  guest$(guestId: string, weddingId = DEFAULT_WEDDING_ID): Observable<Guest | undefined> {
+    return this.doc$<Guest>(`weddings/${weddingId}/guests/${guestId}`);
+  }
+
   schedule$(weddingId = DEFAULT_WEDDING_ID): Observable<ScheduleItem[]> {
     return this.col$<ScheduleItem>(`weddings/${weddingId}/scheduleItems`).pipe(
       map((items) => items.sort((first, second) => first.sortOrder - second.sortOrder)),
