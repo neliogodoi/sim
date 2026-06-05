@@ -45,7 +45,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
           }
         </form>
-      } @else {
+      } @else if (gifts?.length) {
         <button class="primary-action form-toggle-action" type="button" (click)="openForm()">Adicionar presente</button>
       }
 
@@ -142,6 +142,6 @@ export class GiftsAdminPage {
   }
 
   protected shouldShowForm(gifts?: GiftLink[] | null): boolean {
-    return !gifts?.length || this.formExpanded || !!this.editingGiftId;
+    return gifts?.length === 0 || this.formExpanded || !!this.editingGiftId;
   }
 }

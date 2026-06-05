@@ -62,7 +62,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
           }
         </form>
-      } @else {
+      } @else if (people?.length) {
         <button class="primary-action form-toggle-action" type="button" (click)="openForm()">Adicionar pessoa</button>
       }
 
@@ -181,7 +181,7 @@ export class ImportantPeopleAdminPage {
 	}
 
 	protected shouldShowForm(people?: ImportantPerson[] | null): boolean {
-		return !people?.length || this.formExpanded || !!this.editingPersonId;
+		return people?.length === 0 || this.formExpanded || !!this.editingPersonId;
 	}
 
 	protected roleLabel(role: ImportantPerson['role']): string {

@@ -57,7 +57,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
           }
         </form>
-      } @else {
+      } @else if (guests?.length) {
         <button class="primary-action form-toggle-action" type="button" (click)="openForm()">Adicionar convidado</button>
       }
 
@@ -181,7 +181,7 @@ export class GuestsPage {
   }
 
   protected shouldShowForm(guests?: Guest[] | null): boolean {
-    return !guests?.length || this.formExpanded || !!this.editingGuestId;
+    return guests?.length === 0 || this.formExpanded || !!this.editingGuestId;
   }
 
   protected totalGuests(guests?: Guest[] | null): number {

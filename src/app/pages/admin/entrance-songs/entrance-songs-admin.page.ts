@@ -36,7 +36,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
           }
         </form>
-      } @else {
+      } @else if (songs?.length) {
         <button class="primary-action form-toggle-action" type="button" (click)="openForm()">Adicionar musica</button>
       }
 
@@ -137,6 +137,6 @@ export class EntranceSongsAdminPage {
   }
 
   protected shouldShowForm(songs?: EntranceSong[] | null): boolean {
-    return !songs?.length || this.formExpanded || !!this.editingSongId;
+    return songs?.length === 0 || this.formExpanded || !!this.editingSongId;
   }
 }

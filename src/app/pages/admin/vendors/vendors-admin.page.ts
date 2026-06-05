@@ -56,7 +56,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
           }
         </form>
-      } @else {
+      } @else if (vendors?.length) {
         <button class="primary-action form-toggle-action" type="button" (click)="openForm()">Adicionar fornecedor</button>
       }
 
@@ -169,7 +169,7 @@ export class VendorsAdminPage {
   }
 
   protected shouldShowForm(vendors?: Vendor[] | null): boolean {
-    return !vendors?.length || this.formExpanded || !!this.editingVendorId;
+    return vendors?.length === 0 || this.formExpanded || !!this.editingVendorId;
   }
 
   protected categoryLabel(category: Vendor['category']): string {

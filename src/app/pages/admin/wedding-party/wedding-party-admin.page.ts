@@ -60,7 +60,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
           }
         </form>
-      } @else {
+      } @else if (members?.length) {
         <button class="primary-action form-toggle-action" type="button" (click)="openForm()">Adicionar padrinhos</button>
       }
 
@@ -201,7 +201,7 @@ export class WeddingPartyAdminPage {
 	}
 
 	protected shouldShowForm(members?: WeddingPartyMember[] | null): boolean {
-		return !members?.length || this.formExpanded || !!this.editingMemberId;
+		return members?.length === 0 || this.formExpanded || !!this.editingMemberId;
 	}
 
 	protected async uploadPhoto(event: Event): Promise<void> {
