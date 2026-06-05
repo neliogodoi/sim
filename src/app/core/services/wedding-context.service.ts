@@ -30,7 +30,7 @@ export class WeddingContextService {
 
   slugPath(path = ''): string[] {
     const weddingId = this.activeWeddingId.value;
-    return weddingId === DEFAULT_WEDDING_ID ? ['/', path].filter(Boolean) : ['/', weddingId, path].filter(Boolean);
+    return ['/', weddingId, path].filter(Boolean);
   }
 
   private storedWeddingId(): string {

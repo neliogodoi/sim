@@ -1,11 +1,13 @@
-Quero criar uma aplicação somente com:
-- Angular PWA - Frontend
-- Firebase (Apenas) - para salvar dados
+# Notas
 
-# SIM
+## adicionar segundo owner ao casamento?
 
-SIM (Seu Incrivel Momento) é uma PWA para gerenciamento básico de um casamento, permitindo os noivos acessarem um espaço online compartilhado para definirem juntos aspectos do casamento. Palheta de cores, padrinhos, lista de convidados, lista de presentes, ver um contatador regrassivo para a data, tudo em u
+## CSS precisa de ajustes para telas mais "estreitas" a responsividade não esta muito boa. Vide print
 
-## Especificacoes
+## Scroll gigante na tela de "Mais" de admin
 
-- [MVP - Funcionalidades principais](specs/index.md)
+## considerar default como tenant em todos os lugares e aspectos
+
+## remover botão confirmar presença da Home ou ter sistema de busca, para enviar o convidado ao convite.
+
+## 

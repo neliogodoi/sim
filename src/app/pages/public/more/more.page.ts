@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { PublicNavComponent } from '../../../layout/public-nav.component';
+import { DEFAULT_WEDDING_ID } from '../../../core/services/wedding.service';
 
 @Component({
   selector: 'app-more-page',
@@ -28,7 +29,7 @@ export class MorePage {
   private readonly route = inject(ActivatedRoute);
 
   protected link(path: string): string[] {
-    const slug = this.route.snapshot.paramMap.get('slug');
-    return slug ? ['/', slug, path] : ['/', path];
+    const slug = this.route.snapshot.paramMap.get('slug') || DEFAULT_WEDDING_ID;
+    return ['/', slug, path];
   }
 }

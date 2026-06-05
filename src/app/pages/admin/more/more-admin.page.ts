@@ -10,7 +10,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
   template: `
     <app-admin-header />
 
-    <main class="admin-page">
+    <main class="admin-page more-admin-page">
       <h1>Mais</h1>
       <div class="list-stack">
         <a class="info-card link-card" routerLink="/admin/agenda">

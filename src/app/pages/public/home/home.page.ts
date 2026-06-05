@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs';
 
 import { PublicNavComponent } from '../../../layout/public-nav.component';
@@ -10,7 +10,7 @@ import { toDisplayImageUrl } from '../../../core/utils/image-url';
 
 @Component({
   selector: 'app-home-page',
-  imports: [AsyncPipe, PublicNavComponent, RouterLink],
+  imports: [AsyncPipe, PublicNavComponent],
   template: `
     @let wedding = wedding$ | async;
 
@@ -36,7 +36,6 @@ import { toDisplayImageUrl } from '../../../core/utils/image-url';
               'Estamos preparando esse momento com muito carinho e queremos viver cada detalhe ao lado de pessoas especiais.'
           }}
         </p>
-        <a class="primary-action" [routerLink]="confirmPresenceLink()">Confirmar presenca</a>
       </section>
     </main>
 
@@ -50,11 +49,6 @@ export class HomePage {
 
   protected readonly weddingId$ = this.weddingContextService.publicWeddingId$(this.route);
   protected readonly wedding$ = this.weddingId$.pipe(switchMap((weddingId) => this.weddingService.wedding$(weddingId)));
-
-  protected confirmPresenceLink(): string[] {
-    const slug = this.route.snapshot.paramMap.get('slug');
-    return slug ? ['/', slug, 'confirmar-presenca'] : ['/', 'confirmar-presenca'];
-  }
 
   protected imageUrl(url?: string): string {
     return toDisplayImageUrl(url);
