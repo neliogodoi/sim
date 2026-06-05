@@ -14,18 +14,6 @@ import { PublicNavComponent } from '../../../layout/public-nav.component';
           <h2>Presentes</h2>
           <p>Lista de presentes dos noivos.</p>
         </a>
-        <a class="info-card link-card" [routerLink]="link('padrinhos')">
-          <h2>Padrinhos</h2>
-          <p>Pessoas escolhidas para estar perto nesse momento.</p>
-        </a>
-        <a class="info-card link-card" [routerLink]="link('musicas')">
-          <h2>Musicas</h2>
-          <p>Trilha das entradas da cerimonia.</p>
-        </a>
-        <a class="info-card link-card" [routerLink]="link('agenda')">
-          <h2>Agenda</h2>
-          <p>Programacao do evento.</p>
-        </a>
         <a class="info-card link-card" [routerLink]="link('recados')">
           <h2>Recados</h2>
           <p>Mensagens dos convidados.</p>

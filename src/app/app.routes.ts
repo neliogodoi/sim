@@ -16,20 +16,8 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/public/location/location.page').then((m) => m.LocationPage),
   },
   {
-    path: 'agenda',
-    loadComponent: () => import('./pages/public/schedule/schedule.page').then((m) => m.SchedulePage),
-  },
-  {
     path: 'presentes',
     loadComponent: () => import('./pages/public/gifts/gifts.page').then((m) => m.GiftsPage),
-  },
-  {
-    path: 'padrinhos',
-    loadComponent: () => import('./pages/public/wedding-party/wedding-party.page').then((m) => m.WeddingPartyPage),
-  },
-  {
-    path: 'musicas',
-    loadComponent: () => import('./pages/public/entrance-songs/entrance-songs.page').then((m) => m.EntranceSongsPage),
   },
   {
     path: 'mais',
@@ -102,20 +90,8 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/public/location/location.page').then((m) => m.LocationPage),
   },
   {
-    path: ':slug/agenda',
-    loadComponent: () => import('./pages/public/schedule/schedule.page').then((m) => m.SchedulePage),
-  },
-  {
     path: ':slug/presentes',
     loadComponent: () => import('./pages/public/gifts/gifts.page').then((m) => m.GiftsPage),
-  },
-  {
-    path: ':slug/padrinhos',
-    loadComponent: () => import('./pages/public/wedding-party/wedding-party.page').then((m) => m.WeddingPartyPage),
-  },
-  {
-    path: ':slug/musicas',
-    loadComponent: () => import('./pages/public/entrance-songs/entrance-songs.page').then((m) => m.EntranceSongsPage),
   },
   {
     path: ':slug/mais',
