@@ -18,6 +18,11 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 
     <main class="admin-page">
       <h1>Convidados</h1>
+      <section class="summary-card">
+        <span>Total de convidados</span>
+        <strong>{{ totalGuests(guests) }}</strong>
+      </section>
+
       @if (shouldShowForm(guests)) {
         <form class="form-card" (ngSubmit)="addGuest()">
           <label>
@@ -164,5 +169,9 @@ export class GuestsPage {
 
   protected shouldShowForm(guests?: Guest[] | null): boolean {
     return !guests?.length || this.formExpanded || !!this.editingGuestId;
+  }
+
+  protected totalGuests(guests?: Guest[] | null): number {
+    return (guests || []).reduce((total, guest) => total + (Number(guest.guestCount) || 1), 0);
   }
 }

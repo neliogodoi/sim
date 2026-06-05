@@ -231,10 +231,10 @@ a {
 .form-card,
 .info-card {
   display: grid;
-  gap: 16px;
+  gap: 10px;
   width: 100%;
-  margin-top: 20px;
-  padding: 20px;
+  margin-top: 12px;
+  padding: 14px;
   border: 1px solid var(--color-border);
   border-radius: 8px;
   background: var(--color-surface);
@@ -243,13 +243,13 @@ a {
 
 .info-card h2 {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .info-card p {
   margin: 0;
   color: var(--color-muted);
-  line-height: 1.5;
+  line-height: 1.35;
 }
 
 .cover-preview {
@@ -269,22 +269,22 @@ a {
 
 .admin-list-card {
   position: relative;
-  padding: 18px 92px 18px 18px;
+  padding: 14px 82px 14px 14px;
 }
 
 .card-actions {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 10px;
+  right: 10px;
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 .icon-action {
   display: inline-grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   border: 1px solid var(--color-border);
   border-radius: 8px;
   background: var(--color-surface-strong);
@@ -312,13 +312,13 @@ a {
 .compact-person-card {
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  min-height: 112px;
-  padding: 18px 92px 18px 18px;
+  min-height: 92px;
+  padding: 12px 82px 12px 12px;
 }
 
 .compact-person-card .card-actions {
-  top: 12px;
-  right: 12px;
+  top: 10px;
+  right: 10px;
 }
 
 .compact-card-copy {
@@ -326,13 +326,13 @@ a {
 }
 
 .compact-card-copy h2 {
-  font-size: 1rem;
+  font-size: 0.95rem;
   line-height: 1.2;
 }
 
 .compact-card-copy p {
-  margin-top: 6px;
-  font-size: 0.95rem;
+  margin-top: 4px;
+  font-size: 0.9rem;
 }
 
 .compact-card-media {
@@ -341,8 +341,26 @@ a {
 }
 
 .compact-card-media .person-photo {
-  width: 72px;
-  height: 72px;
+  width: 60px;
+  height: 60px;
+}
+
+.summary-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface);
+  color: var(--color-muted);
+}
+
+.summary-card strong {
+  color: var(--color-text);
+  font-size: 1.4rem;
 }
 
 .form-toggle-action {
@@ -544,7 +562,7 @@ a {
 
 .list-stack {
   display: grid;
-  gap: 12px;
+  gap: 6px;
   text-align: left;
 }
 
