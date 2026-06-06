@@ -19,10 +19,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
     <main class="admin-page">
       <h1>Convidados</h1>
       <section class="summary-card">
-        <span>Total de convidados</span>
-        <strong>{{ totalGuests(guests) }}</strong>
-        <span>Confirmados</span>
-        <strong>{{ confirmedGuests(guests) }}</strong>
+        {{ totalGuests(guests) }} convidados, {{ confirmedGuests(guests) }} confirmaram
       </section>
 
       @if (shouldShowForm(guests)) {

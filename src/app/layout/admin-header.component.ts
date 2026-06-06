@@ -21,13 +21,16 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
           <path d="M17 14c2 .5 3.2 2 3.7 5" />
         </svg>
       </a>
-      <a routerLink="/admin/presentes" routerLinkActive="active" aria-label="Presentes">
+      <a routerLink="/admin/padrinhos" routerLinkActive="active" aria-label="Padrinhos">
         <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M4 10h16v10H4z" />
-          <path d="M3 6h18v4H3z" />
-          <path d="M12 6v14" />
-          <path d="M12 6c-2.8 0-4.2-3-2-3 1.6 0 2 3 2 3Z" />
-          <path d="M12 6c2.8 0 4.2-3 2-3-1.6 0-2 3-2 3Z" />
+          <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.7A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z" />
+        </svg>
+      </a>
+      <a routerLink="/admin/musicas" routerLinkActive="active" aria-label="Musicas">
+        <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9 18V5l10-2v13" />
+          <circle cx="6" cy="18" r="3" />
+          <circle cx="16" cy="16" r="3" />
         </svg>
       </a>
       <a routerLink="/admin/mais" routerLinkActive="active" aria-label="Mais">

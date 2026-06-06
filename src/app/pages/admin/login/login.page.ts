@@ -11,8 +11,11 @@ import { AuthService } from '../../../core/services/auth.service';
   imports: [FormsModule],
   template: `
     <main class="admin-login">
-      <form class="form-card" (ngSubmit)="login()">
-        <h1>Entrar no SIM</h1>
+      <form class="form-card login-card" (ngSubmit)="login()">
+        <header class="login-heading">
+          <p>Administração</p>
+          <h1>Entrar no SIM</h1>
+        </header>
         <button class="google-action" type="button" [disabled]="isGoogleLoginLoading" (click)="loginWithGoogle()">
           {{ isGoogleLoginLoading ? 'Entrando com Google...' : 'Entrar com Google' }}
         </button>
@@ -29,7 +32,7 @@ import { AuthService } from '../../../core/services/auth.service';
           Senha
           <input type="password" name="password" [(ngModel)]="password" required />
         </label>
-        <button class="primary-action" type="submit">Entrar</button>
+        <button class="primary-action login-primary-action" type="submit">Entrar</button>
         <button class="secondary-action" type="button" (click)="register()">Criar acesso</button>
         @if (error) {
           <p class="error-state">{{ error }}</p>
@@ -105,7 +108,7 @@ export class LoginPage {
 
   private async enterAdmin(user = this.authService.currentUser()): Promise<void> {
     await this.adminWeddingBootstrapService.ensureWedding(user);
-    await this.router.navigateByUrl('/admin/configuracoes');
+    await this.router.navigateByUrl('/admin');
   }
 
   private googleLoginErrorMessage(error: unknown): string {

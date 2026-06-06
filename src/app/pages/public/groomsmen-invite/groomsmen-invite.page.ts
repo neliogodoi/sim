@@ -14,31 +14,39 @@ import { toDisplayImageUrl } from '../../../core/utils/image-url';
     @let wedding = wedding$ | async;
     @let member = member$ | async;
 
-    <main class="print-invite-page">
+    <main class="print-invite-page special-invite-page">
       <section class="print-invite-card groomsmen-invite-card">
-        @if (wedding?.coverImageUrl) {
-          <img class="print-invite-cover" [src]="imageUrl(wedding?.coverImageUrl)" [alt]="wedding?.coupleNames || 'Casamento'" />
-        }
-        <h2 class="invite-couple-name">{{ wedding?.coupleNames || 'Os noivos' }}</h2>
-        @if (wedding?.eventDate) {
-          <p class="print-invite-date">{{ wedding?.eventDate }}</p>
-        }
-        <p class="eyebrow">Convite especial</p>
-        <h1 class="groomsmen-question">Vocês aceitam ser nossos padrinhos?</h1>
-        @if (member) {
-          <p class="groomsmen-names">{{ shortCoupleName(member) }}</p>
-        }
-        <p class="invite-message">
-          Queremos ter vocês ainda mais perto nesse momento. A presença de vocês na nossa história é importante,
-          e seria uma alegria contar com vocês como padrinhos.
-        </p>
-        <div class="acceptance-actions">
-          <button class="acceptance-button" type="button" (click)="respond('accepted')">Sim</button>
-          <button class="acceptance-button ghost" type="button" (click)="respond('declined')">Não</button>
+        <section class="hero" [class.hero-empty]="!wedding?.coverImageUrl">
+          @if (wedding?.coverImageUrl) {
+            <img [src]="imageUrl(wedding?.coverImageUrl)" [alt]="wedding?.coupleNames || 'Casamento'" />
+          } @else {
+            <div class="hero-placeholder"></div>
+          }
+        </section>
+
+        <div class="special-invite-content">
+          <div class="ornament" aria-hidden="true">♥</div>
+          <h2 class="invite-couple-name">{{ wedding?.coupleNames || 'Os noivos' }}</h2>
+          @if (wedding?.eventDate) {
+            <p class="date">{{ wedding?.eventDate }}</p>
+          }
+          <p class="eyebrow">Convite especial</p>
+          <h1 class="groomsmen-question">Vocês aceitam ser nossos padrinhos?</h1>
+          @if (member) {
+            <p class="groomsmen-names">{{ shortCoupleName(member) }}</p>
+          }
+          <p class="invite-message">
+            Queremos ter vocês ainda mais perto nesse momento. A presença de vocês na nossa história é importante,
+            e seria uma alegria contar com vocês como padrinhos.
+          </p>
+          <div class="acceptance-actions">
+            <button class="acceptance-button" type="button" (click)="respond('accepted')">Sim</button>
+            <button class="acceptance-button ghost" type="button" (click)="respond('declined')">Não</button>
+          </div>
+          @if (responseMessage()) {
+            <p class="success-state">{{ responseMessage() }}</p>
+          }
         </div>
-        @if (responseMessage()) {
-          <p class="success-state">{{ responseMessage() }}</p>
-        }
       </section>
 
       <button class="floating-print-action" type="button" (click)="print()" aria-label="Gerar PDF ou imprimir">

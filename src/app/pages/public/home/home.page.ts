@@ -21,8 +21,6 @@ import { toDisplayImageUrl } from '../../../core/utils/image-url';
         } @else {
           <div class="hero-placeholder"></div>
         }
-
-        <button class="palette-button" type="button" aria-label="Paleta ativa"></button>
       </section>
 
       <section class="home-content">
@@ -36,6 +34,11 @@ import { toDisplayImageUrl } from '../../../core/utils/image-url';
               'Estamos preparando esse momento com muito carinho e queremos viver cada detalhe ao lado de pessoas especiais.'
           }}
         </p>
+        <div class="palette-dots public-palette-dots" aria-label="Paleta do casamento">
+          @for (color of paletteColors(wedding); track $index) {
+            <span [style.background]="color"></span>
+          }
+        </div>
       </section>
     </main>
 
@@ -52,6 +55,17 @@ export class HomePage {
 
   protected imageUrl(url?: string): string {
     return toDisplayImageUrl(url);
+  }
+
+  protected paletteColors(
+    wedding?: { theme?: { primary?: string; secondary?: string; tertiary?: string; neutral?: string } } | null,
+  ): string[] {
+    return [
+      wedding?.theme?.primary || '#f2f2f2',
+      wedding?.theme?.secondary || '#ffffff',
+      wedding?.theme?.tertiary || '#eeeeee',
+      wedding?.theme?.neutral || '#ffffff',
+    ];
   }
 
   protected countdownLabel(eventDate?: string): string {

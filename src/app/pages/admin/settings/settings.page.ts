@@ -12,6 +12,13 @@ import { WeddingService } from '../../../core/services/wedding.service';
 import { toDisplayImageUrl } from '../../../core/utils/image-url';
 import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 
+const DEFAULT_PALETTE = {
+  primary: '#f2f2f2',
+  secondary: '#ffffff',
+  tertiary: '#eeeeee',
+  neutral: '#ffffff',
+};
+
 @Component({
   selector: 'app-settings-page',
   imports: [AdminHeaderComponent, AsyncPipe, FormsModule],
@@ -118,10 +125,10 @@ export class SettingsPage {
 
   protected receptionAddress = '';
   protected receptionMapUrl = '';
-  protected primary = '#f2f2f2';
-  protected secondary = '#ffffff';
-  protected tertiary = '#eeeeee';
-  protected neutral = '#ffffff';
+  protected primary = DEFAULT_PALETTE.primary;
+  protected secondary = DEFAULT_PALETTE.secondary;
+  protected tertiary = DEFAULT_PALETTE.tertiary;
+  protected neutral = DEFAULT_PALETTE.neutral;
   protected isUploadingCover = false;
   protected uploadMessage = '';
   protected uploadError = '';
@@ -156,10 +163,10 @@ export class SettingsPage {
       receptionAddress: this.receptionAddress,
       receptionMapUrl: this.receptionMapUrl,
       theme: {
-        primary: this.primary,
-        secondary: this.secondary,
-        tertiary: this.tertiary,
-        neutral: this.neutral,
+        primary: this.normalizeColor(this.primary, DEFAULT_PALETTE.primary),
+        secondary: this.normalizeColor(this.secondary, DEFAULT_PALETTE.secondary),
+        tertiary: this.normalizeColor(this.tertiary, DEFAULT_PALETTE.tertiary),
+        neutral: this.normalizeColor(this.neutral, DEFAULT_PALETTE.neutral),
       },
     }, weddingId);
   }
@@ -217,9 +224,14 @@ export class SettingsPage {
     this.ceremonyMapUrl = wedding.ceremonyMapUrl || '';
     this.receptionAddress = wedding.receptionAddress || '';
     this.receptionMapUrl = wedding.receptionMapUrl || '';
-    this.primary = wedding.theme?.primary || this.primary;
-    this.secondary = wedding.theme?.secondary || this.secondary;
-    this.tertiary = wedding.theme?.tertiary || this.tertiary;
-    this.neutral = wedding.theme?.neutral || this.neutral;
+    this.primary = this.normalizeColor(wedding.theme?.primary, DEFAULT_PALETTE.primary);
+    this.secondary = this.normalizeColor(wedding.theme?.secondary, DEFAULT_PALETTE.secondary);
+    this.tertiary = this.normalizeColor(wedding.theme?.tertiary, DEFAULT_PALETTE.tertiary);
+    this.neutral = this.normalizeColor(wedding.theme?.neutral, DEFAULT_PALETTE.neutral);
+  }
+
+  private normalizeColor(value: string | undefined, fallback: string): string {
+    const normalized = (value || '').trim();
+    return /^#[0-9a-fA-F]{6}$/.test(normalized) ? normalized : fallback;
   }
 }

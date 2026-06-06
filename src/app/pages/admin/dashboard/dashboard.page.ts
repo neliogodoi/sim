@@ -68,12 +68,16 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             }
           </div>
           <div class="dashboard-wedding-copy">
-            <p class="eyebrow">Casamento ativo</p>
             <h2>{{ wedding.coupleNames || wedding.slug || wedding.id }}</h2>
             @if (wedding.eventDate) {
               <p>{{ wedding.eventDate }}</p>
             }
             <p>/{{ wedding.slug || wedding.id }}</p>
+            <div class="palette-dots dashboard-card-palette" aria-label="Paleta do casamento">
+              @for (color of paletteColors(wedding); track $index) {
+                <span [style.background]="color"></span>
+              }
+            </div>
           </div>
         </section>
       }
@@ -240,6 +244,15 @@ export class DashboardPage {
 
   protected imageUrl(url?: string): string {
     return toDisplayImageUrl(url);
+  }
+
+  protected paletteColors(wedding?: Wedding | null): string[] {
+    return [
+      wedding?.theme?.primary || '#f2f2f2',
+      wedding?.theme?.secondary || '#ffffff',
+      wedding?.theme?.tertiary || '#eeeeee',
+      wedding?.theme?.neutral || '#ffffff',
+    ];
   }
 
   protected shortCoupleName(member: WeddingPartyMember): string {

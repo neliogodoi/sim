@@ -1,23 +1,29 @@
 import { Injectable, inject } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { combineLatest, filter, map, startWith, switchMap } from 'rxjs';
 
+import { WeddingTheme } from '../models/wedding.models';
+import { WeddingContextService } from './wedding-context.service';
 import { WeddingService } from './wedding.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ThemeService {
+  private readonly router = inject(Router);
+  private readonly weddingContextService = inject(WeddingContextService);
   private readonly weddingService = inject(WeddingService);
 
   initialize(): void {
-    this.weddingService.wedding$().subscribe((wedding) => {
-      const theme = wedding?.theme;
-      if (!theme) {
-        return;
-      }
-
-      const root = document.documentElement;
-      this.applyPalette(root, theme);
-    });
+    combineLatest([this.currentUrl$(), this.weddingContextService.activeWeddingId$])
+      .pipe(
+        map(([url, activeWeddingId]) => this.weddingIdFromUrl(url, activeWeddingId)),
+        switchMap((weddingId) => this.weddingService.wedding$(weddingId)),
+      )
+      .subscribe((wedding) => {
+        const root = document.documentElement;
+        this.applyPrimaryColor(root, wedding?.theme?.primary || this.defaultPrimaryColor());
+      });
   }
 
   applyPrimaryColor(root: HTMLElement, primary: string): void {
@@ -49,26 +55,45 @@ export class ThemeService {
     root.style.setProperty('--color-qr-light', this.rgbToHex(surface));
   }
 
-  applyPalette(root: HTMLElement, palette: { primary: string; secondary?: string; tertiary?: string; neutral?: string }): void {
-    this.applyPrimaryColor(root, palette.primary);
+  private currentUrl$() {
+    return this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      map((event) => event.urlAfterRedirects),
+      startWith(this.router.url),
+    );
+  }
 
-    const secondary = this.hexToRgb(palette.secondary || '') ?? this.hexToRgb('#ffffff');
-    const tertiary = this.hexToRgb(palette.tertiary || '') ?? this.hexToRgb('#eeeeee');
-    const neutral = this.hexToRgb(palette.neutral || '') ?? this.hexToRgb('#ffffff');
+  private weddingIdFromUrl(url: string, activeWeddingId: string): string {
+    const [path] = url.split('?');
+    const [firstSegment = ''] = path.split('/').filter(Boolean);
 
-    if (secondary) {
-      root.style.setProperty('--color-surface-strong', this.rgbToHex(secondary));
-      root.style.setProperty('--color-qr-light', this.rgbToHex(secondary));
+    if (firstSegment === 'admin') {
+      return activeWeddingId;
     }
 
-    if (tertiary) {
-      root.style.setProperty('--color-soft', this.rgbToHex(tertiary));
-      root.style.setProperty('--color-border', this.rgbToHex(this.mix(tertiary, { red: 255, green: 255, blue: 255 }, 0.45)));
+    if (!firstSegment || this.publicRouteSegments().has(firstSegment)) {
+      return 'default';
     }
 
-    if (neutral) {
-      root.style.setProperty('--color-surface', this.rgbToHex(neutral));
-    }
+    return firstSegment;
+  }
+
+  private publicRouteSegments(): Set<string> {
+    return new Set([
+      'album',
+      'confirmar-presenca',
+      'convite',
+      'convite-especial',
+      'convite-padrinhos',
+      'local',
+      'mais',
+      'presentes',
+      'recados',
+    ]);
+  }
+
+  private defaultPrimaryColor(): WeddingTheme['primary'] {
+    return '#f2f2f2';
   }
 
   private hexToRgb(hex: string): Rgb | null {

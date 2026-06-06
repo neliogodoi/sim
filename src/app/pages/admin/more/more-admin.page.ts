@@ -13,21 +13,17 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
     <main class="admin-page more-admin-page">
       <h1>Mais</h1>
       <div class="list-stack">
+        <a class="info-card link-card" routerLink="/admin/presentes">
+          <h2>Presentes</h2>
+          <p>Lista de presentes, cotas e links úteis.</p>
+        </a>
         <a class="info-card link-card" routerLink="/admin/agenda">
           <h2>Agenda</h2>
           <p>Organizacao interna da programacao.</p>
         </a>
-        <a class="info-card link-card" routerLink="/admin/padrinhos">
-          <h2>Padrinhos</h2>
-          <p>Casais e fotos dos padrinhos.</p>
-        </a>
         <a class="info-card link-card" routerLink="/admin/pessoas">
           <h2>Pessoas importantes</h2>
           <p>Pais, pajens, damas e familiares.</p>
-        </a>
-        <a class="info-card link-card" routerLink="/admin/musicas">
-          <h2>Musicas</h2>
-          <p>Entradas e links das musicas.</p>
         </a>
         <a class="info-card link-card" routerLink="/admin/fornecedores">
           <h2>Fornecedores</h2>
