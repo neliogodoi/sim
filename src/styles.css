@@ -1,1549 +1,1548 @@
 @font-face {
-  font-family: 'Great Vibes';
-  src: url('/fonts/great-vibes.ttf') format('truetype');
-  font-display: swap;
+	font-family: 'Great Vibes';
+	src: url('/fonts/great-vibes.ttf') format('truetype');
+	font-display: swap;
 }
 
 @font-face {
-  font-family: 'Alex Brush';
-  src: url('/fonts/AlexBrush-Regular.ttf') format('truetype');
-  font-display: swap;
+	font-family: 'Alex Brush';
+	src: url('/fonts/AlexBrush-Regular.ttf') format('truetype');
+	font-display: swap;
 }
 
 @font-face {
-  font-family: 'Allura';
-  src: url('/fonts/Allura-Regular.ttf') format('truetype');
-  font-display: swap;
+	font-family: 'Allura';
+	src: url('/fonts/Allura-Regular.ttf') format('truetype');
+	font-display: swap;
 }
 
 @font-face {
-  font-family: 'Brittany Signature';
-  src: url('/fonts/BrittanySignature.ttf') format('truetype');
-  font-display: swap;
+	font-family: 'Brittany Signature';
+	src: url('/fonts/BrittanySignature.ttf') format('truetype');
+	font-display: swap;
 }
 
 @font-face {
-  font-family: 'Bacalisties';
-  src: url('/fonts/Bacalisties.ttf') format('truetype');
-  font-display: swap;
+	font-family: 'Bacalisties';
+	src: url('/fonts/Bacalisties.ttf') format('truetype');
+	font-display: swap;
 }
 
 @font-face {
-  font-family: 'Cormorant SC';
-  src: url('/fonts/CormorantSC-Regular.otf') format('opentype');
-  font-display: swap;
+	font-family: 'Cormorant SC';
+	src: url('/fonts/CormorantSC-Regular.otf') format('opentype');
+	font-display: swap;
 }
 
 @font-face {
-  font-family: 'Dancing Script';
-  src: url('/fonts/Dancing%20Script.ttf') format('truetype');
-  font-display: swap;
+	font-family: 'Dancing Script';
+	src: url('/fonts/Dancing%20Script.ttf') format('truetype');
+	font-display: swap;
 }
 
 @font-face {
-  font-family: 'Montserrat';
-  src: url('/fonts/Montserrat-Regular.ttf') format('truetype');
-  font-display: swap;
+	font-family: 'Montserrat';
+	src: url('/fonts/Montserrat-Regular.ttf') format('truetype');
+	font-display: swap;
 }
 
 @font-face {
-  font-family: 'Playfair Display';
-  src: url('/fonts/PlayfairDisplay-Regular.ttf') format('truetype');
-  font-display: swap;
+	font-family: 'Playfair Display';
+	src: url('/fonts/PlayfairDisplay-Regular.ttf') format('truetype');
+	font-display: swap;
 }
 
 @font-face {
-  font-family: 'Tangerine';
-  src: url('/fonts/Tangerine_Bold.ttf') format('truetype');
-  font-display: swap;
+	font-family: 'Tangerine';
+	src: url('/fonts/Tangerine_Bold.ttf') format('truetype');
+	font-display: swap;
 }
 
 :root {
-  --color-primary: #f2f2f2;
-  --color-primary-rgb: 242, 242, 242;
-  --color-primary-contrast: #222222;
-  --color-background: #f8f8f8;
-  --color-surface: #ffffff;
-  --color-surface-strong: #ffffff;
-  --color-text: #222222;
-  --color-muted: #777777;
-  --color-border: #e4e4e4;
-  --color-soft: #eeeeee;
-  --color-shadow: 90, 90, 90;
-  --color-qr-dark: #222222;
-  --color-qr-light: #ffffff;
-  --color-danger: #9f2f2f;
-  --color-success: #4d7c3f;
-  --bottom-nav-height: calc(64px + env(safe-area-inset-bottom));
-  --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
-  --font-script: 'Bacalisties', 'Brittany Signature', 'Great Vibes', Georgia, 'Times New Roman', serif;
-  --font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	--color-primary: #f2f2f2;
+	--color-primary-rgb: 242, 242, 242;
+	--color-primary-contrast: #222222;
+	--color-background: #f8f8f8;
+	--color-surface: #ffffff;
+	--color-surface-strong: #ffffff;
+	--color-text: #222222;
+	--color-muted: #777777;
+	--color-border: #e4e4e4;
+	--color-soft: #eeeeee;
+	--color-shadow: 90, 90, 90;
+	--color-qr-dark: #222222;
+	--color-qr-light: #ffffff;
+	--color-danger: #9f2f2f;
+	--color-success: #4d7c3f;
+	--bottom-nav-height: calc(64px + env(safe-area-inset-bottom));
+	--font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+	--font-script: 'Bacalisties', 'Brittany Signature', 'Great Vibes', Georgia, 'Times New Roman', serif;
+	--font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 html {
-  height: 100%;
-  background: var(--color-background);
-  color: var(--color-text);
-  font-family: var(--font-body);
-  overflow-x: hidden;
+	height: 100%;
+	background: var(--color-background);
+	color: var(--color-text);
+	font-family: var(--font-body);
+	overflow-x: hidden;
 }
 
 body {
-  margin: 0;
-  min-height: 100%;
-  min-width: 320px;
-  overflow-x: hidden;
+	margin: 0;
+	min-height: 100%;
+	min-width: 320px;
+	overflow-x: hidden;
 }
 
 app-root {
-  display: block;
-  min-height: 100%;
+	display: block;
+	min-height: 100%;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+	color: inherit;
+	text-decoration: none;
 }
 
 button,
 input,
 select,
 textarea {
-  font: inherit;
+	font: inherit;
 }
 
 button,
 a {
-  -webkit-tap-highlight-color: transparent;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .public-page {
-  min-height: auto;
-  padding-bottom: calc(var(--bottom-nav-height) + 12px);
+	min-height: auto;
+	padding-bottom: calc(var(--bottom-nav-height) + 12px);
 }
 
 .home-page {
-  background: var(--color-background);
+	background: var(--color-background);
 }
 
 .hero {
-  position: relative;
-  height: min(58dvh, 420px);
-  min-height: 320px;
-  overflow: hidden;
-  background: linear-gradient(135deg, var(--color-soft), var(--color-background));
+	position: relative;
+	height: min(58dvh, 420px);
+	min-height: 320px;
+	overflow: hidden;
+	background: linear-gradient(135deg, var(--color-soft), var(--color-background));
 }
 
 .hero.hero-empty {
-  height: 300px;
-  min-height: 300px;
+	height: 300px;
+	min-height: 300px;
 }
 
 .hero::after {
-  position: absolute;
-  right: 0;
-  bottom: -1px;
-  left: 0;
-  height: 42%;
-  content: '';
-  background: linear-gradient(to bottom, rgba(var(--color-primary-rgb), 0), var(--color-background));
+	position: absolute;
+	right: 0;
+	bottom: -1px;
+	left: 0;
+	height: 42%;
+	content: '';
+	background: linear-gradient(to bottom, rgba(var(--color-primary-rgb), 0), var(--color-background));
 }
 
 .hero img,
 .hero-placeholder {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
 }
 
 .hero-placeholder {
-  background:
-    radial-gradient(circle at 25% 25%, rgba(var(--color-primary-rgb), 0.22), transparent 32%),
-    linear-gradient(135deg, var(--color-soft), var(--color-background));
+	background:
+		radial-gradient(circle at 25% 25%, rgba(var(--color-primary-rgb), 0.22), transparent 32%),
+		linear-gradient(135deg, var(--color-soft), var(--color-background));
 }
 
 .home-content {
-  position: relative;
-  z-index: 1;
-  max-width: 620px;
-  margin: -56px auto 0;
-  padding: 0 28px 56px;
-  text-align: center;
+	position: relative;
+	z-index: 1;
+	max-width: 620px;
+	margin: -56px auto 0;
+	padding: 0 28px 56px;
+	text-align: center;
 }
 
 .ornament {
-  color: var(--color-text);
-  font-family: var(--font-script);
-  font-size: 30px;
-  line-height: 1;
+	color: var(--color-text);
+	font-family: var(--font-script);
+	font-size: 30px;
+	line-height: 1;
 }
 
 .home-content h1 {
-  margin: 10px 0 0;
-  color: var(--color-text);
-  font-family: var(--font-script);
-  font-size: clamp(4rem, 16vw, 6.4rem);
-  font-weight: 400;
-  line-height: 0.82;
+	margin: 10px 0 0;
+	color: var(--color-text);
+	font-family: var(--font-script);
+	font-size: clamp(4rem, 16vw, 6.4rem);
+	font-weight: 400;
+	line-height: 0.82;
 }
 
 .date {
-  margin: 16px 0 0;
-  color: var(--color-text);
-  font-family: var(--font-display);
-  font-size: 2rem;
-  font-weight: 600;
+	margin: 16px 0 0;
+	color: var(--color-text);
+	font-family: var(--font-display);
+	font-size: 2rem;
+	font-weight: 600;
 }
 
 .countdown {
-  margin: 10px 0 0;
-  color: var(--color-text);
-  font-weight: 900;
+	margin: 10px 0 0;
+	color: var(--color-text);
+	font-weight: 900;
 }
 
 .message {
-  max-width: 520px;
-  margin: 28px auto 0;
-  color: var(--color-muted);
-  font-family: var(--font-display);
-  font-size: 1.12rem;
-  line-height: 1.55;
+	max-width: 520px;
+	margin: 28px auto 0;
+	color: var(--color-muted);
+	font-family: var(--font-display);
+	font-size: 1.12rem;
+	line-height: 1.55;
 }
 
 .palette-dots {
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 .palette-dots span {
-  display: block;
-  border: 1px solid rgba(var(--color-shadow), 0.14);
-  border-radius: 50%;
+	display: block;
+	border: 1px solid rgba(var(--color-shadow), 0.14);
+	border-radius: 50%;
 }
 
 .public-palette-dots {
-  justify-content: center;
-  gap: 10px;
-  width: 40%;
-  min-width: 128px;
-  margin: 24px auto 0;
+	justify-content: center;
+	gap: 10px;
+	width: 40%;
+	min-width: 128px;
+	margin: 24px auto 0;
 }
 
 .public-palette-dots span {
-  width: clamp(16px, 4.2vw, 24px);
-  height: clamp(16px, 4.2vw, 24px);
+	width: clamp(16px, 4.2vw, 24px);
+	height: clamp(16px, 4.2vw, 24px);
 }
 
 .public-nav {
-  position: fixed !important;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 10;
-  width: 100vw;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-  height: var(--bottom-nav-height);
-  padding: 6px 10px calc(6px + env(safe-area-inset-bottom));
-  border-top: 1px solid var(--color-border);
-  background: var(--color-surface);
-  box-shadow: 0 -10px 30px rgba(var(--color-shadow), 0.08);
+	position: fixed !important;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 10;
+	width: 100vw;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 0;
+	height: var(--bottom-nav-height);
+	padding: 6px 10px calc(6px + env(safe-area-inset-bottom));
+	border-top: 1px solid var(--color-border);
+	background: var(--color-surface);
+	box-shadow: 0 -10px 30px rgba(var(--color-shadow), 0.08);
 }
 
 .print-invite-page {
-  min-height: 100dvh;
-  padding: 28px 20px;
-  background: var(--color-background);
+	min-height: 100dvh;
+	padding: 28px 20px;
+	background: var(--color-background);
 }
 
 .print-invite-card {
-  display: grid;
-  gap: 20px;
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 40px 28px;
-  border: 1px solid var(--color-border);
-  border-radius: 16px;
-  background: var(--color-surface);
-  color: var(--color-text);
-  text-align: center;
+	display: grid;
+	gap: 20px;
+	max-width: 720px;
+	margin: 0 auto;
+	padding: 40px 28px;
+	border: 1px solid var(--color-border);
+	border-radius: 16px;
+	background: var(--color-surface);
+	color: var(--color-text);
+	text-align: center;
 }
 
 .print-invite-cover {
-  width: 100%;
-  max-height: 280px;
-  border-radius: 12px;
-  object-fit: cover;
+	width: 100%;
+	max-height: 280px;
+	border-radius: 12px;
+	object-fit: cover;
 }
 
 .print-invite-card .eyebrow {
-  margin: 10px 0 0;
-  color: var(--color-muted);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+	margin: 10px 0 0;
+	color: var(--color-muted);
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
 }
 
 .print-invite-card h1 {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 2.4rem;
-  font-weight: 400;
+	margin: 0;
+	font-family: var(--font-display);
+	font-size: 2.4rem;
+	font-weight: 400;
 }
 
 .print-invite-card h2 {
-  margin: 0 0 4px;
-  font-family: var(--font-script);
-  font-size: 2.8rem;
-  font-weight: 400;
+	margin: 0 0 4px;
+	font-family: var(--font-script);
+	font-size: 2.8rem;
+	font-weight: 400;
 }
 
 .print-invite-date {
-  margin: 0 0 10px;
-  color: var(--color-muted);
-  font-family: var(--font-display);
-  font-weight: 600;
+	margin: 0 0 10px;
+	color: var(--color-muted);
+	font-family: var(--font-display);
+	font-weight: 600;
 }
 
 .invite-person-name {
-  margin: 0;
-  color: var(--color-text);
-  font-weight: 900;
+	margin: 0;
+	color: var(--color-text);
+	font-weight: 900;
 }
 
 .groomsmen-invite-card {
-  gap: 0;
-  max-width: none;
-  width: 100%;
-  overflow: hidden;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
+	gap: 0;
+	max-width: none;
+	width: 100%;
+	overflow: hidden;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
 }
 
 .groomsmen-template-svg {
-  width: min(100%, 720px);
-  margin: 0 auto;
+	width: min(100%, 720px);
+	margin: 0 auto;
 }
 
 .print-template-only {
-  display: none;
+	display: none;
 }
 
 .groomsmen-template-svg svg {
-  display: block;
-  width: 100%;
-  height: auto;
+	display: block;
+	width: 100%;
+	height: auto;
 }
 
 .template-acceptance-panel {
-  display: grid;
-  gap: 14px;
-  width: min(100%, 520px);
-  margin: 22px auto 0;
-  padding: 0 24px 48px;
+	display: grid;
+	gap: 14px;
+	width: min(100%, 520px);
+	margin: 22px auto 0;
+	padding: 0 24px 48px;
 }
 
 .special-invite-page {
-  padding: 0;
+	padding: 0;
 }
 
 .special-invite-content {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  gap: 18px;
-  max-width: 620px;
-  margin: -56px auto 0;
-  padding: 0 28px 44px;
+	position: relative;
+	z-index: 1;
+	display: grid;
+	gap: 18px;
+	max-width: 620px;
+	margin: -56px auto 0;
+	padding: 0 28px 44px;
 }
 
 .special-invite-content .invite-couple-name {
-  font-size: clamp(4rem, 13vw, 5.8rem);
-  line-height: 0.84;
+	font-size: clamp(4rem, 13vw, 5.8rem);
+	line-height: 0.84;
 }
 
 .special-invite-content .print-invite-date {
-  margin: 4px 0 22px;
-  color: var(--color-text);
-  font-size: 1.35rem;
+	margin: 4px 0 22px;
+	color: var(--color-text);
+	font-size: 1.35rem;
 }
 
 .groomsmen-invite-card .eyebrow {
-  margin-top: 0;
-  font-size: 0.9rem;
+	margin-top: 0;
+	font-size: 0.9rem;
 }
 
 .groomsmen-question {
-  max-width: 480px;
-  margin: 0 auto;
-  font-size: clamp(1.55rem, 5vw, 2.15rem) !important;
-  line-height: 1.18;
+	max-width: 480px;
+	margin: 0 auto;
+	font-size: clamp(1.55rem, 5vw, 2.15rem) !important;
+	line-height: 1.18;
 }
 
 .groomsmen-names {
-  max-width: 520px;
-  margin: 6px auto 20px;
-  color: var(--color-text);
-  font-family: var(--font-display) !important;
-  font-size: clamp(2rem, 7vw, 2.85rem) !important;
-  font-weight: 600;
-  line-height: 1.08 !important;
+	max-width: 520px;
+	margin: 6px auto 20px;
+	color: var(--color-text);
+	font-family: var(--font-display) !important;
+	font-size: clamp(2rem, 7vw, 2.85rem) !important;
+	font-weight: 600;
+	line-height: 1.08 !important;
 }
 
 .groomsmen-invite-card .invite-message {
-  max-width: 460px;
-  margin: 12px auto 4px;
-  font-family: var(--font-body);
-  font-weight: 400;
-  font-size: 1.04rem;
-  line-height: 1.7;
+	max-width: 460px;
+	margin: 12px auto 4px;
+	font-family: var(--font-body);
+	font-weight: 400;
+	font-size: 1.04rem;
+	line-height: 1.7;
 }
 
 .special-person-invite-card {
-  gap: 0;
-  max-width: none;
-  width: 100%;
-  overflow: hidden;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
+	gap: 0;
+	max-width: none;
+	width: 100%;
+	overflow: hidden;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
 }
 
 .special-person-invite-card .eyebrow {
-  margin-top: 0;
-  font-size: 0.9rem;
+	margin-top: 0;
+	font-size: 0.9rem;
 }
 
 .special-person-question {
-  max-width: 480px;
-  margin: 0 auto;
-  font-size: clamp(1.55rem, 5vw, 2.15rem) !important;
-  line-height: 1.18;
+	max-width: 480px;
+	margin: 0 auto;
+	font-size: clamp(1.55rem, 5vw, 2.15rem) !important;
+	line-height: 1.18;
 }
 
 .special-person-name {
-  max-width: 520px;
-  margin: 6px auto 0;
-  color: var(--color-text);
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 7vw, 2.85rem);
-  font-weight: 600;
-  line-height: 1.08;
+	max-width: 520px;
+	margin: 6px auto 0;
+	color: var(--color-text);
+	font-family: var(--font-display);
+	font-size: clamp(2rem, 7vw, 2.85rem);
+	font-weight: 600;
+	line-height: 1.08;
 }
 
 .invite-role {
-  margin: -8px 0 12px;
-  color: var(--color-muted);
-  font-weight: 800;
+	margin: -8px 0 12px;
+	color: var(--color-muted);
+	font-weight: 800;
 }
 
 .special-person-invite-card .invite-message {
-  max-width: 460px;
-  margin: 12px auto 4px;
-  font-family: var(--font-body);
-  font-weight: 400;
-  font-size: 1.04rem;
-  line-height: 1.7;
+	max-width: 460px;
+	margin: 12px auto 4px;
+	font-family: var(--font-body);
+	font-weight: 400;
+	font-size: 1.04rem;
+	line-height: 1.7;
 }
 
 .acceptance-actions {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-  gap: 10px;
-  margin-top: 8px;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+	gap: 10px;
+	margin-top: 8px;
 }
 
 .acceptance-button {
-  min-height: 46px;
-  border: 0;
-  border-radius: 999px;
-  background: var(--color-primary);
-  color: var(--color-primary-contrast);
-  cursor: pointer;
-  font-weight: 900;
+	min-height: 46px;
+	border: 0;
+	border-radius: 999px;
+	background: var(--color-primary);
+	color: var(--color-primary-contrast);
+	cursor: pointer;
+	font-weight: 900;
 }
 
 .acceptance-button.ghost {
-  border: 1px solid var(--color-border);
-  background: var(--color-surface-strong);
-  color: var(--color-text);
+	border: 1px solid var(--color-border);
+	background: var(--color-surface-strong);
+	color: var(--color-text);
 }
 
 .compact-rsvp-card {
-  max-width: 520px;
-  padding: 28px 20px;
+	max-width: 520px;
+	padding: 28px 20px;
 }
 
 .guest-invite-card {
-  max-width: 560px;
-  gap: 14px;
-  padding: 42px 28px;
+	max-width: 560px;
+	gap: 14px;
+	padding: 42px 28px;
 }
 
 .guest-invite-card h1 {
-  color: var(--color-text);
-  font-family: var(--font-script) !important;
-  font-size: clamp(4rem, 16vw, 6.4rem);
-  font-weight: 400;
-  line-height: 0.82;
+	color: var(--color-text);
+	font-family: var(--font-script) !important;
+	font-size: clamp(4rem, 16vw, 6.4rem);
+	font-weight: 400;
+	line-height: 0.82;
 }
 
 .guest-invite-card h2 {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 9vw, 3rem);
+	font-family: var(--font-display);
+	font-size: clamp(2rem, 9vw, 3rem);
 }
 
 .invite-location,
 .invite-group,
 .invite-help {
-  margin: 0;
-  color: var(--color-muted);
-  line-height: 1.25;
+	margin: 0;
+	color: var(--color-muted);
+	line-height: 1.25;
 }
 
 .guest-invite-card .print-invite-date {
-  margin: 0;
+	margin: 0;
 }
 
 .invite-location {
-  font-size: 0.98rem;
+	font-size: 0.98rem;
 }
 
 .invite-message {
-  max-width: 420px;
-  margin: 24px auto 8px;
-  color: var(--color-text);
-  font-family: var(--font-body);
-  font-weight: 400;
-  font-size: 1.12rem;
-  line-height: 1.5;
+	max-width: 420px;
+	margin: 24px auto 8px;
+	color: var(--color-text);
+	font-family: var(--font-body);
+	font-weight: 400;
+	font-size: 1.12rem;
+	line-height: 1.5;
 }
 
 .invite-group {
-  margin-bottom: 18px;
+	margin-bottom: 18px;
 }
 
 .invite-help {
-  margin-top: 18px;
+	margin-top: 18px;
 }
 
 .guest-invite-card label {
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  text-align: left;
+	width: 100%;
+	max-width: none;
+	margin: 0;
+	text-align: left;
 }
 
 .rsvp-actions {
-  grid-template-columns: repeat(3, 1fr);
-  width: 100%;
+	grid-template-columns: repeat(3, 1fr);
+	width: 100%;
 }
 
 .floating-print-action {
-  position: fixed;
-  right: 16px;
-  bottom: calc(16px + env(safe-area-inset-bottom));
-  z-index: 20;
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--color-border);
-  border-radius: 50%;
-  background: var(--color-surface);
-  color: var(--color-text);
-  box-shadow: 0 10px 28px rgba(var(--color-shadow), 0.14);
-  cursor: pointer;
+	position: fixed;
+	right: 16px;
+	bottom: calc(16px + env(safe-area-inset-bottom));
+	z-index: 20;
+	display: grid;
+	place-items: center;
+	width: 44px;
+	height: 44px;
+	border: 1px solid var(--color-border);
+	border-radius: 50%;
+	background: var(--color-surface);
+	color: var(--color-text);
+	box-shadow: 0 10px 28px rgba(var(--color-shadow), 0.14);
+	cursor: pointer;
 }
 
 .floating-print-action svg {
-  width: 21px;
-  height: 21px;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.8;
+	width: 21px;
+	height: 21px;
+	fill: none;
+	stroke: currentColor;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	stroke-width: 1.8;
 }
 
 @media print {
-  @page {
-    margin: 0;
-  }
+	@page {
+		margin: 0;
+	}
 
-  html,
-  body {
-    background: #ffffff !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
+	html,
+	body {
+		background: #ffffff !important;
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
 
-  .floating-print-action,
-  .public-nav,
-  .acceptance-actions,
-  .template-acceptance-panel,
-  .screen-invite-content,
-  .success-state {
-    display: none;
-  }
+	.floating-print-action,
+	.public-nav,
+	.acceptance-actions,
+	.template-acceptance-panel,
+	.screen-invite-content,
+	.success-state {
+		display: none;
+	}
 
-  .print-template-only {
-    display: block;
-  }
+	.print-template-only {
+		display: block;
+	}
 
-  .print-invite-page {
-    min-height: auto;
-    padding: 0;
-    background: #ffffff;
-  }
+	.print-invite-page {
+		min-height: auto;
+		padding: 0;
+		background: #ffffff;
+	}
 
-  .print-invite-card {
-    min-height: auto;
-    max-width: none;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    border-radius: 0;
-    background: #ffffff;
-    box-shadow: none;
-  }
+	.print-invite-card {
+		min-height: auto;
+		max-width: none;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		border-radius: 0;
+		background: #ffffff;
+		box-shadow: none;
+	}
 
-  .groomsmen-template-svg {
-    width: 100%;
-    max-width: none;
-    margin: 0;
-  }
+	.groomsmen-template-svg {
+		width: 100%;
+		max-width: none;
+		margin: 0;
+	}
 
-  .groomsmen-template-svg svg {
-    width: 100vw;
-    height: 100vh;
-  }
+	.groomsmen-template-svg svg {
+		width: 100vw;
+		height: 100vh;
+	}
 
-  .special-invite-page .hero {
-    height: 118mm;
-    min-height: 0;
-    background: #ffffff;
-  }
+	.special-invite-page .hero {
+		height: 118mm;
+		min-height: 0;
+		background: #ffffff;
+	}
 
-  .special-invite-page .hero::after {
-    height: 44%;
-    background: linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.7) 68%,
-      #ffffff 100%
-    );
-  }
+	.special-invite-page .hero::after {
+		height: 44%;
+		background: linear-gradient(to bottom,
+				rgba(255, 255, 255, 0) 0%,
+				rgba(255, 255, 255, 0.7) 68%,
+				#ffffff 100%);
+	}
 
-  .special-invite-page .hero img {
-    object-position: center 38%;
-  }
+	.special-invite-page .hero img {
+		object-position: center 38%;
+	}
 
-  .special-invite-content {
-    max-width: 150mm;
-    gap: 5mm;
-    margin: -18mm auto 0;
-    padding: 0 14mm 14mm;
-  }
+	.special-invite-content {
+		max-width: 150mm;
+		gap: 5mm;
+		margin: -18mm auto 0;
+		padding: 0 14mm 14mm;
+	}
 
-  .special-invite-content .ornament {
-    font-size: 16pt;
-  }
+	.special-invite-content .ornament {
+		font-size: 16pt;
+	}
 
-  .special-invite-content .invite-couple-name {
-    font-size: 42pt;
-    line-height: 0.86;
-  }
+	.special-invite-content .invite-couple-name {
+		font-size: 42pt;
+		line-height: 0.86;
+	}
 
-  .special-invite-content .date {
-    margin-top: 0;
-    font-size: 20pt;
-  }
+	.special-invite-content .date {
+		margin-top: 0;
+		font-size: 20pt;
+	}
 
-  .special-invite-content .eyebrow {
-    font-size: 9pt;
-    letter-spacing: 0.12em;
-  }
+	.special-invite-content .eyebrow {
+		font-size: 9pt;
+		letter-spacing: 0.12em;
+	}
 
-  .groomsmen-question,
-  .special-person-question {
-    max-width: 120mm;
-    font-size: 17pt !important;
-    line-height: 1.2;
-  }
+	.groomsmen-question,
+	.special-person-question {
+		max-width: 120mm;
+		font-size: 17pt !important;
+		line-height: 1.2;
+	}
 
-  .groomsmen-names,
-  .special-person-name {
-    max-width: 130mm;
-    margin: 0 auto;
-    font-size: 26pt !important;
-    line-height: 1.05 !important;
-  }
+	.groomsmen-names,
+	.special-person-name {
+		max-width: 130mm;
+		margin: 0 auto;
+		font-size: 26pt !important;
+		line-height: 1.05 !important;
+	}
 
-  .invite-role {
-    margin: -3mm 0 3mm;
-    font-size: 12pt;
-  }
+	.invite-role {
+		margin: -3mm 0 3mm;
+		font-size: 12pt;
+	}
 
-  .groomsmen-invite-card .invite-message,
-  .special-person-invite-card .invite-message {
-    max-width: 118mm;
-    margin: 4mm auto 0;
-    font-size: 12pt;
-    line-height: 1.55;
-  }
+	.groomsmen-invite-card .invite-message,
+	.special-person-invite-card .invite-message {
+		max-width: 118mm;
+		margin: 4mm auto 0;
+		font-size: 12pt;
+		line-height: 1.55;
+	}
 }
 
 .public-nav a {
-  display: grid;
-  place-items: center;
-  align-content: center;
-  min-width: 0;
-  min-height: 46px;
-  border-radius: 8px;
-  color: var(--color-muted);
-  line-height: 1;
+	display: grid;
+	place-items: center;
+	align-content: center;
+	min-width: 0;
+	min-height: 46px;
+	border-radius: 8px;
+	color: var(--color-muted);
+	line-height: 1;
 }
 
 .public-nav a.active {
-  background: color-mix(in srgb, var(--color-primary) 22%, transparent);
-  color: var(--color-text);
+	background: color-mix(in srgb, var(--color-primary) 22%, transparent);
+	color: var(--color-text);
 }
 
 .nav-icon {
-  width: 24px;
-  height: 24px;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.8;
+	width: 24px;
+	height: 24px;
+	fill: none;
+	stroke: currentColor;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	stroke-width: 1.8;
 }
 
 .content-page {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 40px 20px 100px;
-  text-align: center;
+	max-width: 720px;
+	margin: 0 auto;
+	padding: 40px 20px 100px;
+	text-align: center;
 }
 
 .content-page h1 {
-  margin: 0 0 12px;
-  font-family: var(--font-display);
-  font-size: 2.5rem;
-  font-weight: 400;
+	margin: 0 0 12px;
+	font-family: var(--font-display);
+	font-size: 2.5rem;
+	font-weight: 400;
 }
 
 .admin-page h1,
 .admin-login h1 {
-  margin: 0 0 12px;
-  font-size: clamp(1.9rem, 7vw, 2.35rem);
-  font-weight: 800;
-  line-height: 1.08;
+	margin: 0 0 12px;
+	font-size: clamp(1.9rem, 7vw, 2.35rem);
+	font-weight: 800;
+	line-height: 1.08;
 }
 
-.content-page > p {
-  max-width: 620px;
-  margin: 0 auto;
-  color: var(--color-muted);
-  line-height: 1.5;
+.content-page>p {
+	max-width: 620px;
+	margin: 0 auto;
+	color: var(--color-muted);
+	line-height: 1.5;
 }
 
 .form-card,
 .info-card {
-  display: grid;
-  gap: 10px;
-  width: 100%;
-  margin-top: 12px;
-  padding: 14px;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  background: var(--color-surface);
-  text-align: left;
+	display: grid;
+	gap: 10px;
+	width: 100%;
+	margin-top: 12px;
+	padding: 14px;
+	border: 1px solid var(--color-border);
+	border-radius: 8px;
+	background: var(--color-surface);
+	text-align: left;
 }
 
 .info-card h2 {
-  margin: 0;
-  font-size: 1rem;
+	margin: 0;
+	font-size: 1rem;
 }
 
 .info-card p {
-  margin: 0;
-  color: var(--color-muted);
-  line-height: 1.35;
+	margin: 0;
+	color: var(--color-muted);
+	line-height: 1.35;
 }
 
 .cover-preview {
-  width: 100%;
-  max-height: 280px;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  object-fit: cover;
+	width: 100%;
+	max-height: 280px;
+	border: 1px solid var(--color-border);
+	border-radius: 8px;
+	object-fit: cover;
 }
 
 .person-photo {
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
-  object-fit: cover;
+	width: 96px;
+	height: 96px;
+	border-radius: 50%;
+	object-fit: cover;
 }
 
 .admin-list-card {
-  position: relative;
-  padding: 14px 120px 14px 14px;
+	position: relative;
+	padding: 14px 120px 14px 14px;
 }
 
 .card-actions {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  display: flex;
-  gap: 6px;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	display: flex;
+	gap: 6px;
 }
 
 .icon-action {
-  display: inline-grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  background: var(--color-surface-strong);
-  color: var(--color-text);
-  cursor: pointer;
-  text-decoration: none;
+	display: inline-grid;
+	place-items: center;
+	width: 32px;
+	height: 32px;
+	border: 1px solid var(--color-border);
+	border-radius: 8px;
+	background: var(--color-surface-strong);
+	color: var(--color-text);
+	cursor: pointer;
+	text-decoration: none;
 }
 
 .icon-action svg {
-  width: 18px;
-  height: 18px;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.8;
+	width: 18px;
+	height: 18px;
+	fill: none;
+	stroke: currentColor;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	stroke-width: 1.8;
 }
 
 .inline-link {
-  color: var(--color-text);
-  font-weight: 800;
-  text-decoration: underline;
-  text-underline-offset: 4px;
+	color: var(--color-text);
+	font-weight: 800;
+	text-decoration: underline;
+	text-underline-offset: 4px;
 }
 
 .compact-person-card {
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  min-height: 92px;
-  padding: 12px 120px 12px 12px;
+	grid-template-columns: auto minmax(0, 1fr);
+	align-items: center;
+	min-height: 92px;
+	padding: 12px 120px 12px 12px;
 }
 
 .compact-person-card .card-actions {
-  top: 10px;
-  right: 10px;
+	top: 10px;
+	right: 10px;
 }
 
 .compact-card-copy {
-  min-width: 0;
+	min-width: 0;
 }
 
 .compact-card-copy h2 {
-  font-size: 0.95rem;
-  line-height: 1.2;
+	font-size: 0.95rem;
+	line-height: 1.2;
 }
 
 .compact-card-copy p {
-  margin-top: 4px;
-  font-size: 0.9rem;
+	margin-top: 4px;
+	font-size: 0.9rem;
 }
 
 .compact-card-media {
-  display: grid;
-  place-items: center;
+	display: grid;
+	place-items: center;
 }
 
 .compact-card-media .person-photo {
-  width: 60px;
-  height: 60px;
+	width: 60px;
+	height: 60px;
 }
 
 .summary-card {
-  margin-top: 12px;
-  color: var(--color-muted);
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.4;
+	margin-top: 12px;
+	color: var(--color-muted);
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.4;
 }
 
 .status-pill {
-  display: inline-grid;
-  min-height: 24px;
-  place-items: center;
-  padding: 2px 8px;
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  background: var(--color-surface-strong);
-  color: var(--color-muted);
-  font-size: 0.78rem;
-  font-weight: 900;
-  line-height: 1;
+	display: inline-grid;
+	min-height: 24px;
+	place-items: center;
+	padding: 2px 8px;
+	border: 1px solid var(--color-border);
+	border-radius: 999px;
+	background: var(--color-surface-strong);
+	color: var(--color-muted);
+	font-size: 0.78rem;
+	font-weight: 900;
+	line-height: 1;
 }
 
 .status-pill.confirmed {
-  border-color: color-mix(in srgb, var(--color-success) 40%, var(--color-border));
-  background: color-mix(in srgb, var(--color-success) 14%, var(--color-surface));
-  color: var(--color-success);
+	border-color: color-mix(in srgb, var(--color-success) 40%, var(--color-border));
+	background: color-mix(in srgb, var(--color-success) 14%, var(--color-surface));
+	color: var(--color-success);
 }
 
 @media (max-width: 420px) {
-  .summary-card {
-    font-size: 0.95rem;
-  }
+	.summary-card {
+		font-size: 0.95rem;
+	}
 }
 
 .form-toggle-action {
-  width: 100%;
+	width: 100%;
 }
 
 .dashboard-page {
-  display: grid;
-  gap: 20px;
-  min-width: 0;
+	display: grid;
+	gap: 20px;
+	min-width: 0;
 }
 
 .dashboard-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  min-width: 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	min-width: 0;
 }
 
 .dashboard-topbar h1 {
-  margin: 0;
-  min-width: 0;
+	margin: 0;
+	min-width: 0;
 }
 
 .dashboard-actions {
-  display: flex;
-  flex-shrink: 0;
-  gap: 8px;
+	display: flex;
+	flex-shrink: 0;
+	gap: 8px;
 }
 
 .round-icon-action {
-  display: inline-grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border: 1px solid var(--color-border);
-  border-radius: 50%;
-  background: var(--color-surface);
-  color: var(--color-text);
-  cursor: pointer;
+	display: inline-grid;
+	place-items: center;
+	width: 42px;
+	height: 42px;
+	border: 1px solid var(--color-border);
+	border-radius: 50%;
+	background: var(--color-surface);
+	color: var(--color-text);
+	cursor: pointer;
 }
 
 .round-icon-action svg,
 .dashboard-shortcut svg {
-  width: 22px;
-  height: 22px;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.8;
+	width: 22px;
+	height: 22px;
+	fill: none;
+	stroke: currentColor;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	stroke-width: 1.8;
 }
 
 .discreet-create-card {
-  margin-top: 0;
+	margin-top: 0;
 }
 
 .dashboard-wedding-card {
-  display: grid;
-  grid-template-columns: minmax(88px, 112px) minmax(0, 1fr);
-  gap: 16px;
-  align-items: center;
-  min-width: 0;
-  padding: 14px;
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  background: var(--color-surface);
+	display: grid;
+	grid-template-columns: minmax(88px, 112px) minmax(0, 1fr);
+	gap: 16px;
+	align-items: center;
+	min-width: 0;
+	padding: 14px;
+	border: 1px solid var(--color-border);
+	border-radius: 12px;
+	background: var(--color-surface);
 }
 
 .dashboard-cover {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 1;
-  overflow: hidden;
-  border-radius: 10px;
-  background:
-    radial-gradient(circle at 30% 25%, rgba(var(--color-primary-rgb), 0.28), transparent 36%),
-    linear-gradient(135deg, var(--color-soft), var(--color-background));
+	width: 100%;
+	height: auto;
+	aspect-ratio: 1;
+	overflow: hidden;
+	border-radius: 10px;
+	background:
+		radial-gradient(circle at 30% 25%, rgba(var(--color-primary-rgb), 0.28), transparent 36%),
+		linear-gradient(135deg, var(--color-soft), var(--color-background));
 }
 
 .dashboard-cover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
 }
 
 .dashboard-wedding-copy {
-  min-width: 0;
+	min-width: 0;
 }
 
 .dashboard-wedding-copy .eyebrow {
-  margin: 0 0 4px;
-  color: var(--color-muted);
-  font-size: 0.78rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+	margin: 0 0 4px;
+	color: var(--color-muted);
+	font-size: 0.78rem;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
 }
 
 .dashboard-wedding-copy h2 {
-  margin: 0;
-  color: var(--color-text);
-  font-size: clamp(1.25rem, 4.2vw, 1.55rem);
-  font-weight: 800;
-  line-height: 1.1;
+	margin: 0;
+	color: var(--color-text);
+	font-size: clamp(1.25rem, 4.2vw, 1.55rem);
+	font-weight: 800;
+	line-height: 1.1;
 }
 
 .dashboard-wedding-copy p {
-  margin: 6px 0 0;
-  color: var(--color-muted);
-  overflow-wrap: anywhere;
+	margin: 6px 0 0;
+	color: var(--color-muted);
+	overflow-wrap: anywhere;
 }
 
 .dashboard-card-palette {
-  justify-content: flex-start;
-  gap: 6px;
-  margin-top: 10px;
+	justify-content: flex-start;
+	gap: 6px;
+	margin-top: 10px;
 }
 
 .dashboard-card-palette span {
-  width: 10px;
-  height: 10px;
+	width: 10px;
+	height: 10px;
 }
 
 .dashboard-party-strip {
-  display: grid;
-  gap: 10px;
-  padding: 14px;
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  background: var(--color-surface);
+	display: grid;
+	gap: 10px;
+	padding: 14px;
+	border: 1px solid var(--color-border);
+	border-radius: 12px;
+	background: var(--color-surface);
 }
 
 .dashboard-party-strip h2 {
-  margin: 0;
-  font-size: 1rem;
+	margin: 0;
+	font-size: 1rem;
 }
 
 .party-avatar-row {
-  display: flex;
-  gap: 8px;
-  overflow: hidden;
+	display: flex;
+	gap: 8px;
+	overflow: hidden;
 }
 
 .party-avatar-row .person-photo {
-  width: 54px;
-  height: 54px;
-  border: 2px solid var(--color-surface-strong);
+	width: 54px;
+	height: 54px;
+	border: 2px solid var(--color-surface-strong);
 }
 
 .dashboard-shortcuts {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-  min-width: 0;
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 10px;
+	min-width: 0;
 }
 
 .dashboard-shortcut {
-  display: grid;
-  place-items: center;
-  gap: 8px;
-  min-width: 0;
-  min-height: 92px;
-  padding: 12px 8px;
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  background: var(--color-surface);
-  color: var(--color-text);
-  font-weight: 800;
-  text-align: center;
+	display: grid;
+	place-items: center;
+	gap: 8px;
+	min-width: 0;
+	min-height: 92px;
+	padding: 12px 8px;
+	border: 1px solid var(--color-border);
+	border-radius: 12px;
+	background: var(--color-surface);
+	color: var(--color-text);
+	font-weight: 800;
+	text-align: center;
 }
 
 .dashboard-shortcut svg {
-  width: 30px;
-  height: 30px;
+	width: 30px;
+	height: 30px;
 }
 
 .dashboard-shortcut span {
-  font-size: 0.84rem;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
+	font-size: 0.84rem;
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .compact-wedding-list h2 {
-  margin: 12px 0 0;
-  font-size: 1rem;
+	margin: 12px 0 0;
+	font-size: 1rem;
 }
 
 .wedding-select-card {
-  display: grid;
-  gap: 4px;
-  width: 100%;
-  padding: 14px;
-  border: 1px solid var(--color-border);
-  border-radius: 10px;
-  background: var(--color-surface);
-  color: var(--color-text);
-  text-align: left;
-  cursor: pointer;
+	display: grid;
+	gap: 4px;
+	width: 100%;
+	padding: 14px;
+	border: 1px solid var(--color-border);
+	border-radius: 10px;
+	background: var(--color-surface);
+	color: var(--color-text);
+	text-align: left;
+	cursor: pointer;
 }
 
 .wedding-select-card span {
-  font-weight: 800;
+	font-weight: 800;
 }
 
 .wedding-select-card small {
-  color: var(--color-muted);
+	color: var(--color-muted);
 }
 
 .muted-state {
-  margin: 0;
-  color: var(--color-muted);
+	margin: 0;
+	color: var(--color-muted);
 }
 
 .link-card {
-  display: block;
+	display: block;
 }
 
 .list-stack {
-  display: grid;
-  gap: 6px;
-  text-align: left;
+	display: grid;
+	gap: 6px;
+	text-align: left;
 }
 
 label {
-  display: grid;
-  gap: 8px;
-  color: var(--color-text);
-  font-weight: 700;
+	display: grid;
+	gap: 8px;
+	color: var(--color-text);
+	font-weight: 700;
 }
 
 input,
 select,
 textarea {
-  width: 100%;
-  min-height: 48px;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 10px 12px;
-  background: var(--color-surface-strong);
-  color: var(--color-text);
+	width: 100%;
+	min-height: 48px;
+	border: 1px solid var(--color-border);
+	border-radius: 8px;
+	padding: 10px 12px;
+	background: var(--color-surface-strong);
+	color: var(--color-text);
 }
 
 input[type='color'] {
-  height: 48px;
-  padding: 4px;
-  background: var(--color-surface);
-  cursor: pointer;
+	height: 48px;
+	padding: 4px;
+	background: var(--color-surface);
+	cursor: pointer;
 }
 
 input[type='color']::-webkit-color-swatch-wrapper {
-  padding: 0;
+	padding: 0;
 }
 
 input[type='color']::-webkit-color-swatch {
-  border: 0;
-  border-radius: 6px;
+	border: 0;
+	border-radius: 6px;
 }
 
 input[type='color']::-moz-color-swatch {
-  border: 0;
-  border-radius: 6px;
+	border: 0;
+	border-radius: 6px;
 }
 
 .font-picker {
-  display: grid;
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  border: 0;
+	display: grid;
+	gap: 10px;
+	margin: 0;
+	padding: 0;
+	border: 0;
 }
 
 .font-picker legend {
-  padding: 0;
-  color: var(--color-text);
-  font-weight: 700;
+	padding: 0;
+	color: var(--color-text);
+	font-weight: 700;
 }
 
 .font-option-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 8px;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	gap: 8px;
 }
 
 .font-option {
-  position: relative;
-  display: block;
-  min-width: 0;
-  padding: 12px;
-  border: 1px solid var(--color-border);
-  border-radius: 10px;
-  background: var(--color-surface-strong);
-  cursor: pointer;
+	position: relative;
+	display: block;
+	min-width: 0;
+	padding: 12px;
+	border: 1px solid var(--color-border);
+	border-radius: 10px;
+	background: var(--color-surface-strong);
+	cursor: pointer;
 }
 
 .font-option.active {
-  border-color: var(--color-text);
-  box-shadow: 0 0 0 1px var(--color-text);
+	border-color: var(--color-text);
+	box-shadow: 0 0 0 1px var(--color-text);
 }
 
 .font-option input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
 }
 
 .font-option span {
-  display: block;
-  overflow: hidden;
-  color: var(--color-text);
-  font-size: 1.6rem;
-  font-weight: 400;
-  line-height: 1.1;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+	display: block;
+	overflow: hidden;
+	color: var(--color-text);
+	font-size: 1.6rem;
+	font-weight: 400;
+	line-height: 1.1;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 textarea {
-  min-height: 120px;
-  resize: vertical;
+	min-height: 120px;
+	resize: vertical;
 }
 
 .primary-action,
 .secondary-action,
 .google-action {
-  display: inline-grid;
-  place-items: center;
-  min-height: 48px;
-  border: 0;
-  border-radius: 999px;
-  padding: 0 22px;
-  cursor: pointer;
-  font-weight: 800;
+	display: inline-grid;
+	place-items: center;
+	min-height: 48px;
+	border: 0;
+	border-radius: 999px;
+	padding: 0 22px;
+	cursor: pointer;
+	font-weight: 800;
 }
 
 .primary-action {
-  margin-top: 24px;
-  background: var(--color-primary);
-  color: var(--color-primary-contrast);
+	margin-top: 24px;
+	background: var(--color-primary);
+	color: var(--color-primary-contrast);
 }
 
 .secondary-action {
-  border: 1px solid var(--color-border);
-  background: var(--color-surface-strong);
-  color: var(--color-text);
+	border: 1px solid var(--color-border);
+	background: var(--color-surface-strong);
+	color: var(--color-text);
 }
 
 .google-action {
-  width: 100%;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface-strong);
-  color: var(--color-text);
+	width: 100%;
+	border: 1px solid var(--color-border);
+	background: var(--color-surface-strong);
+	color: var(--color-text);
 }
 
 .login-card {
-  max-width: 520px;
-  gap: 14px;
-  margin: 0;
-  padding: 26px;
-  border-radius: 18px;
-  color: #2f2f2f;
+	max-width: 520px;
+	gap: 14px;
+	margin: 0;
+	padding: 26px;
+	border-radius: 18px;
+	color: #2f2f2f;
 }
 
 .login-heading {
-  display: grid;
-  gap: 4px;
-  margin-bottom: 6px;
+	display: grid;
+	gap: 4px;
+	margin-bottom: 6px;
 }
 
 .login-heading p {
-  margin: 0;
-  color: #77746d;
-  font-size: 0.78rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+	margin: 0;
+	color: #77746d;
+	font-size: 0.78rem;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
 }
 
 .login-card .divider {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 12px;
-  align-items: center;
-  color: #77746d;
-  font-size: 0.9rem;
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	gap: 12px;
+	align-items: center;
+	color: #77746d;
+	font-size: 0.9rem;
 }
 
 .login-card .divider::before,
 .login-card .divider::after {
-  height: 1px;
-  content: '';
-  background: #e6e3dc;
+	height: 1px;
+	content: '';
+	background: #e6e3dc;
 }
 
 .login-card label {
-  color: #333333;
-  gap: 6px;
+	color: #333333;
+	gap: 6px;
 }
 
 .login-card input {
-  border-color: #e4e1da;
-  background: #fbfbfa;
-  color: #2f2f2f;
+	border-color: #e4e1da;
+	background: #fbfbfa;
+	color: #2f2f2f;
 }
 
 .login-card .google-action,
 .login-card .secondary-action {
-  border-color: #e4e1da;
-  background: #fbfbfa;
-  color: #333333;
+	border-color: #e4e1da;
+	background: #fbfbfa;
+	color: #333333;
 }
 
 .login-primary-action {
-  background: #4b4b4b;
-  color: #ffffff;
+	background: #4b4b4b;
+	color: #ffffff;
 }
 
 .login-primary-action:hover {
-  background: #3f3f3f;
+	background: #3f3f3f;
 }
 
 .more-admin-page {
-  align-content: start;
-  padding-top: 20px;
+	align-content: start;
+	padding-top: 20px;
 }
 
 .more-admin-page h1 {
-  margin-bottom: 8px;
+	margin-bottom: 8px;
 }
 
 .more-admin-page .list-stack {
-  gap: 8px;
+	gap: 8px;
 }
 
 .more-admin-page .link-card {
-  padding: 12px 14px;
+	padding: 12px 14px;
 }
 
 .more-admin-page .link-card h2 {
-  font-size: 1rem;
+	font-size: 1rem;
 }
 
 .more-admin-page .link-card p {
-  margin-top: 4px;
-  font-size: 0.9rem;
+	margin-top: 4px;
+	font-size: 0.9rem;
 }
 
 .more-admin-page .secondary-action {
-  margin-top: 8px;
+	margin-top: 8px;
 }
 
 .divider {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 12px;
-  align-items: center;
-  color: var(--color-muted);
-  font-size: 0.9rem;
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	gap: 12px;
+	align-items: center;
+	color: var(--color-muted);
+	font-size: 0.9rem;
 }
 
 .divider::before,
 .divider::after {
-  height: 1px;
-  content: '';
-  background: var(--color-border);
+	height: 1px;
+	content: '';
+	background: var(--color-border);
 }
 
 .success-state {
-  color: var(--color-success);
-  font-weight: 700;
+	color: var(--color-success);
+	font-weight: 700;
 }
 
 .error-state {
-  color: var(--color-danger);
-  font-weight: 700;
+	color: var(--color-danger);
+	font-weight: 700;
 }
 
 .qr-placeholder {
-  display: grid;
-  place-items: center;
-  width: min(72vw, 260px);
-  aspect-ratio: 1;
-  margin: 28px auto 0;
-  border: 12px solid var(--color-qr-light);
-  background:
-    linear-gradient(90deg, var(--color-qr-dark) 12px, transparent 12px) 0 0 / 36px 36px,
-    linear-gradient(var(--color-qr-dark) 12px, transparent 12px) 0 0 / 36px 36px,
-    var(--color-qr-light);
-  box-shadow: 0 12px 36px rgba(var(--color-shadow), 0.16);
-  color: var(--color-primary);
-  font-weight: 900;
+	display: grid;
+	place-items: center;
+	width: min(72vw, 260px);
+	aspect-ratio: 1;
+	margin: 28px auto 0;
+	border: 12px solid var(--color-qr-light);
+	background:
+		linear-gradient(90deg, var(--color-qr-dark) 12px, transparent 12px) 0 0 / 36px 36px,
+		linear-gradient(var(--color-qr-dark) 12px, transparent 12px) 0 0 / 36px 36px,
+		var(--color-qr-light);
+	box-shadow: 0 12px 36px rgba(var(--color-shadow), 0.16);
+	color: var(--color-primary);
+	font-weight: 900;
 }
 
 .qr-image {
-  display: block;
-  width: min(72vw, 280px);
-  height: auto;
-  margin: 28px auto 0;
-  border: 12px solid var(--color-qr-light);
-  box-shadow: 0 12px 36px rgba(var(--color-shadow), 0.16);
+	display: block;
+	width: min(72vw, 280px);
+	height: auto;
+	margin: 28px auto 0;
+	border: 12px solid var(--color-qr-light);
+	box-shadow: 0 12px 36px rgba(var(--color-shadow), 0.16);
 }
 
 .admin-nav {
-  position: fixed !important;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 10;
-  width: 100vw;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 0;
-  height: var(--bottom-nav-height);
-  padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
-  border-top: 1px solid var(--color-border);
-  background: var(--color-surface);
-  box-shadow: 0 -10px 30px rgba(var(--color-shadow), 0.08);
+	position: fixed !important;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 10;
+	width: 100vw;
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 0;
+	height: var(--bottom-nav-height);
+	padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+	border-top: 1px solid var(--color-border);
+	background: var(--color-surface);
+	box-shadow: 0 -10px 30px rgba(var(--color-shadow), 0.08);
 }
 
 .admin-nav a,
 .admin-nav button {
-  display: grid;
-  place-items: center;
-  min-width: 48px;
-  min-height: 46px;
-  border: 0;
-  border-radius: 8px;
-  background: transparent;
-  color: var(--color-muted);
-  cursor: pointer;
+	display: grid;
+	place-items: center;
+	min-width: 48px;
+	min-height: 46px;
+	border: 0;
+	border-radius: 8px;
+	background: transparent;
+	color: var(--color-muted);
+	cursor: pointer;
 }
 
 .admin-nav a.active {
-  background: color-mix(in srgb, var(--color-primary) 22%, transparent);
-  color: var(--color-text);
+	background: color-mix(in srgb, var(--color-primary) 22%, transparent);
+	color: var(--color-text);
 }
 
 .admin-nav button {
-  color: var(--color-danger);
+	color: var(--color-danger);
 }
 
 .admin-page,
 .admin-login {
-  width: 100%;
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 32px 20px calc(var(--bottom-nav-height) + 28px);
+	width: 100%;
+	max-width: 960px;
+	margin: 0 auto;
+	padding: 32px 20px calc(var(--bottom-nav-height) + 28px);
 }
 
 .admin-login {
-  display: grid;
-  min-height: 100%;
-  place-items: center;
-  background: #f4f4f2;
+	display: grid;
+	min-height: 100%;
+	place-items: center;
+	background: #f4f4f2;
 }
 
 .admin-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 12px;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	gap: 12px;
 }
 
 @media (min-width: 720px) {
-  .content-page {
-    padding-top: 64px;
-  }
+	.content-page {
+		padding-top: 64px;
+	}
 }
 
 @media (max-width: 430px) {
-  .admin-page,
-  .admin-login {
-    padding-right: 14px;
-    padding-left: 14px;
-  }
 
-  .dashboard-page {
-    gap: 16px;
-  }
+	.admin-page,
+	.admin-login {
+		padding-right: 14px;
+		padding-left: 14px;
+	}
 
-  .dashboard-topbar {
-    gap: 10px;
-  }
+	.dashboard-page {
+		gap: 16px;
+	}
 
-  .round-icon-action {
-    width: 40px;
-    height: 40px;
-  }
+	.dashboard-topbar {
+		gap: 10px;
+	}
 
-  .dashboard-wedding-card {
-    grid-template-columns: 92px minmax(0, 1fr);
-    gap: 12px;
-    padding: 12px;
-  }
+	.round-icon-action {
+		width: 40px;
+		height: 40px;
+	}
 
-  .dashboard-wedding-copy h2 {
-    font-size: clamp(1.25rem, 6.2vw, 1.55rem);
-  }
+	.dashboard-wedding-card {
+		grid-template-columns: 92px minmax(0, 1fr);
+		gap: 12px;
+		padding: 12px;
+	}
 
-  .dashboard-shortcuts {
-    gap: 8px;
-  }
+	.dashboard-wedding-copy h2 {
+		font-size: clamp(1.25rem, 6.2vw, 1.55rem);
+	}
 
-  .dashboard-shortcut {
-    min-height: 78px;
-    padding: 10px 6px;
-  }
+	.dashboard-shortcuts {
+		gap: 8px;
+	}
 
-  .dashboard-shortcut svg {
-    width: 26px;
-    height: 26px;
-  }
+	.dashboard-shortcut {
+		min-height: 78px;
+		padding: 10px 6px;
+	}
 
-  .dashboard-shortcut span {
-    font-size: 0.72rem;
-  }
+	.dashboard-shortcut svg {
+		width: 26px;
+		height: 26px;
+	}
 
-  .admin-list-card {
-    padding-right: 112px;
-  }
+	.dashboard-shortcut span {
+		font-size: 0.72rem;
+	}
 
-  .compact-person-card {
-    padding-right: 112px;
-  }
+	.admin-list-card {
+		padding-right: 112px;
+	}
+
+	.compact-person-card {
+		padding-right: 112px;
+	}
 }
 
 @media (max-width: 360px) {
-  .dashboard-shortcut span {
-    font-size: 0.68rem;
-  }
+	.dashboard-shortcut span {
+		font-size: 0.68rem;
+	}
 
-  .dashboard-shortcut {
-    min-height: 72px;
-    padding-inline: 4px;
-  }
+	.dashboard-shortcut {
+		min-height: 72px;
+		padding-inline: 4px;
+	}
 }

@@ -24,6 +24,15 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
       <div class="dashboard-topbar">
         <h1>Painel</h1>
         <div class="dashboard-actions">
+          <button class="round-icon-action" type="button" (click)="shareWedding(wedding)" aria-label="Compartilhar">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="18" cy="5" r="2" />
+              <circle cx="6" cy="12" r="2" />
+              <circle cx="18" cy="19" r="2" />
+              <path d="M8 11l8-5" />
+              <path d="M8 13l8 5" />
+            </svg>
+          </button>
           <a class="round-icon-action" routerLink="/admin/configuracoes" aria-label="Configuracoes">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <circle cx="12" cy="12" r="3" />
@@ -266,13 +275,34 @@ export class DashboardPage {
   private generateWeddingId(coupleNames: string): string {
     const slug =
       coupleNames
-      .trim()
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-z0-9-]+/g, '-')
-      .replace(/^-+|-+$/g, '');
+        .trim()
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9-]+/g, '-')
+        .replace(/^-+|-+$/g, '');
 
     return `${slug || 'casamento'}-${crypto.randomUUID().slice(0, 8)}`;
+  }
+
+  protected async shareWedding(wedding?: Wedding | null): Promise<void> {
+    if (!wedding) {
+      this.error = 'Selecione um casamento para compartilhar.';
+      return;
+    }
+
+    const slug = wedding.slug || wedding.id;
+    const url = `${window.location.origin}/${slug}`;
+
+    if (navigator.share) {
+      await navigator.share({
+        title: wedding.coupleNames || 'Nosso casamento',
+        text: 'Veja nosso site de casamento',
+        url,
+      });
+      return;
+    }
+
+    await navigator.clipboard.writeText(url);
   }
 }
