@@ -4,6 +4,60 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Alex Brush';
+  src: url('/fonts/AlexBrush-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Allura';
+  src: url('/fonts/Allura-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Brittany Signature';
+  src: url('/fonts/BrittanySignature.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bacalisties';
+  src: url('/fonts/Bacalisties.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cormorant SC';
+  src: url('/fonts/CormorantSC-Regular.otf') format('opentype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Dancing Script';
+  src: url('/fonts/Dancing%20Script.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/Montserrat-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('/fonts/PlayfairDisplay-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tangerine';
+  src: url('/fonts/Tangerine_Bold.ttf') format('truetype');
+  font-display: swap;
+}
+
 :root {
   --color-primary: #f2f2f2;
   --color-primary-rgb: 242, 242, 242;
@@ -20,8 +74,9 @@
   --color-qr-light: #ffffff;
   --color-danger: #9f2f2f;
   --color-success: #4d7c3f;
-  --font-display: Georgia, 'Times New Roman', serif;
-  --font-script: 'Great Vibes', Georgia, 'Times New Roman', serif;
+  --bottom-nav-height: calc(64px + env(safe-area-inset-bottom));
+  --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-script: 'Bacalisties', 'Brittany Signature', 'Great Vibes', Georgia, 'Times New Roman', serif;
   --font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
@@ -30,6 +85,7 @@
 }
 
 html {
+  min-height: 100%;
   background: var(--color-background);
   color: var(--color-text);
   font-family: var(--font-body);
@@ -38,8 +94,14 @@ html {
 
 body {
   margin: 0;
+  min-height: 100%;
   min-width: 320px;
   overflow-x: hidden;
+}
+
+app-root {
+  display: block;
+  min-height: 100%;
 }
 
 a {
@@ -60,8 +122,8 @@ a {
 }
 
 .public-page {
-  min-height: 100dvh;
-  padding-bottom: calc(76px + env(safe-area-inset-bottom));
+  min-height: calc(100svh - var(--bottom-nav-height));
+  padding-bottom: calc(var(--bottom-nav-height) + 12px);
 }
 
 .home-page {
@@ -135,6 +197,7 @@ a {
   color: var(--color-text);
   font-family: var(--font-display);
   font-size: 2rem;
+  font-weight: 600;
 }
 
 .countdown {
@@ -185,7 +248,7 @@ a {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0;
-  min-height: calc(64px + env(safe-area-inset-bottom));
+  height: var(--bottom-nav-height);
   padding: 6px 10px calc(6px + env(safe-area-inset-bottom));
   border-top: 1px solid var(--color-border);
   background: var(--color-surface);
@@ -243,7 +306,8 @@ a {
 .print-invite-date {
   margin: 0 0 10px;
   color: var(--color-muted);
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-weight: 600;
 }
 
 .invite-person-name {
@@ -261,6 +325,29 @@ a {
   border: 0;
   border-radius: 0;
   background: transparent;
+}
+
+.groomsmen-template-svg {
+  width: min(100%, 720px);
+  margin: 0 auto;
+}
+
+.print-template-only {
+  display: none;
+}
+
+.groomsmen-template-svg svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.template-acceptance-panel {
+  display: grid;
+  gap: 14px;
+  width: min(100%, 520px);
+  margin: 22px auto 0;
+  padding: 0 24px 48px;
 }
 
 .special-invite-page {
@@ -306,12 +393,15 @@ a {
   color: var(--color-text);
   font-family: var(--font-display) !important;
   font-size: clamp(2rem, 7vw, 2.85rem) !important;
+  font-weight: 600;
   line-height: 1.08 !important;
 }
 
 .groomsmen-invite-card .invite-message {
   max-width: 460px;
   margin: 12px auto 4px;
+  font-family: var(--font-body);
+  font-weight: 400;
   font-size: 1.04rem;
   line-height: 1.7;
 }
@@ -345,6 +435,7 @@ a {
   color: var(--color-text);
   font-family: var(--font-display);
   font-size: clamp(2rem, 7vw, 2.85rem);
+  font-weight: 600;
   line-height: 1.08;
 }
 
@@ -357,6 +448,8 @@ a {
 .special-person-invite-card .invite-message {
   max-width: 460px;
   margin: 12px auto 4px;
+  font-family: var(--font-body);
+  font-weight: 400;
   font-size: 1.04rem;
   line-height: 1.7;
 }
@@ -428,7 +521,8 @@ a {
   max-width: 420px;
   margin: 24px auto 8px;
   color: var(--color-text);
-  font-family: var(--font-display);
+  font-family: var(--font-body);
+  font-weight: 400;
   font-size: 1.12rem;
   line-height: 1.5;
 }
@@ -481,20 +575,131 @@ a {
 }
 
 @media print {
+  @page {
+    margin: 0;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
   .floating-print-action,
-  .public-nav {
+  .public-nav,
+  .acceptance-actions,
+  .template-acceptance-panel,
+  .screen-invite-content,
+  .success-state {
     display: none;
   }
 
+  .print-template-only {
+    display: block;
+  }
+
   .print-invite-page {
+    min-height: auto;
     padding: 0;
     background: #ffffff;
   }
 
   .print-invite-card {
-    min-height: 100vh;
+    min-height: auto;
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
     border: 0;
     border-radius: 0;
+    background: #ffffff;
+    box-shadow: none;
+  }
+
+  .groomsmen-template-svg {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+  }
+
+  .groomsmen-template-svg svg {
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .special-invite-page .hero {
+    height: 118mm;
+    min-height: 0;
+    background: #ffffff;
+  }
+
+  .special-invite-page .hero::after {
+    height: 44%;
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.7) 68%,
+      #ffffff 100%
+    );
+  }
+
+  .special-invite-page .hero img {
+    object-position: center 38%;
+  }
+
+  .special-invite-content {
+    max-width: 150mm;
+    gap: 5mm;
+    margin: -18mm auto 0;
+    padding: 0 14mm 14mm;
+  }
+
+  .special-invite-content .ornament {
+    font-size: 16pt;
+  }
+
+  .special-invite-content .invite-couple-name {
+    font-size: 42pt;
+    line-height: 0.86;
+  }
+
+  .special-invite-content .date {
+    margin-top: 0;
+    font-size: 20pt;
+  }
+
+  .special-invite-content .eyebrow {
+    font-size: 9pt;
+    letter-spacing: 0.12em;
+  }
+
+  .groomsmen-question,
+  .special-person-question {
+    max-width: 120mm;
+    font-size: 17pt !important;
+    line-height: 1.2;
+  }
+
+  .groomsmen-names,
+  .special-person-name {
+    max-width: 130mm;
+    margin: 0 auto;
+    font-size: 26pt !important;
+    line-height: 1.05 !important;
+  }
+
+  .invite-role {
+    margin: -3mm 0 3mm;
+    font-size: 12pt;
+  }
+
+  .groomsmen-invite-card .invite-message,
+  .special-person-invite-card .invite-message {
+    max-width: 118mm;
+    margin: 4mm auto 0;
+    font-size: 12pt;
+    line-height: 1.55;
   }
 }
 
@@ -541,10 +746,9 @@ a {
 .admin-page h1,
 .admin-login h1 {
   margin: 0 0 12px;
-  font-family: var(--font-display);
-  font-size: clamp(2.1rem, 9vw, 2.7rem);
-  font-weight: 400;
-  line-height: 1;
+  font-size: clamp(1.9rem, 7vw, 2.35rem);
+  font-weight: 800;
+  line-height: 1.08;
 }
 
 .content-page > p {
@@ -808,10 +1012,9 @@ a {
 .dashboard-wedding-copy h2 {
   margin: 0;
   color: var(--color-text);
-  font-family: var(--font-display);
-  font-size: clamp(1.35rem, 4.8vw, 1.75rem);
-  font-weight: 400;
-  line-height: 1.05;
+  font-size: clamp(1.25rem, 4.2vw, 1.55rem);
+  font-weight: 800;
+  line-height: 1.1;
 }
 
 .dashboard-wedding-copy p {
@@ -970,6 +1173,59 @@ input[type='color']::-webkit-color-swatch {
 input[type='color']::-moz-color-swatch {
   border: 0;
   border-radius: 6px;
+}
+
+.font-picker {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.font-picker legend {
+  padding: 0;
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+.font-option-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.font-option {
+  position: relative;
+  display: block;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface-strong);
+  cursor: pointer;
+}
+
+.font-option.active {
+  border-color: var(--color-text);
+  box-shadow: 0 0 0 1px var(--color-text);
+}
+
+.font-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.font-option span {
+  display: block;
+  overflow: hidden;
+  color: var(--color-text);
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 textarea {
@@ -1166,7 +1422,7 @@ textarea {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 0;
-  min-height: calc(64px + env(safe-area-inset-bottom));
+  height: var(--bottom-nav-height);
   padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
   border-top: 1px solid var(--color-border);
   background: var(--color-surface);
@@ -1200,7 +1456,7 @@ textarea {
   width: 100%;
   max-width: 960px;
   margin: 0 auto;
-  padding: 32px 20px calc(92px + env(safe-area-inset-bottom));
+  padding: 32px 20px calc(var(--bottom-nav-height) + 28px);
 }
 
 .admin-login {

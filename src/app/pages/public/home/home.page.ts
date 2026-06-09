@@ -9,9 +9,9 @@ import { WeddingService } from '../../../core/services/wedding.service';
 import { toDisplayImageUrl } from '../../../core/utils/image-url';
 
 @Component({
-  selector: 'app-home-page',
-  imports: [AsyncPipe, PublicNavComponent],
-  template: `
+	selector: 'app-home-page',
+	imports: [AsyncPipe, PublicNavComponent],
+	template: `
     @let wedding = wedding$ | async;
 
     <main class="public-page home-page">
@@ -25,7 +25,7 @@ import { toDisplayImageUrl } from '../../../core/utils/image-url';
 
       <section class="home-content">
         <div class="ornament" aria-hidden="true">♥</div>
-        <h1>{{ wedding?.coupleNames || 'Beatriz & Nélio' }}</h1>
+        <h1>{{ wedding?.coupleNames || 'Os noivos' }}</h1>
         <p class="date">{{ wedding?.eventDate || '10/06/2026' }}</p>
         <p class="countdown">{{ countdownLabel(wedding?.eventDate) }}</p>
         <p class="message">
@@ -46,67 +46,67 @@ import { toDisplayImageUrl } from '../../../core/utils/image-url';
   `,
 })
 export class HomePage {
-  private readonly route = inject(ActivatedRoute);
-  private readonly weddingContextService = inject(WeddingContextService);
-  private readonly weddingService = inject(WeddingService);
+	private readonly route = inject(ActivatedRoute);
+	private readonly weddingContextService = inject(WeddingContextService);
+	private readonly weddingService = inject(WeddingService);
 
-  protected readonly weddingId$ = this.weddingContextService.publicWeddingId$(this.route);
-  protected readonly wedding$ = this.weddingId$.pipe(switchMap((weddingId) => this.weddingService.wedding$(weddingId)));
+	protected readonly weddingId$ = this.weddingContextService.publicWeddingId$(this.route);
+	protected readonly wedding$ = this.weddingId$.pipe(switchMap((weddingId) => this.weddingService.wedding$(weddingId)));
 
-  protected imageUrl(url?: string): string {
-    return toDisplayImageUrl(url);
-  }
+	protected imageUrl(url?: string): string {
+		return toDisplayImageUrl(url);
+	}
 
-  protected paletteColors(
-    wedding?: { theme?: { primary?: string; secondary?: string; tertiary?: string; neutral?: string } } | null,
-  ): string[] {
-    return [
-      wedding?.theme?.primary || '#f2f2f2',
-      wedding?.theme?.secondary || '#ffffff',
-      wedding?.theme?.tertiary || '#eeeeee',
-      wedding?.theme?.neutral || '#ffffff',
-    ];
-  }
+	protected paletteColors(
+		wedding?: { theme?: { primary?: string; secondary?: string; tertiary?: string; neutral?: string } } | null,
+	): string[] {
+		return [
+			wedding?.theme?.primary || '#f2f2f2',
+			wedding?.theme?.secondary || '#ffffff',
+			wedding?.theme?.tertiary || '#eeeeee',
+			wedding?.theme?.neutral || '#ffffff',
+		];
+	}
 
-  protected countdownLabel(eventDate?: string): string {
-    if (!eventDate) {
-      return 'Faltam alguns dias para o grande momento';
-    }
+	protected countdownLabel(eventDate?: string): string {
+		if (!eventDate) {
+			return 'Faltam alguns dias para o grande momento';
+		}
 
-    const target = this.parseDate(eventDate);
-    if (!target) {
-      return 'Faltam alguns dias para o grande momento';
-    }
+		const target = this.parseDate(eventDate);
+		if (!target) {
+			return 'Faltam alguns dias para o grande momento';
+		}
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    target.setHours(0, 0, 0, 0);
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+		target.setHours(0, 0, 0, 0);
 
-    const days = Math.ceil((target.getTime() - today.getTime()) / 86_400_000);
+		const days = Math.ceil((target.getTime() - today.getTime()) / 86_400_000);
 
-    if (days === 0) {
-      return 'Hoje e o grande dia';
-    }
+		if (days === 0) {
+			return 'Hoje e o grande dia';
+		}
 
-    if (days < 0) {
-      return 'Esse momento ja ficou na memoria';
-    }
+		if (days < 0) {
+			return 'Esse momento ja ficou na memoria';
+		}
 
-    return days === 1 ? 'Falta 1 dia' : `Faltam ${days} dias`;
-  }
+		return days === 1 ? 'Falta 1 dia' : `Faltam ${days} dias`;
+	}
 
-  private parseDate(value: string): Date | null {
-    if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-      return new Date(`${value}T00:00:00`);
-    }
+	private parseDate(value: string): Date | null {
+		if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+			return new Date(`${value}T00:00:00`);
+		}
 
-    const parts = value.split('/');
-    if (parts.length === 3) {
-      const [day, month, year] = parts;
-      return new Date(`${year}-${month}-${day}T00:00:00`);
-    }
+		const parts = value.split('/');
+		if (parts.length === 3) {
+			const [day, month, year] = parts;
+			return new Date(`${year}-${month}-${day}T00:00:00`);
+		}
 
-    const date = new Date(value);
-    return Number.isNaN(date.getTime()) ? null : date;
-  }
+		const date = new Date(value);
+		return Number.isNaN(date.getTime()) ? null : date;
+	}
 }

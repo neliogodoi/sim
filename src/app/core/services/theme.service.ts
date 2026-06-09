@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { combineLatest, filter, map, startWith, switchMap } from 'rxjs';
 
+import { scriptFontCssFamily } from '../constants/script-fonts';
 import { WeddingTheme } from '../models/wedding.models';
 import { WeddingContextService } from './wedding-context.service';
 import { WeddingService } from './wedding.service';
@@ -23,6 +24,7 @@ export class ThemeService {
       .subscribe((wedding) => {
         const root = document.documentElement;
         this.applyPrimaryColor(root, wedding?.theme?.primary || this.defaultPrimaryColor());
+        this.applyScriptFont(root, wedding?.theme?.scriptFont);
       });
   }
 
@@ -53,6 +55,13 @@ export class ThemeService {
     root.style.setProperty('--color-shadow', `${color.red}, ${color.green}, ${color.blue}`);
     root.style.setProperty('--color-qr-dark', this.rgbToHex(text));
     root.style.setProperty('--color-qr-light', this.rgbToHex(surface));
+  }
+
+  applyScriptFont(root: HTMLElement, scriptFont?: string): void {
+    root.style.setProperty(
+      '--font-script',
+      `${scriptFontCssFamily(scriptFont)}, 'Brittany Signature', 'Great Vibes', Georgia, 'Times New Roman', serif`,
+    );
   }
 
   private currentUrl$() {

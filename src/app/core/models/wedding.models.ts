@@ -23,6 +23,7 @@ export interface WeddingTheme {
   secondary?: string;
   tertiary?: string;
   neutral?: string;
+  scriptFont?: string;
   primaryContrast?: string;
   background?: string;
   surface?: string;
