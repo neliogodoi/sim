@@ -5,14 +5,18 @@ import { AuthService } from '../../../core/services/auth.service';
 import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 
 @Component({
-  selector: 'app-more-admin-page',
-  imports: [AdminHeaderComponent, RouterLink],
-  template: `
+	selector: 'app-more-admin-page',
+	imports: [AdminHeaderComponent, RouterLink],
+	template: `
     <app-admin-header />
 
     <main class="admin-page more-admin-page">
       <h1>Mais</h1>
       <div class="list-stack">
+		<a class="info-card link-card" routerLink="/admin/pessoas">
+          <h2>Pessoas importantes</h2>
+          <p>Pais, pajens, damas e familiares.</p>
+        </a>
         <a class="info-card link-card" routerLink="/admin/presentes">
           <h2>Presentes</h2>
           <p>Lista de presentes, cotas e links úteis.</p>
@@ -20,10 +24,6 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
         <a class="info-card link-card" routerLink="/admin/agenda">
           <h2>Agenda</h2>
           <p>Organizacao interna da programacao.</p>
-        </a>
-        <a class="info-card link-card" routerLink="/admin/pessoas">
-          <h2>Pessoas importantes</h2>
-          <p>Pais, pajens, damas e familiares.</p>
         </a>
         <a class="info-card link-card" routerLink="/admin/fornecedores">
           <h2>Fornecedores</h2>
@@ -39,12 +39,12 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
   `,
 })
 export class MoreAdminPage {
-  private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
+	private readonly authService = inject(AuthService);
+	private readonly router = inject(Router);
 
-  protected async logout(): Promise<void> {
-    await this.authService.logout();
-    await this.router.navigateByUrl('/admin/login');
-  }
+	protected async logout(): Promise<void> {
+		await this.authService.logout();
+		await this.router.navigateByUrl('/admin/login');
+	}
 
 }

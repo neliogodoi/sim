@@ -2,23 +2,15 @@ import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
-  selector: 'app-admin-header',
-  imports: [RouterLink, RouterLinkActive],
-  template: `
+	selector: 'app-admin-header',
+	imports: [RouterLink, RouterLinkActive],
+	template: `
     <nav class="admin-nav" aria-label="Administracao">
       <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Casamentos">
         <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M4 10.5 12 4l8 6.5" />
           <path d="M6.5 9.5V20h11V9.5" />
           <path d="M10 20v-6h4v6" />
-        </svg>
-      </a>
-      <a routerLink="/admin/convidados" routerLinkActive="active" aria-label="Convidados">
-        <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="9" cy="8" r="3" />
-          <path d="M3.5 19c.7-3 2.6-5 5.5-5s4.8 2 5.5 5" />
-          <path d="M16 11a2.5 2.5 0 1 0-.8-4.9" />
-          <path d="M17 14c2 .5 3.2 2 3.7 5" />
         </svg>
       </a>
       <a routerLink="/admin/padrinhos" routerLinkActive="active" aria-label="Padrinhos">
@@ -31,6 +23,14 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
           <path d="M9 18V5l10-2v13" />
           <circle cx="6" cy="18" r="3" />
           <circle cx="16" cy="16" r="3" />
+        </svg>
+      </a>
+	  <a routerLink="/admin/convidados" routerLinkActive="active" aria-label="Convidados">
+        <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="9" cy="8" r="3" />
+          <path d="M3.5 19c.7-3 2.6-5 5.5-5s4.8 2 5.5 5" />
+          <path d="M16 11a2.5 2.5 0 1 0-.8-4.9" />
+          <path d="M17 14c2 .5 3.2 2 3.7 5" />
         </svg>
       </a>
       <a routerLink="/admin/mais" routerLinkActive="active" aria-label="Mais">

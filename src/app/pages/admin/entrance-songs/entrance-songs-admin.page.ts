@@ -9,9 +9,9 @@ import { WeddingService } from '../../../core/services/wedding.service';
 import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 
 @Component({
-  selector: 'app-entrance-songs-admin-page',
-  imports: [AdminHeaderComponent, AsyncPipe, FormsModule],
-  template: `
+	selector: 'app-entrance-songs-admin-page',
+	imports: [AdminHeaderComponent, AsyncPipe, FormsModule],
+	template: `
     <app-admin-header />
     @let songs = songs$ | async;
 
@@ -74,69 +74,69 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
   `,
 })
 export class EntranceSongsAdminPage {
-  private readonly weddingContextService = inject(WeddingContextService);
-  private readonly weddingService = inject(WeddingService);
+	private readonly weddingContextService = inject(WeddingContextService);
+	private readonly weddingService = inject(WeddingService);
 
-  protected readonly weddingId$ = this.weddingContextService.activeWeddingId$;
-  protected readonly songs$ = this.weddingId$.pipe(
-    switchMap((weddingId) => this.weddingService.entranceSongs$(weddingId)),
-  );
-  protected moment = '';
-  protected songTitle = '';
-  protected url = '';
-  protected editingSongId = '';
-  protected formExpanded = false;
+	protected readonly weddingId$ = this.weddingContextService.activeWeddingId$;
+	protected readonly songs$ = this.weddingId$.pipe(
+		switchMap((weddingId) => this.weddingService.entranceSongs$(weddingId)),
+	);
+	protected moment = '';
+	protected songTitle = '';
+	protected url = '';
+	protected editingSongId = '';
+	protected formExpanded = false;
 
-  async saveSong(): Promise<void> {
-    if (!this.moment.trim() || !this.songTitle.trim()) {
-      return;
-    }
+	async saveSong(): Promise<void> {
+		if (!this.moment.trim() || !this.songTitle.trim()) {
+			return;
+		}
 
-    const weddingId = await firstValueFrom(this.weddingId$);
-    await this.weddingService.saveEntranceSong(
-      {
-        id: this.editingSongId || undefined,
-        weddingId,
-        moment: this.moment.trim(),
-        songTitle: this.songTitle.trim(),
-        url: this.url.trim(),
-        sortOrder: Date.now(),
-      },
-      weddingId,
-    );
+		const weddingId = await firstValueFrom(this.weddingId$);
+		await this.weddingService.saveEntranceSong(
+			{
+				id: this.editingSongId || undefined,
+				weddingId,
+				moment: this.moment.trim(),
+				songTitle: this.songTitle.trim(),
+				url: this.url.trim(),
+				sortOrder: Date.now(),
+			},
+			weddingId,
+		);
 
-    this.moment = '';
-    this.songTitle = '';
-    this.url = '';
-    this.editingSongId = '';
-    this.formExpanded = false;
-  }
+		this.moment = '';
+		this.songTitle = '';
+		this.url = '';
+		this.editingSongId = '';
+		this.formExpanded = false;
+	}
 
-  editSong(song: EntranceSong): void {
-    this.formExpanded = true;
-    this.editingSongId = song.id;
-    this.moment = song.moment;
-    this.songTitle = song.songTitle;
-    this.url = song.url || '';
-  }
+	editSong(song: EntranceSong): void {
+		this.formExpanded = true;
+		this.editingSongId = song.id;
+		this.moment = song.moment;
+		this.songTitle = song.songTitle;
+		this.url = song.url || '';
+	}
 
-  removeSong(songId: string): Promise<void> {
-    return this.weddingService.deleteEntranceSong(songId, this.weddingContextService.currentAdminWeddingId());
-  }
+	removeSong(songId: string): Promise<void> {
+		return this.weddingService.deleteEntranceSong(songId, this.weddingContextService.currentAdminWeddingId());
+	}
 
-  protected openForm(): void {
-    this.formExpanded = true;
-  }
+	protected openForm(): void {
+		this.formExpanded = true;
+	}
 
-  protected closeForm(): void {
-    this.moment = '';
-    this.songTitle = '';
-    this.url = '';
-    this.editingSongId = '';
-    this.formExpanded = false;
-  }
+	protected closeForm(): void {
+		this.moment = '';
+		this.songTitle = '';
+		this.url = '';
+		this.editingSongId = '';
+		this.formExpanded = false;
+	}
 
-  protected shouldShowForm(songs?: EntranceSong[] | null): boolean {
-    return songs?.length === 0 || this.formExpanded || !!this.editingSongId;
-  }
+	protected shouldShowForm(songs?: EntranceSong[] | null): boolean {
+		return songs?.length === 0 || this.formExpanded || !!this.editingSongId;
+	}
 }

@@ -103,10 +103,10 @@ const DEFAULT_PALETTE = {
           <legend>Fonte dos nomes dos noivos</legend>
           <div class="font-option-list">
             @for (font of scriptFontOptions; track font.value) {
-              <label class="font-option" [class.active]="scriptFont === font.value">
-                <input type="radio" name="scriptFont" [value]="font.value" [(ngModel)]="scriptFont" />
-                <span [style.font-family]="font.cssFamily">{{ font.label }}</span>
-              </label>
+              	<label class="font-option" [class.active]="scriptFont === font.value" >
+					<input type="radio" name="font" [value]="font.value" [(ngModel)]="scriptFont" />
+					<span [style.font-family]="font.cssFamily"> {{ coupleNames || font.label }} </span>
+				</label>
             }
           </div>
         </fieldset>
@@ -147,7 +147,9 @@ export class SettingsPage {
 	protected uploadMessage = '';
 	protected uploadError = '';
 
-	constructor() {
+	constructor() { }
+
+	ngOnInit(): void {
 		this.wedding$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((wedding) => {
 			if (!wedding || this.hasLoadedWedding) {
 				return;
