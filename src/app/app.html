@@ -1,1 +1,11 @@
 <router-outlet />
+
+@if (isLoading) {
+	<div class="app-loading" aria-live="polite" aria-busy="true">
+		<div class="app-loading-card">
+			<div class="app-loading-spinner"></div>
+			<p>Carregando...</p>
+			<span>Aguarde enquanto a página termina de iniciar.</span>
+		</div>
+	</div>
+}

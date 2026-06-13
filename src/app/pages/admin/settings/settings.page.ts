@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectorRef, Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -115,7 +115,7 @@ const DEFAULT_PALETTE = {
     </main>
   `,
 })
-export class SettingsPage {
+export class SettingsPage implements OnInit {
 	private readonly weddingContextService = inject(WeddingContextService);
 	private readonly weddingService = inject(WeddingService);
 	private readonly r2UploadService = inject(R2UploadService);
@@ -146,8 +146,6 @@ export class SettingsPage {
 	protected isUploadingCover = false;
 	protected uploadMessage = '';
 	protected uploadError = '';
-
-	constructor() { }
 
 	ngOnInit(): void {
 		this.wedding$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((wedding) => {

@@ -1,8 +1,9 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import QRCode from 'qrcode';
 import { switchMap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { WeddingContextService } from '../../../core/services/wedding-context.service';
 import { WeddingService } from '../../../core/services/wedding.service';
@@ -35,8 +36,9 @@ import { PublicNavComponent } from '../../../layout/public-nav.component';
     <app-public-nav />
   `,
 })
-export class AlbumPage {
+export class AlbumPage implements OnInit {
   private readonly route = inject(ActivatedRoute);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly weddingContextService = inject(WeddingContextService);
   private readonly weddingService = inject(WeddingService);
 
@@ -44,8 +46,8 @@ export class AlbumPage {
   protected readonly wedding$ = this.weddingId$.pipe(switchMap((weddingId) => this.weddingService.wedding$(weddingId)));
   protected readonly qrCodeUrl = signal('');
 
-  constructor() {
-    this.wedding$.subscribe((wedding) => {
+  ngOnInit(): void {
+    this.wedding$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((wedding) => {
       void this.generateQrCode(wedding?.sharedAlbumUrl);
     });
   }

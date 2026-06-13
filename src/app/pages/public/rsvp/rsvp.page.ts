@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -71,7 +71,7 @@ import { WeddingService } from '../../../core/services/wedding.service';
     </main>
   `,
 })
-export class RsvpPage {
+export class RsvpPage implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
   private readonly weddingContextService = inject(WeddingContextService);
@@ -96,7 +96,7 @@ export class RsvpPage {
   protected guestCountChanged = false;
   protected readonly saved = signal(false);
 
-  constructor() {
+  ngOnInit(): void {
     this.guest$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((guest) => {
       if (!guest || this.guestCountChanged) {
         return;

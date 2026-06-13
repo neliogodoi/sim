@@ -1,0 +1,141 @@
+<header class="site-header" id="topo">
+	<nav class="nav container">
+		<a class="brand" href="#topo" aria-label="SIM - Seu Incrível Momento">
+			<img class="brand-logo" src="/sim-logo.png" alt="SIM - Seu Incrível Momento" />
+		</a>
+
+		<div class="nav-actions">
+			<a class="nav-link nav-link-ghost btn-login" routerLink="/admin/login">Entrar</a>
+			<a class="nav-link nav-link-solid nav-signup" routerLink="/admin/cadastro">Criar conta</a>
+		</div>
+
+		<button
+			class="nav-toggle"
+			type="button"
+			aria-label="Abrir menu"
+			[attr.aria-expanded]="menuOpen"
+			(click)="toggleMenu()"
+		>
+			<span></span><span></span><span></span>
+		</button>
+
+		<div class="nav-links" [class.open]="menuOpen">
+			<a href="#experiencia" (click)="closeMenu()">Experiência</a>
+			<a href="#recursos" (click)="closeMenu()">Recursos</a>
+			<a href="#publicos" (click)="closeMenu()">Para convidados</a>
+			<a href="#preco" (click)="closeMenu()">Começar</a>
+		</div>
+	</nav>
+</header>
+
+<main>
+	<section class="hero">
+		<div class="container hero-grid">
+			<div class="hero-copy reveal">
+				<span class="eyebrow">Para casais que querem encantar</span>
+				<h1>O casamento começa muito antes da cerimônia.</h1>
+				<p>
+					<strong>SIM</strong> é a plataforma que transforma a organização do casamento em uma experiência
+					elegante, emocionante e inesquecível para noivos, padrinhos e convidados.
+				</p>
+				<div class="hero-actions">
+					<a class="btn btn-primary" routerLink="/admin/cadastro">Criar conta</a>
+					<a class="btn btn-secondary" routerLink="/admin/login">Entrar</a>
+				</div>
+				<div class="trust-line">
+					<span>Convite elegante</span>
+					<span>Painel completo</span>
+					<span>Pronto agora</span>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section story" id="experiencia">
+		<div class="container narrow reveal">
+			<span class="section-kicker">O diferencial</span>
+			<h2>Uma presença digital para o casamento, sem ruído.</h2>
+			<p>
+				Página do evento, confirmação de presença e informações para convidados em um só lugar. Para você
+				acompanhar tudo com mais tranquilidade.
+			</p>
+		</div>
+	</section>
+
+	<section class="section features" id="recursos">
+		<div class="container">
+			<div class="section-heading reveal">
+				<span class="section-kicker">O que você recebe</span>
+				<h2>O essencial, apresentado com cuidado.</h2>
+			</div>
+
+			<div class="feature-grid">
+				<article class="feature-card reveal">
+					<span class="icon">✦</span>
+					<h3>Página do casamento</h3>
+					<p>Um link elegante com história, data, local e informações essenciais.</p>
+				</article>
+				<article class="feature-card reveal delay-1">
+					<span class="icon">✓</span>
+					<h3>Confirmação de presença</h3>
+					<p>Os convidados respondem de forma simples, e você acompanha pelo painel.</p>
+				</article>
+				<article class="feature-card reveal delay-2">
+					<span class="icon">☰</span>
+					<h3>Painel administrativo</h3>
+					<p>Gerencie convidados, padrinhos e detalhes importantes em um lugar só.</p>
+				</article>
+			</div>
+		</div>
+	</section>
+
+	<section class="section split" id="publicos">
+		<div class="container split-grid">
+			<div class="reveal">
+				<span class="section-kicker">Seus convidados</span>
+				<h2>Tudo claro para quem recebe o convite.</h2>
+				<p>
+					Seus convidados encontram data, local, informações práticas e confirmação de presença sem precisar procurar em conversas.
+				</p>
+				<ul class="check-list">
+					<li>Funciona perfeito em qualquer celular</li>
+					<li>Informações claras e organizadas</li>
+					<li>Confirmação em poucos toques</li>
+				</ul>
+			</div>
+			<div class="panel reveal delay-1">
+				<span class="panel-label">Para os noivos</span>
+				<p>Acompanhe confirmações, padrinhos e informações importantes com menos troca de mensagens e menos retrabalho.</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="section pricing" id="preco">
+		<div class="container pricing-grid reveal">
+			<div>
+				<span class="section-kicker">Começar agora</span>
+				<h2>Crie um casamento memorável com SIM.</h2>
+				<p>
+					Organize o essencial, apresente tudo com elegância e deixe seus convidados seguros sobre cada detalhe.
+				</p>
+			</div>
+			<div class="price-card">
+				<a
+					class="btn btn-primary full"
+					href="https://wa.me/5500000000000?text=Olá%2C%20quero%20conhecer%20o%20SIM"
+					target="_blank"
+					rel="noreferrer"
+				>
+					Conversar no WhatsApp
+				</a>
+			</div>
+		</div>
+	</section>
+</main>
+
+<footer class="footer">
+	<div class="container footer-grid">
+		<img class="footer-logo" src="/sim-logo.png" alt="SIM" />
+		<a href="#topo">Voltar ao topo</a>
+	</div>
+</footer>

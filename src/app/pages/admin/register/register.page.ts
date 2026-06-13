@@ -7,33 +7,58 @@ import { AdminWeddingBootstrapService } from '../../../core/services/admin-weddi
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
-	selector: 'app-login-page',
+	selector: 'app-register-page',
 	imports: [FormsModule, RouterLink],
 	styleUrls: ['../auth/auth.page.css'],
-  template: `
-    <main class="auth-shell auth-shell-login">
-      <form class="auth-card auth-card-login" (ngSubmit)="login()">
-        <span class="eyebrow">Administração</span>
-        <h1>Entrar</h1>
-        <p class="auth-intro">Acesse o painel para editar o casamento e acompanhar convidados.</p>
-        <button class="auth-google" type="button" [disabled]="isGoogleLoginLoading || isSubmitting || isCheckingRedirect" (click)="loginWithGoogle()">
-          {{ isGoogleLoginLoading ? 'Entrando com Google...' : 'Entrar com Google' }}
+	template: `
+    <main class="auth-shell">
+      <section class="auth-hero">
+        <span class="eyebrow">Novo acesso</span>
+        <h1>Criar conta no SIM</h1>
+        <p>
+          Cadastre a conta principal do casamento e comece com uma base já preparada para convite, convidados e painel administrativo.
+        </p>
+        <div class="auth-points">
+          <div class="auth-point">
+            <strong>Conta separada</strong>
+            <span>Cadastro dedicado, sem misturar com o login de usuários já existentes.</span>
+          </div>
+          <div class="auth-point">
+            <strong>Preparado para casar</strong>
+            <span>Ao concluir, o painel é liberado e o casamento é configurado automaticamente.</span>
+          </div>
+          <div class="auth-point">
+            <strong>Tempo de espera</strong>
+            <span>Indicamos o carregamento sem deixar a tela em silêncio.</span>
+          </div>
+        </div>
+      </section>
+
+      <form class="auth-card" (ngSubmit)="register()">
+        <span class="eyebrow">Primeiro acesso</span>
+        <h2>Crie sua conta</h2>
+        <button class="auth-google" type="button" [disabled]="isGoogleLoginLoading || isSubmitting || isCheckingRedirect" (click)="registerWithGoogle()">
+          {{ isGoogleLoginLoading ? 'Cadastrando com Google...' : 'Criar conta com Google' }}
         </button>
-        <div class="auth-divider">ou use seu email</div>
+        <div class="auth-divider">ou preencha os dados</div>
+        <label>
+          Nome dos noivos
+          <input name="displayName" [(ngModel)]="displayName" autocomplete="name" />
+        </label>
         <label>
           Email
           <input type="email" name="email" [(ngModel)]="email" required autocomplete="email" />
         </label>
         <label>
           Senha
-          <input type="password" name="password" [(ngModel)]="password" required autocomplete="current-password" />
+          <input type="password" name="password" [(ngModel)]="password" required autocomplete="new-password" />
         </label>
         <button class="auth-button" type="submit" [disabled]="isSubmitting || isGoogleLoginLoading || isCheckingRedirect">
-          {{ isSubmitting ? 'Entrando...' : 'Entrar' }}
+          {{ isSubmitting ? 'Criando conta...' : 'Criar conta' }}
         </button>
         <div class="auth-link-row">
-          <span class="auth-note">Ainda não tem conta?</span>
-          <a routerLink="/admin/cadastro">Criar acesso</a>
+          <span class="auth-note">Já tem acesso?</span>
+          <a routerLink="/admin/login">Voltar para login</a>
         </div>
         @if (error) {
           <p class="auth-error">{{ error }}</p>
@@ -42,13 +67,14 @@ import { AuthService } from '../../../core/services/auth.service';
     </main>
   `,
 })
-export class LoginPage implements OnInit {
+export class RegisterPage implements OnInit {
 	private readonly adminWeddingBootstrapService = inject(AdminWeddingBootstrapService);
 	private readonly authService = inject(AuthService);
 	private readonly router = inject(Router);
 
 	protected email = '';
 	protected password = '';
+	protected displayName = '';
 	protected error = '';
 	protected isGoogleLoginLoading = false;
 	protected isSubmitting = false;
@@ -58,7 +84,7 @@ export class LoginPage implements OnInit {
 		void this.completeRedirectLogin();
 	}
 
-	async loginWithGoogle(): Promise<void> {
+	async registerWithGoogle(): Promise<void> {
 		if (this.isGoogleLoginLoading || this.isSubmitting) {
 			return;
 		}
@@ -79,7 +105,7 @@ export class LoginPage implements OnInit {
 		}
 	}
 
-	async login(): Promise<void> {
+	async register(): Promise<void> {
 		if (this.isSubmitting || this.isGoogleLoginLoading) {
 			return;
 		}
@@ -88,10 +114,10 @@ export class LoginPage implements OnInit {
 		this.error = '';
 
 		try {
-			const user = await this.authService.login(this.email, this.password);
+			const user = await this.authService.register(this.displayName, this.email, this.password);
 			await this.enterAdmin(user);
 		} catch {
-			this.error = 'Nao foi possivel entrar. Verifique email e senha.';
+			this.error = 'Nao foi possivel criar o acesso. Verifique email, senha e nome.';
 		} finally {
 			this.isSubmitting = false;
 		}
@@ -119,17 +145,17 @@ export class LoginPage implements OnInit {
 
 	private googleLoginErrorMessage(error: unknown): string {
 		if (!(error instanceof FirebaseError)) {
-			return 'Nao foi possivel entrar com Google.';
+			return 'Nao foi possivel cadastrar com Google.';
 		}
 
 		if (error.code === 'auth/internal-error' || error.code === 'auth/network-request-failed') {
-			return 'Falha ao carregar o login do Google. Verifique conexao, bloqueadores ou DNS e tente novamente.';
+			return 'Falha ao carregar o cadastro com Google. Verifique conexao, bloqueadores ou DNS e tente novamente.';
 		}
 
 		if (error.code === 'auth/unauthorized-domain') {
 			return 'Dominio nao autorizado no servico de autenticacao.';
 		}
 
-		return 'Nao foi possivel entrar com Google.';
+		return 'Nao foi possivel cadastrar com Google.';
 	}
 }

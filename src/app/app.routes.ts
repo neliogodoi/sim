@@ -6,7 +6,7 @@ import { loginGuard } from './core/guards/login.guard';
 export const routes: Routes = [
 	{
 		path: '',
-		loadComponent: () => import('./pages/public/home/home.page').then((m) => m.HomePage),
+		loadComponent: () => import('./pages/public/landing/landing-page.component').then((m) => m.LandingPageComponent),
 	},
 	{
 		path: 'confirmar-presenca',
@@ -50,6 +50,11 @@ export const routes: Routes = [
 		path: 'admin/login',
 		canActivate: [loginGuard],
 		loadComponent: () => import('./pages/admin/login/login.page').then((m) => m.LoginPage),
+	},
+	{
+		path: 'admin/cadastro',
+		canActivate: [loginGuard],
+		loadComponent: () => import('./pages/admin/register/register.page').then((m) => m.RegisterPage),
 	},
 	{
 		path: 'admin',
