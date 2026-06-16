@@ -7,7 +7,7 @@ import { combineLatest, filter, firstValueFrom, from, map, of, shareReplay, swit
 import { normalizeScriptFont } from '../../../core/constants/script-fonts';
 import { Wedding, WeddingPartyMember } from '../../../core/models/wedding.models';
 import { WeddingContextService } from '../../../core/services/wedding-context.service';
-import { WeddingService } from '../../../core/services/wedding.service';
+import { DEFAULT_WEDDING_ID, WeddingService } from '../../../core/services/wedding.service';
 import { toDisplayImageUrl } from '../../../core/utils/image-url';
 
 @Component({
@@ -16,6 +16,7 @@ import { toDisplayImageUrl } from '../../../core/utils/image-url';
   template: `
     @let wedding = wedding$ | async;
     @let template = templateSvg$ | async;
+    @let isReadOnly = isReadOnly$ | async;
 
     <main class="print-invite-page special-invite-page">
       <section class="print-invite-card groomsmen-invite-card">
@@ -51,15 +52,21 @@ import { toDisplayImageUrl } from '../../../core/utils/image-url';
           <div class="groomsmen-template-svg print-template-only" [innerHTML]="template"></div>
         }
 
-        <div class="template-acceptance-panel screen-only">
-          <div class="acceptance-actions">
-            <button class="acceptance-button" type="button" (click)="respond('accepted')">Sim</button>
-            <button class="acceptance-button ghost" type="button" (click)="respond('declined')">Não</button>
+        @if (!isReadOnly) {
+          <div class="template-acceptance-panel screen-only">
+            <div class="acceptance-actions">
+              <button class="acceptance-button" type="button" (click)="respond('accepted')">Sim</button>
+              <button class="acceptance-button ghost" type="button" (click)="respond('declined')">Não</button>
+            </div>
+            @if (responseMessage()) {
+              <p class="success-state">{{ responseMessage() }}</p>
+            }
           </div>
-          @if (responseMessage()) {
-            <p class="success-state">{{ responseMessage() }}</p>
-          }
-        </div>
+        } @else {
+          <div class="template-acceptance-panel screen-only">
+            <p class="muted-state">Este convite está disponível apenas para visualização.</p>
+          </div>
+        }
       </section>
 
     </main>
@@ -73,6 +80,7 @@ export class GroomsmenInvitePage implements OnInit {
 
   protected readonly weddingId$ = this.weddingContextService.publicWeddingId$(this.route);
   protected readonly wedding$ = this.weddingId$.pipe(switchMap((weddingId) => this.weddingService.wedding$(weddingId)));
+  protected readonly isReadOnly$ = this.weddingId$.pipe(map((weddingId) => weddingId === DEFAULT_WEDDING_ID));
   protected readonly member$ = this.route.paramMap.pipe(
     switchMap((params) => {
       const memberId = params.get('memberId');

@@ -2,10 +2,10 @@ import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { firstValueFrom, switchMap } from 'rxjs';
+import { firstValueFrom, map, switchMap } from 'rxjs';
 
 import { WeddingContextService } from '../../../core/services/wedding-context.service';
-import { WeddingService } from '../../../core/services/wedding.service';
+import { DEFAULT_WEDDING_ID, WeddingService } from '../../../core/services/wedding.service';
 import { PublicNavComponent } from '../../../layout/public-nav.component';
 
 @Component({
@@ -13,20 +13,25 @@ import { PublicNavComponent } from '../../../layout/public-nav.component';
   imports: [AsyncPipe, FormsModule, PublicNavComponent],
   template: `
     @let messages = messages$ | async;
+    @let isReadOnly = isReadOnly$ | async;
 
     <main class="public-page content-page">
       <h1>Recados</h1>
-      <form class="form-card" (ngSubmit)="submit()">
-        <label>
-          Nome
-          <input name="guestName" [(ngModel)]="guestName" required />
-        </label>
-        <label>
-          Mensagem
-          <textarea name="content" [(ngModel)]="content" required></textarea>
-        </label>
-        <button class="primary-action" type="submit">Enviar recado</button>
-      </form>
+      @if (isReadOnly) {
+        <p class="muted-state">Este casamento está disponível apenas para visualização.</p>
+      } @else {
+        <form class="form-card" (ngSubmit)="submit()">
+          <label>
+            Nome
+            <input name="guestName" [(ngModel)]="guestName" required />
+          </label>
+          <label>
+            Mensagem
+            <textarea name="content" [(ngModel)]="content" required></textarea>
+          </label>
+          <button class="primary-action" type="submit">Enviar recado</button>
+        </form>
+      }
 
       <div class="list-stack">
         @for (message of messages; track message.id) {
@@ -52,6 +57,7 @@ export class MessagesPage {
   protected readonly messages$ = this.weddingId$.pipe(
     switchMap((weddingId) => this.weddingService.publicMessages$(weddingId)),
   );
+  protected readonly isReadOnly$ = this.weddingId$.pipe(map((weddingId) => weddingId === DEFAULT_WEDDING_ID));
   protected guestName = '';
   protected content = '';
 

@@ -3,10 +3,10 @@ import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { firstValueFrom, of, switchMap } from 'rxjs';
+import { firstValueFrom, map, of, switchMap } from 'rxjs';
 
 import { WeddingContextService } from '../../../core/services/wedding-context.service';
-import { WeddingService } from '../../../core/services/wedding.service';
+import { DEFAULT_WEDDING_ID, WeddingService } from '../../../core/services/wedding.service';
 
 @Component({
   selector: 'app-rsvp-page',
@@ -15,6 +15,7 @@ import { WeddingService } from '../../../core/services/wedding.service';
     <main class="public-page content-page">
       @let guest = guest$ | async;
       @let wedding = wedding$ | async;
+      @let isReadOnly = isReadOnly$ | async;
 
       <section class="print-invite-card guest-invite-card">
         <h1>{{ wedding?.coupleNames || 'Noiva e Noivo' }}</h1>
@@ -32,29 +33,33 @@ import { WeddingService } from '../../../core/services/wedding.service';
         @if (guest?.groupName) {
           <p class="invite-group">Estendendo-se a {{ guest?.groupName }}</p>
         }
-        <p class="invite-help">Confirme sua presença para ajudar os noivos na organização.</p>
-        <label>
-          Número de pessoas
-          <input
-            type="number"
-            min="1"
-            name="guestCount"
-            [(ngModel)]="guestCount"
-            [placeholder]="guest?.guestCount?.toString() || '1'"
-            (ngModelChange)="guestCountChanged = true"
-          />
-        </label>
-        @if (!guest) {
+        @if (isReadOnly) {
+          <p class="invite-help">Este casamento está disponível apenas para visualização.</p>
+        } @else {
+          <p class="invite-help">Confirme sua presença para ajudar os noivos na organização.</p>
           <label>
-            Nome
-            <input name="name" [(ngModel)]="name" required />
+            Número de pessoas
+            <input
+              type="number"
+              min="1"
+              name="guestCount"
+              [(ngModel)]="guestCount"
+              [placeholder]="guest?.guestCount?.toString() || '1'"
+              (ngModelChange)="guestCountChanged = true"
+            />
           </label>
+          @if (!guest) {
+            <label>
+              Nome
+              <input name="name" [(ngModel)]="name" required />
+            </label>
+          }
+          <div class="acceptance-actions rsvp-actions">
+            <button class="acceptance-button" type="button" (click)="submit('confirmed')">Sim</button>
+            <button class="acceptance-button ghost" type="button" (click)="submit('declined')">Não</button>
+            <button class="acceptance-button ghost" type="button" (click)="submit('maybe')">Talvez</button>
+          </div>
         }
-        <div class="acceptance-actions rsvp-actions">
-          <button class="acceptance-button" type="button" (click)="submit('confirmed')">Sim</button>
-          <button class="acceptance-button ghost" type="button" (click)="submit('declined')">Não</button>
-          <button class="acceptance-button ghost" type="button" (click)="submit('maybe')">Talvez</button>
-        </div>
       </section>
 
       @if (saved()) {
@@ -78,6 +83,7 @@ export class RsvpPage implements OnInit {
   private readonly weddingService = inject(WeddingService);
   private readonly weddingId$ = this.weddingContextService.publicWeddingId$(this.route);
   protected readonly wedding$ = this.weddingId$.pipe(switchMap((weddingId) => this.weddingService.wedding$(weddingId)));
+  protected readonly isReadOnly$ = this.weddingId$.pipe(map((weddingId) => weddingId === DEFAULT_WEDDING_ID));
   protected readonly guest$ = this.route.paramMap.pipe(
     switchMap((params) => {
       const guestId = params.get('guestId');

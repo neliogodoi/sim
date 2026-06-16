@@ -1,11 +1,11 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { combineLatest, filter, firstValueFrom, of, switchMap, take } from 'rxjs';
+import { combineLatest, filter, firstValueFrom, map, of, switchMap, take } from 'rxjs';
 
 import { ImportantPerson } from '../../../core/models/wedding.models';
 import { WeddingContextService } from '../../../core/services/wedding-context.service';
-import { WeddingService } from '../../../core/services/wedding.service';
+import { DEFAULT_WEDDING_ID, WeddingService } from '../../../core/services/wedding.service';
 import { toDisplayImageUrl } from '../../../core/utils/image-url';
 
 @Component({
@@ -14,6 +14,7 @@ import { toDisplayImageUrl } from '../../../core/utils/image-url';
 	template: `
     @let wedding = wedding$ | async;
     @let person = person$ | async;
+    @let isReadOnly = isReadOnly$ | async;
 
     <main class="print-invite-page special-invite-page">
       <section class="print-invite-card special-person-invite-card">
@@ -43,12 +44,16 @@ import { toDisplayImageUrl } from '../../../core/utils/image-url';
             {{ person?.secondName ? 'A presença de vocês tem' : 'Sua presença tem' }} um significado especial para nós.
             Queremos celebrar esse dia ao lado de pessoas que fazem parte da nossa história.
           </p>
-          <div class="acceptance-actions">
-            <button class="acceptance-button" type="button" (click)="respond('accepted')">Sim</button>
-            <button class="acceptance-button ghost" type="button" (click)="respond('declined')">Não</button>
-          </div>
-          @if (responseMessage()) {
-            <p class="success-state">{{ responseMessage() }}</p>
+          @if (!isReadOnly) {
+            <div class="acceptance-actions">
+              <button class="acceptance-button" type="button" (click)="respond('accepted')">Sim</button>
+              <button class="acceptance-button ghost" type="button" (click)="respond('declined')">Não</button>
+            </div>
+            @if (responseMessage()) {
+              <p class="success-state">{{ responseMessage() }}</p>
+            }
+          } @else {
+            <p class="muted-state">Este convite está disponível apenas para visualização.</p>
           }
         </div>
       </section>
@@ -63,6 +68,7 @@ export class ImportantPersonInvitePage implements OnInit {
 
 	protected readonly weddingId$ = this.weddingContextService.publicWeddingId$(this.route);
 	protected readonly wedding$ = this.weddingId$.pipe(switchMap((weddingId) => this.weddingService.wedding$(weddingId)));
+	protected readonly isReadOnly$ = this.weddingId$.pipe(map((weddingId) => weddingId === DEFAULT_WEDDING_ID));
 	protected readonly person$ = this.route.paramMap.pipe(
 		switchMap((params) => {
 			const personId = params.get('personId');
