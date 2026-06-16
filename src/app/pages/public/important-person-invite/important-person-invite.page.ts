@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { firstValueFrom, of, switchMap } from 'rxjs';
+import { combineLatest, filter, firstValueFrom, of, switchMap, take } from 'rxjs';
 
 import { ImportantPerson } from '../../../core/models/wedding.models';
 import { WeddingContextService } from '../../../core/services/wedding-context.service';
@@ -53,17 +53,10 @@ import { toDisplayImageUrl } from '../../../core/utils/image-url';
         </div>
       </section>
 
-      <button class="floating-print-action" type="button" (click)="print()" aria-label="Gerar PDF ou imprimir">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M7 8V4h10v4" />
-          <path d="M6 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-1" />
-          <path d="M7 14h10v6H7z" />
-        </svg>
-      </button>
     </main>
   `,
 })
-export class ImportantPersonInvitePage {
+export class ImportantPersonInvitePage implements OnInit {
 	private readonly route = inject(ActivatedRoute);
 	private readonly weddingContextService = inject(WeddingContextService);
 	private readonly weddingService = inject(WeddingService);
@@ -86,8 +79,13 @@ export class ImportantPersonInvitePage {
 		return toDisplayImageUrl(url);
 	}
 
-	protected print(): void {
-		window.print();
+	ngOnInit(): void {
+		combineLatest([this.route.queryParamMap, this.wedding$, this.person$])
+			.pipe(
+				filter(([params, wedding, person]) => params.get('print') === '1' && !!wedding && !!person),
+				take(1),
+			)
+			.subscribe(() => setTimeout(() => window.print()));
 	}
 
 	protected async respond(invitationStatus: 'accepted' | 'declined'): Promise<void> {

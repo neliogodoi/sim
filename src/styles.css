@@ -811,7 +811,7 @@ a {
 
 .admin-list-card {
 	position: relative;
-	padding: 14px 120px 14px 14px;
+	padding: 14px 158px 14px 14px;
 }
 
 .card-actions {
@@ -856,7 +856,7 @@ a {
 	grid-template-columns: auto minmax(0, 1fr);
 	align-items: center;
 	min-height: 92px;
-	padding: 12px 120px 12px 12px;
+	padding: 12px 158px 12px 12px;
 }
 
 .compact-person-card .card-actions {
@@ -1620,11 +1620,11 @@ textarea {
 	}
 
 	.admin-list-card {
-		padding-right: 112px;
+		padding-right: 150px;
 	}
 
 	.compact-person-card {
-		padding-right: 112px;
+		padding-right: 150px;
 	}
 
 	.capacity-metrics,

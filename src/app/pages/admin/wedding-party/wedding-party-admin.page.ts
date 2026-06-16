@@ -68,6 +68,13 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
         @for (member of members; track member.id) {
           <article class="info-card admin-list-card wedding-party-card compact-person-card">
             <div class="card-actions">
+              <a class="icon-action" [href]="groomsmenPrintUrl(member)" target="_blank" rel="noreferrer" aria-label="Imprimir convite dos padrinhos">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7 8V4h10v4" />
+                  <path d="M6 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-1" />
+                  <path d="M7 14h10v6H7z" />
+                </svg>
+              </a>
               <a class="icon-action" [href]="groomsmenWhatsappInviteLink(member)" target="_blank" rel="noreferrer" aria-label="Enviar convite dos padrinhos">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M4 6h16v12H4z" />
@@ -238,6 +245,10 @@ export class WeddingPartyAdminPage {
 
 	protected groomsmenInviteUrl(member: WeddingPartyMember): string {
 		return `${window.location.origin}/${this.weddingContextService.currentAdminWeddingId()}/convite-padrinhos/${member.id}`;
+	}
+
+	protected groomsmenPrintUrl(member: WeddingPartyMember): string {
+		return `${this.groomsmenInviteUrl(member)}?print=1`;
 	}
 
 	protected groomsmenWhatsappInviteLink(member: WeddingPartyMember): string {

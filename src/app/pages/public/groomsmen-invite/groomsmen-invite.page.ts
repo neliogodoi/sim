@@ -1,8 +1,8 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { combineLatest, firstValueFrom, from, map, of, shareReplay, switchMap } from 'rxjs';
+import { combineLatest, filter, firstValueFrom, from, map, of, shareReplay, switchMap, take } from 'rxjs';
 
 import { normalizeScriptFont } from '../../../core/constants/script-fonts';
 import { Wedding, WeddingPartyMember } from '../../../core/models/wedding.models';
@@ -62,17 +62,10 @@ import { toDisplayImageUrl } from '../../../core/utils/image-url';
         </div>
       </section>
 
-      <button class="floating-print-action" type="button" (click)="print()" aria-label="Gerar PDF ou imprimir">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M7 8V4h10v4" />
-          <path d="M6 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-1" />
-          <path d="M7 14h10v6H7z" />
-        </svg>
-      </button>
     </main>
   `,
 })
-export class GroomsmenInvitePage {
+export class GroomsmenInvitePage implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly sanitizer = inject(DomSanitizer);
   private readonly weddingContextService = inject(WeddingContextService);
@@ -106,8 +99,13 @@ export class GroomsmenInvitePage {
     return toDisplayImageUrl(url);
   }
 
-  protected print(): void {
-    window.print();
+  ngOnInit(): void {
+    combineLatest([this.route.queryParamMap, this.templateSvg$])
+      .pipe(
+        filter(([params, template]) => params.get('print') === '1' && !!template),
+        take(1),
+      )
+      .subscribe(() => setTimeout(() => window.print()));
   }
 
   protected async respond(invitationStatus: 'accepted' | 'declined'): Promise<void> {
