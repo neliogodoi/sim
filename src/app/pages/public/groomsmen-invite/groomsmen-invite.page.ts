@@ -151,6 +151,7 @@ export class GroomsmenInvitePage {
     if (imageUrl && imageElement) {
       imageElement.setAttribute('href', imageUrl);
       imageElement.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', imageUrl);
+      imageElement.setAttribute('preserveAspectRatio', 'xMidYMid slice');
     }
 
     return new XMLSerializer()

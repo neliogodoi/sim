@@ -4,10 +4,10 @@
 	--surface: #fbf8f2;
 	--surface-strong: #ffffff;
 	--text: #2b2b2b;
-	--muted: #68706b;
+	--muted: #6d866f;
 	--line: rgba(105, 132, 113, 0.14);
-	--primary: #6f8471;
-	--primary-dark: #536457;
+	--primary: #568A5B;
+	--primary-dark: #568A5B;
 	--soft: #e6eee7;
 	--shadow: 0 24px 70px rgba(83, 100, 87, 0.15);
 }
@@ -430,6 +430,7 @@ strong {
 }
 
 @media (max-width: 1024px) {
+
 	.split-grid,
 	.pricing-grid {
 		grid-template-columns: 1fr;
