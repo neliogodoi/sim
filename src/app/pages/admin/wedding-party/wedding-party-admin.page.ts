@@ -21,7 +21,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 
     <main class="admin-page">
       <h1>Padrinhos</h1>
-      @if (!isDemoMode() && shouldShowForm(members)) {
+      @if (shouldShowForm(members)) {
         <form class="form-card" (ngSubmit)="saveMember()">
           <label>
             Primeira pessoa
@@ -56,20 +56,19 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
           @if (uploadError) {
             <p class="error-state">{{ uploadError }}</p>
           }
-          <button class="primary-action" type="submit">{{ editingMemberId ? 'Salvar padrinhos' : 'Adicionar padrinhos' }}</button>
+          <button class="primary-action" type="submit" [disabled]="isDemoMode()">{{ editingMemberId ? 'Salvar padrinhos' : 'Adicionar padrinhos' }}</button>
           @if (members?.length) {
             <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
           }
         </form>
-      } @else if (!isDemoMode() && members?.length) {
-        <button class="primary-action form-toggle-action" type="button" (click)="openForm()">Adicionar padrinhos</button>
+      } @else if (members?.length) {
+        <button class="primary-action form-toggle-action" type="button" [disabled]="isDemoMode()" (click)="openForm()">Adicionar padrinhos</button>
       }
 
       <div class="list-stack">
         @for (member of members; track member.id) {
           <article class="info-card admin-list-card wedding-party-card compact-person-card">
-            @if (!isDemoMode()) {
-            <div class="card-actions">
+            <div class="card-actions" [class.demo-disabled]="isDemoMode()" [attr.aria-disabled]="isDemoMode()">
               <a class="icon-action" [href]="groomsmenPrintUrl(member)" target="_blank" rel="noreferrer" aria-label="Imprimir convite dos padrinhos">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M7 8V4h10v4" />
@@ -99,7 +98,6 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
                 </svg>
               </button>
             </div>
-            }
             <div class="compact-card-media">
               @if (member.photoUrl) {
                 <img class="person-photo" [src]="imageUrl(member.photoUrl)" [alt]="shortCoupleName(member)" />
@@ -151,6 +149,7 @@ export class WeddingPartyAdminPage {
 		if (this.isDemoMode()) {
 			return;
 		}
+
 		if (!this.firstName.trim() || !this.secondName.trim()) {
 			return;
 		}

@@ -18,7 +18,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 
     <main class="admin-page">
       <h1>Musicas de entrada</h1>
-      @if (!isDemoMode() && shouldShowForm(songs)) {
+      @if (shouldShowForm(songs)) {
         <form class="form-card" (ngSubmit)="saveSong()">
           <label>
             Momento
@@ -32,20 +32,19 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             Link
             <input name="url" [(ngModel)]="url" />
           </label>
-          <button class="primary-action" type="submit">{{ editingSongId ? 'Salvar musica' : 'Adicionar musica' }}</button>
+          <button class="primary-action" type="submit" [disabled]="isDemoMode()">{{ editingSongId ? 'Salvar musica' : 'Adicionar musica' }}</button>
           @if (songs?.length) {
             <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
           }
         </form>
-      } @else if (!isDemoMode() && songs?.length) {
-        <button class="primary-action form-toggle-action" type="button" (click)="openForm()">Adicionar musica</button>
+      } @else if (songs?.length) {
+        <button class="primary-action form-toggle-action" type="button" [disabled]="isDemoMode()" (click)="openForm()">Adicionar musica</button>
       }
 
       <div class="list-stack">
         @for (song of songs; track song.id) {
           <article class="info-card admin-list-card">
-            @if (!isDemoMode()) {
-            <div class="card-actions">
+            <div class="card-actions" [class.demo-disabled]="isDemoMode()" [attr.aria-disabled]="isDemoMode()">
               <button class="icon-action" type="button" (click)="editSong(song)" aria-label="Editar musica">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z" />
@@ -62,7 +61,6 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
                 </svg>
               </button>
             </div>
-            }
             <h2>{{ song.moment }}</h2>
             <p>{{ song.songTitle }}</p>
             @if (song.url) {
@@ -95,6 +93,7 @@ export class EntranceSongsAdminPage {
 		if (this.isDemoMode()) {
 			return;
 		}
+
 		if (!this.moment.trim() || !this.songTitle.trim()) {
 			return;
 		}

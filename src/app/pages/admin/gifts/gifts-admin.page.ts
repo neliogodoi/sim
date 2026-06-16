@@ -18,7 +18,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 
     <main class="admin-page">
       <h1>Presentes</h1>
-      @if (!isDemoMode() && shouldShowForm(gifts)) {
+      @if (shouldShowForm(gifts)) {
         <form class="form-card" (ngSubmit)="saveGift()">
           <label>
             Titulo
@@ -41,20 +41,19 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             Descricao
             <textarea name="description" [(ngModel)]="description"></textarea>
           </label>
-          <button class="primary-action" type="submit">{{ editingGiftId ? 'Salvar presente' : 'Adicionar presente' }}</button>
+          <button class="primary-action" type="submit" [disabled]="isDemoMode()">{{ editingGiftId ? 'Salvar presente' : 'Adicionar presente' }}</button>
           @if (gifts?.length) {
             <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
           }
         </form>
-      } @else if (!isDemoMode() && gifts?.length) {
-        <button class="primary-action form-toggle-action" type="button" (click)="openForm()">Adicionar presente</button>
+      } @else if (gifts?.length) {
+        <button class="primary-action form-toggle-action" type="button" [disabled]="isDemoMode()" (click)="openForm()">Adicionar presente</button>
       }
 
       <div class="list-stack">
         @for (gift of gifts; track gift.id) {
           <article class="info-card admin-list-card">
-            @if (!isDemoMode()) {
-            <div class="card-actions">
+            <div class="card-actions" [class.demo-disabled]="isDemoMode()" [attr.aria-disabled]="isDemoMode()">
               <button class="icon-action" type="button" (click)="editGift(gift)" aria-label="Editar presente">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z" />
@@ -71,7 +70,6 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
                 </svg>
               </button>
             </div>
-            }
             <h2>{{ gift.title }}</h2>
             <p>{{ gift.description || gift.type }}</p>
             <a class="inline-link" [href]="gift.url" target="_blank" rel="noreferrer">Abrir link</a>
@@ -99,6 +97,7 @@ export class GiftsAdminPage {
     if (this.isDemoMode()) {
       return;
     }
+
     if (!this.title.trim() || !this.url.trim()) {
       return;
     }

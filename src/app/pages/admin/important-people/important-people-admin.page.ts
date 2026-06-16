@@ -18,7 +18,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 
     <main class="admin-page">
       <h1>Pessoas importantes</h1>
-      @if (!isDemoMode() && shouldShowForm(people)) {
+      @if (shouldShowForm(people)) {
         <form class="form-card" (ngSubmit)="savePerson()">
           <label>
             Primeira pessoa
@@ -58,20 +58,19 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             Observacao
             <textarea name="description" [(ngModel)]="description"></textarea>
           </label>
-          <button class="primary-action" type="submit">{{ editingPersonId ? 'Salvar pessoa' : 'Adicionar pessoa' }}</button>
+          <button class="primary-action" type="submit" [disabled]="isDemoMode()">{{ editingPersonId ? 'Salvar pessoa' : 'Adicionar pessoa' }}</button>
           @if (people?.length) {
             <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
           }
         </form>
-      } @else if (!isDemoMode() && people?.length) {
-        <button class="primary-action form-toggle-action" type="button" (click)="openForm()">Adicionar pessoa</button>
+      } @else if (people?.length) {
+        <button class="primary-action form-toggle-action" type="button" [disabled]="isDemoMode()" (click)="openForm()">Adicionar pessoa</button>
       }
 
       <div class="list-stack">
         @for (person of people; track person.id) {
           <article class="info-card admin-list-card">
-            @if (!isDemoMode()) {
-            <div class="card-actions">
+            <div class="card-actions" [class.demo-disabled]="isDemoMode()" [attr.aria-disabled]="isDemoMode()">
               <a class="icon-action" [href]="importantPersonPrintUrl(person)" target="_blank" rel="noreferrer" aria-label="Imprimir convite especial">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M7 8V4h10v4" />
@@ -101,7 +100,6 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
                 </svg>
               </button>
             </div>
-            }
             <h2>{{ personDisplayName(person) }}</h2>
             <p>
               {{ roleDisplay(person) }}
@@ -144,6 +142,7 @@ export class ImportantPeopleAdminPage {
 		if (this.isDemoMode()) {
 			return;
 		}
+
 		if (!this.name.trim()) {
 			return;
 		}

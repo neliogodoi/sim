@@ -24,7 +24,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
       <div class="dashboard-topbar">
         <h1>Painel</h1>
         <div class="dashboard-actions">
-          <button class="round-icon-action" type="button" (click)="shareWedding(wedding)" aria-label="Compartilhar">
+          <button class="round-icon-action" type="button" [disabled]="isDemoMode()" (click)="shareWedding(wedding)" aria-label="Compartilhar">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <circle cx="18" cy="5" r="2" />
               <circle cx="6" cy="12" r="2" />
@@ -33,8 +33,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
               <path d="M8 13l8 5" />
             </svg>
           </button>
-        @if (!isDemoMode()) {
-          <a class="round-icon-action" routerLink="/admin/configuracoes" aria-label="Configuracoes">
+          <a class="round-icon-action" routerLink="/admin/configuracoes" [class.demo-disabled]="isDemoMode()" [attr.aria-disabled]="isDemoMode()" aria-label="Configuracoes">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <circle cx="12" cy="12" r="3" />
               <path d="M12 2.8v3" />
@@ -47,13 +46,12 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
               <path d="m17.7 6.3 2.1-2.1" />
             </svg>
           </a>
-          <button class="round-icon-action" type="button" (click)="toggleCreateWedding()" aria-label="Criar casamento">
+          <button class="round-icon-action" type="button" [disabled]="isDemoMode()" (click)="toggleCreateWedding()" aria-label="Criar casamento">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M12 5v14" />
               <path d="M5 12h14" />
             </svg>
           </button>
-        }
         </div>
       </div>
 
@@ -107,8 +105,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
       }
 
       <section class="dashboard-shortcuts" aria-label="Atalhos administrativos">
-        @if (!isDemoMode()) {
-        <a class="dashboard-shortcut" routerLink="/admin/configuracoes" aria-label="Configuracoes">
+        <a class="dashboard-shortcut" routerLink="/admin/configuracoes" [class.demo-disabled]="isDemoMode()" [attr.aria-disabled]="isDemoMode()" aria-label="Configuracoes">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="12" r="3" />
             <path d="M12 2.8v3" />
@@ -122,7 +119,6 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
           </svg>
           <span>Config.</span>
         </a>
-        }
         <a class="dashboard-shortcut" [routerLink]="adminLink('convidados')" aria-label="Convidados">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="9" cy="8" r="3" />

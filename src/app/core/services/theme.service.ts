@@ -81,6 +81,10 @@ export class ThemeService {
       return activeWeddingId;
     }
 
+    if (firstSegment === 'demo') {
+      return 'default';
+    }
+
     if (!firstSegment || this.publicRouteSegments().has(firstSegment)) {
       return 'default';
     }

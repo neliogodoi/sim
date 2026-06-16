@@ -23,7 +23,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
         {{ totalGuests(guests) }} convidados, {{ confirmedGuests(guests) }} confirmaram
       </section>
 
-      @if (!isDemoMode() && shouldShowForm(guests)) {
+      @if (shouldShowForm(guests)) {
         <form class="form-card" (ngSubmit)="addGuest()">
           <label>
             Nome
@@ -50,20 +50,19 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
               <option value="maybe">Talvez</option>
             </select>
           </label>
-          <button class="primary-action" type="submit">{{ editingGuestId ? 'Salvar convidado' : 'Adicionar convidado' }}</button>
+          <button class="primary-action" type="submit" [disabled]="isDemoMode()">{{ editingGuestId ? 'Salvar convidado' : 'Adicionar convidado' }}</button>
           @if (guests?.length) {
             <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
           }
         </form>
-      } @else if (!isDemoMode() && guests?.length) {
-        <button class="primary-action form-toggle-action" type="button" (click)="openForm()">Adicionar convidado</button>
+      } @else if (guests?.length) {
+        <button class="primary-action form-toggle-action" type="button" [disabled]="isDemoMode()" (click)="openForm()">Adicionar convidado</button>
       }
 
       <div class="list-stack">
         @for (guest of guests; track guest.id) {
           <article class="info-card admin-list-card">
-            @if (!isDemoMode()) {
-            <div class="card-actions">
+            <div class="card-actions" [class.demo-disabled]="isDemoMode()" [attr.aria-disabled]="isDemoMode()">
               <a class="icon-action" [href]="whatsappInviteLink(guest)" target="_blank" rel="noreferrer" aria-label="Enviar convite do convidado">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M4 6h16v12H4z" />
@@ -86,7 +85,6 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
                 </svg>
               </button>
             </div>
-            }
             <h2>{{ guest.name }}</h2>
             <p>
               <span class="status-pill" [class.confirmed]="guest.rsvpStatus === 'confirmed'">
@@ -122,6 +120,7 @@ export class GuestsPage {
     if (this.isDemoMode()) {
       return;
     }
+
     if (!this.name.trim()) {
       return;
     }

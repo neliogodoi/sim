@@ -18,7 +18,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 
     <main class="admin-page">
       <h1>Agenda</h1>
-      @if (!isDemoMode() && shouldShowForm(items)) {
+      @if (shouldShowForm(items)) {
         <form class="form-card" (ngSubmit)="saveItem()">
           <label>
             Titulo
@@ -36,20 +36,19 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             Descricao
             <textarea name="description" [(ngModel)]="description"></textarea>
           </label>
-          <button class="primary-action" type="submit">{{ editingItemId ? 'Salvar item' : 'Adicionar item' }}</button>
+          <button class="primary-action" type="submit" [disabled]="isDemoMode()">{{ editingItemId ? 'Salvar item' : 'Adicionar item' }}</button>
           @if (items?.length) {
             <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
           }
         </form>
-      } @else if (!isDemoMode() && items?.length) {
-        <button class="primary-action form-toggle-action" type="button" (click)="openForm()">Adicionar item</button>
+      } @else if (items?.length) {
+        <button class="primary-action form-toggle-action" type="button" [disabled]="isDemoMode()" (click)="openForm()">Adicionar item</button>
       }
 
       <div class="list-stack">
         @for (item of items; track item.id) {
           <article class="info-card admin-list-card">
-            @if (!isDemoMode()) {
-            <div class="card-actions">
+            <div class="card-actions" [class.demo-disabled]="isDemoMode()" [attr.aria-disabled]="isDemoMode()">
               <button class="icon-action" type="button" (click)="editItem(item)" aria-label="Editar item">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z" />
@@ -66,7 +65,6 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
                 </svg>
               </button>
             </div>
-            }
             <h2>{{ item.title }}</h2>
             <p>{{ item.startsAt }} · {{ item.locationLabel || 'Sem local especifico' }}</p>
           </article>
@@ -93,6 +91,7 @@ export class ScheduleAdminPage {
     if (this.isDemoMode()) {
       return;
     }
+
     if (!this.title.trim() || !this.startsAt.trim()) {
       return;
     }

@@ -37,9 +37,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
           <h2>Recados</h2>
           <p>Moderar mensagens dos convidados.</p>
         </a>
-        @if (!isDemoMode()) {
-          <button class="secondary-action" type="button" (click)="logout()">Sair</button>
-        }
+        <button class="secondary-action" type="button" [disabled]="isDemoMode()" (click)="logout()">Sair</button>
       </div>
     </main>
   `,

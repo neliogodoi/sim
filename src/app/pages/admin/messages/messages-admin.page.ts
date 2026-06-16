@@ -19,8 +19,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
       <div class="list-stack">
         @for (message of messages; track message.id) {
           <article class="info-card admin-list-card">
-            @if (!isDemoMode()) {
-            <div class="card-actions">
+            <div class="card-actions" [class.demo-disabled]="isDemoMode()" [attr.aria-disabled]="isDemoMode()">
               <button
                 class="icon-action"
                 type="button"
@@ -42,7 +41,6 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
                 </svg>
               </button>
             </div>
-            }
             <h2>{{ message.guestName }}</h2>
             <p>{{ message.content }}</p>
             <p>{{ message.isVisible ? 'Visivel publicamente' : 'Oculto' }}</p>

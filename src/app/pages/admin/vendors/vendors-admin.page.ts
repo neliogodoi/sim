@@ -18,7 +18,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 
     <main class="admin-page">
       <h1>Fornecedores</h1>
-      @if (!isDemoMode() && shouldShowForm(vendors)) {
+      @if (shouldShowForm(vendors)) {
         <form class="form-card" (ngSubmit)="saveVendor()">
           <label>
             Nome
@@ -52,20 +52,19 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             Observacoes
             <textarea name="notes" [(ngModel)]="notes"></textarea>
           </label>
-          <button class="primary-action" type="submit">{{ editingVendorId ? 'Salvar fornecedor' : 'Adicionar fornecedor' }}</button>
+          <button class="primary-action" type="submit" [disabled]="isDemoMode()">{{ editingVendorId ? 'Salvar fornecedor' : 'Adicionar fornecedor' }}</button>
           @if (vendors?.length) {
             <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
           }
         </form>
-      } @else if (!isDemoMode() && vendors?.length) {
-        <button class="primary-action form-toggle-action" type="button" (click)="openForm()">Adicionar fornecedor</button>
+      } @else if (vendors?.length) {
+        <button class="primary-action form-toggle-action" type="button" [disabled]="isDemoMode()" (click)="openForm()">Adicionar fornecedor</button>
       }
 
       <div class="list-stack">
         @for (vendor of vendors; track vendor.id) {
           <article class="info-card admin-list-card">
-            @if (!isDemoMode()) {
-            <div class="card-actions">
+            <div class="card-actions" [class.demo-disabled]="isDemoMode()" [attr.aria-disabled]="isDemoMode()">
               <button class="icon-action" type="button" (click)="editVendor(vendor)" aria-label="Editar fornecedor">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z" />
@@ -82,7 +81,6 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
                 </svg>
               </button>
             </div>
-            }
             <h2>{{ vendor.name }}</h2>
             <p>{{ categoryLabel(vendor.category) }}</p>
             @if (vendor.contactName || vendor.phone) {
@@ -122,6 +120,7 @@ export class VendorsAdminPage {
     if (this.isDemoMode()) {
       return;
     }
+
     if (!this.name.trim()) {
       return;
     }
