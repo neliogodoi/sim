@@ -70,7 +70,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
       <div class="list-stack">
         @for (person of people; track person.id) {
           <article class="info-card admin-list-card">
-            <div class="card-actions" [class.demo-disabled]="isDemoMode()" [attr.aria-disabled]="isDemoMode()">
+            <div class="card-actions">
               <a class="icon-action" [href]="importantPersonPrintUrl(person)" target="_blank" rel="noreferrer" aria-label="Imprimir convite especial">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M7 8V4h10v4" />
@@ -78,19 +78,19 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
                   <path d="M7 14h10v6H7z" />
                 </svg>
               </a>
-              <a class="icon-action" [href]="importantPersonWhatsappInviteLink(person)" target="_blank" rel="noreferrer" aria-label="Enviar convite especial">
+              <a class="icon-action" [class.demo-disabled]="isDemoMode()" [attr.aria-disabled]="isDemoMode()" [href]="importantPersonWhatsappInviteLink(person)" target="_blank" rel="noreferrer" aria-label="Enviar convite especial">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M4 6h16v12H4z" />
                   <path d="m4 7 8 6 8-6" />
                 </svg>
               </a>
-              <button class="icon-action" type="button" (click)="editPerson(person)" aria-label="Editar pessoa">
+              <button class="icon-action" type="button" [disabled]="isDemoMode()" (click)="editPerson(person)" aria-label="Editar pessoa">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z" />
                   <path d="m14 6 4 4" />
                 </svg>
               </button>
-              <button class="icon-action" type="button" (click)="removePerson(person.id)" aria-label="Remover pessoa">
+              <button class="icon-action" type="button" [disabled]="isDemoMode()" (click)="removePerson(person.id)" aria-label="Remover pessoa">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M5 7h14" />
                   <path d="M9 7V5h6v2" />
