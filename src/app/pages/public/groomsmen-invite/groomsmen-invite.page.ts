@@ -134,6 +134,10 @@ export class GroomsmenInvitePage {
       return template;
     }
 
+    document.documentElement.setAttribute('width', '210mm');
+    document.documentElement.setAttribute('height', '297mm');
+    document.documentElement.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+
     const imageUrl = this.imageUrl(wedding.coverImageUrl);
     this.setSvgText(document, 'nomes-noivos', wedding.coupleNames || 'Os noivos');
     this.setSvgText(document, 'data', wedding.eventDate || '');

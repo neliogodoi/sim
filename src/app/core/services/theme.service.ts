@@ -46,6 +46,7 @@ export class ThemeService {
     root.style.setProperty('--color-primary-rgb', `${color.red}, ${color.green}, ${color.blue}`);
     root.style.setProperty('--color-primary-contrast', contrast);
     root.style.setProperty('--color-background', this.rgbToHex(background));
+    root.style.setProperty('--color-background-rgb', `${background.red}, ${background.green}, ${background.blue}`);
     root.style.setProperty('--color-surface', this.rgbToHex(surface));
     root.style.setProperty('--color-surface-strong', '#ffffff');
     root.style.setProperty('--color-text', this.rgbToHex(text));
