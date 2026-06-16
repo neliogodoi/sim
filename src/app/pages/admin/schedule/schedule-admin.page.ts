@@ -1,6 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { firstValueFrom, switchMap } from 'rxjs';
 
 import { ScheduleItem } from '../../../core/models/wedding.models';
@@ -17,7 +18,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 
     <main class="admin-page">
       <h1>Agenda</h1>
-      @if (shouldShowForm(items)) {
+      @if (!isDemoMode() && shouldShowForm(items)) {
         <form class="form-card" (ngSubmit)="saveItem()">
           <label>
             Titulo
@@ -40,13 +41,14 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
           }
         </form>
-      } @else if (items?.length) {
+      } @else if (!isDemoMode() && items?.length) {
         <button class="primary-action form-toggle-action" type="button" (click)="openForm()">Adicionar item</button>
       }
 
       <div class="list-stack">
         @for (item of items; track item.id) {
           <article class="info-card admin-list-card">
+            @if (!isDemoMode()) {
             <div class="card-actions">
               <button class="icon-action" type="button" (click)="editItem(item)" aria-label="Editar item">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -64,6 +66,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
                 </svg>
               </button>
             </div>
+            }
             <h2>{{ item.title }}</h2>
             <p>{{ item.startsAt }} · {{ item.locationLabel || 'Sem local especifico' }}</p>
           </article>
@@ -75,6 +78,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 export class ScheduleAdminPage {
   private readonly weddingContextService = inject(WeddingContextService);
   private readonly weddingService = inject(WeddingService);
+  private readonly router = inject(Router);
 
   protected readonly weddingId$ = this.weddingContextService.activeWeddingId$;
   protected readonly schedule$ = this.weddingId$.pipe(switchMap((weddingId) => this.weddingService.schedule$(weddingId)));
@@ -86,6 +90,9 @@ export class ScheduleAdminPage {
   protected formExpanded = false;
 
   async saveItem(): Promise<void> {
+    if (this.isDemoMode()) {
+      return;
+    }
     if (!this.title.trim() || !this.startsAt.trim()) {
       return;
     }
@@ -110,6 +117,9 @@ export class ScheduleAdminPage {
   }
 
   editItem(item: ScheduleItem): void {
+    if (this.isDemoMode()) {
+      return;
+    }
     this.formExpanded = true;
     this.editingItemId = item.id;
     this.title = item.title;
@@ -119,7 +129,14 @@ export class ScheduleAdminPage {
   }
 
   removeItem(itemId: string): Promise<void> {
+    if (this.isDemoMode()) {
+      return Promise.resolve();
+    }
     return this.weddingService.deleteScheduleItem(itemId, this.weddingContextService.currentAdminWeddingId());
+  }
+
+  protected isDemoMode(): boolean {
+    return this.router.url.startsWith('/demo') || this.router.url.startsWith('/default/admin');
   }
 
   protected openForm(): void {

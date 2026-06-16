@@ -1,6 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { firstValueFrom, switchMap } from 'rxjs';
 
 import { EntranceSong } from '../../../core/models/wedding.models';
@@ -17,7 +18,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 
     <main class="admin-page">
       <h1>Musicas de entrada</h1>
-      @if (shouldShowForm(songs)) {
+      @if (!isDemoMode() && shouldShowForm(songs)) {
         <form class="form-card" (ngSubmit)="saveSong()">
           <label>
             Momento
@@ -36,13 +37,14 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
           }
         </form>
-      } @else if (songs?.length) {
+      } @else if (!isDemoMode() && songs?.length) {
         <button class="primary-action form-toggle-action" type="button" (click)="openForm()">Adicionar musica</button>
       }
 
       <div class="list-stack">
         @for (song of songs; track song.id) {
           <article class="info-card admin-list-card">
+            @if (!isDemoMode()) {
             <div class="card-actions">
               <button class="icon-action" type="button" (click)="editSong(song)" aria-label="Editar musica">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -60,6 +62,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
                 </svg>
               </button>
             </div>
+            }
             <h2>{{ song.moment }}</h2>
             <p>{{ song.songTitle }}</p>
             @if (song.url) {
@@ -76,6 +79,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 export class EntranceSongsAdminPage {
 	private readonly weddingContextService = inject(WeddingContextService);
 	private readonly weddingService = inject(WeddingService);
+	private readonly router = inject(Router);
 
 	protected readonly weddingId$ = this.weddingContextService.activeWeddingId$;
 	protected readonly songs$ = this.weddingId$.pipe(
@@ -88,6 +92,9 @@ export class EntranceSongsAdminPage {
 	protected formExpanded = false;
 
 	async saveSong(): Promise<void> {
+		if (this.isDemoMode()) {
+			return;
+		}
 		if (!this.moment.trim() || !this.songTitle.trim()) {
 			return;
 		}
@@ -113,6 +120,9 @@ export class EntranceSongsAdminPage {
 	}
 
 	editSong(song: EntranceSong): void {
+		if (this.isDemoMode()) {
+			return;
+		}
 		this.formExpanded = true;
 		this.editingSongId = song.id;
 		this.moment = song.moment;
@@ -121,7 +131,14 @@ export class EntranceSongsAdminPage {
 	}
 
 	removeSong(songId: string): Promise<void> {
+		if (this.isDemoMode()) {
+			return Promise.resolve();
+		}
 		return this.weddingService.deleteEntranceSong(songId, this.weddingContextService.currentAdminWeddingId());
+	}
+
+	protected isDemoMode(): boolean {
+		return this.router.url.startsWith('/demo') || this.router.url.startsWith('/default/admin');
 	}
 
 	protected openForm(): void {

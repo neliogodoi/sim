@@ -37,7 +37,7 @@ service cloud.firestore {
 
       match /guests/{guestId} {
         allow get: if canReadWedding(weddingId);
-        allow list: if isOwner(weddingId);
+        allow list: if isDefaultWedding(weddingId) || isOwner(weddingId);
         allow create, update: if canPublicWriteWedding(weddingId) || isOwner(weddingId);
         allow delete: if isOwner(weddingId);
       }
@@ -70,7 +70,7 @@ service cloud.firestore {
 
       match /importantPeople/{personId} {
         allow get: if canReadWedding(weddingId);
-        allow list: if isOwner(weddingId);
+        allow list: if isDefaultWedding(weddingId) || isOwner(weddingId);
         allow create, delete: if isOwner(weddingId);
         allow update: if isOwner(weddingId)
           || (
@@ -81,11 +81,12 @@ service cloud.firestore {
       }
 
       match /vendors/{vendorId} {
-        allow read, write: if isOwner(weddingId);
+        allow read: if isDefaultWedding(weddingId) || isOwner(weddingId);
+        allow write: if isOwner(weddingId);
       }
 
       match /messages/{messageId} {
-        allow read: if isOwner(weddingId) || (canReadWedding(weddingId) && resource.data.isVisible == true);
+        allow read: if isDefaultWedding(weddingId) || isOwner(weddingId) || (canReadWedding(weddingId) && resource.data.isVisible == true);
         allow create: if canPublicWriteWedding(weddingId);
         allow update, delete: if isOwner(weddingId);
       }

@@ -1,6 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { firstValueFrom, switchMap } from 'rxjs';
 
 import { Vendor } from '../../../core/models/wedding.models';
@@ -17,7 +18,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 
     <main class="admin-page">
       <h1>Fornecedores</h1>
-      @if (shouldShowForm(vendors)) {
+      @if (!isDemoMode() && shouldShowForm(vendors)) {
         <form class="form-card" (ngSubmit)="saveVendor()">
           <label>
             Nome
@@ -56,13 +57,14 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
           }
         </form>
-      } @else if (vendors?.length) {
+      } @else if (!isDemoMode() && vendors?.length) {
         <button class="primary-action form-toggle-action" type="button" (click)="openForm()">Adicionar fornecedor</button>
       }
 
       <div class="list-stack">
         @for (vendor of vendors; track vendor.id) {
           <article class="info-card admin-list-card">
+            @if (!isDemoMode()) {
             <div class="card-actions">
               <button class="icon-action" type="button" (click)="editVendor(vendor)" aria-label="Editar fornecedor">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -80,6 +82,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
                 </svg>
               </button>
             </div>
+            }
             <h2>{{ vendor.name }}</h2>
             <p>{{ categoryLabel(vendor.category) }}</p>
             @if (vendor.contactName || vendor.phone) {
@@ -102,6 +105,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 export class VendorsAdminPage {
   private readonly weddingContextService = inject(WeddingContextService);
   private readonly weddingService = inject(WeddingService);
+  private readonly router = inject(Router);
 
   protected readonly weddingId$ = this.weddingContextService.activeWeddingId$;
   protected readonly vendors$ = this.weddingId$.pipe(switchMap((weddingId) => this.weddingService.vendors$(weddingId)));
@@ -115,6 +119,9 @@ export class VendorsAdminPage {
   protected formExpanded = false;
 
   async saveVendor(): Promise<void> {
+    if (this.isDemoMode()) {
+      return;
+    }
     if (!this.name.trim()) {
       return;
     }
@@ -139,6 +146,9 @@ export class VendorsAdminPage {
   }
 
   editVendor(vendor: Vendor): void {
+    if (this.isDemoMode()) {
+      return;
+    }
     this.formExpanded = true;
     this.editingVendorId = vendor.id;
     this.name = vendor.name;
@@ -150,7 +160,14 @@ export class VendorsAdminPage {
   }
 
   removeVendor(vendorId: string): Promise<void> {
+    if (this.isDemoMode()) {
+      return Promise.resolve();
+    }
     return this.weddingService.deleteVendor(vendorId, this.weddingContextService.currentAdminWeddingId());
+  }
+
+  protected isDemoMode(): boolean {
+    return this.router.url.startsWith('/demo') || this.router.url.startsWith('/default/admin');
   }
 
   protected openForm(): void {

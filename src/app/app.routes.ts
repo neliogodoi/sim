@@ -1,9 +1,73 @@
 import { Routes } from '@angular/router';
 
 import { adminGuard } from './core/guards/admin.guard';
+import { demoAdminGuard } from './core/guards/demo-admin.guard';
 import { loginGuard } from './core/guards/login.guard';
 
+const demoAdminRoutes: Routes = [
+	{
+		path: 'demo',
+		canActivate: [demoAdminGuard],
+		loadComponent: () => import('./pages/admin/dashboard/dashboard.page').then((m) => m.DashboardPage),
+	},
+	{
+		path: 'demo/convidados',
+		canActivate: [demoAdminGuard],
+		loadComponent: () => import('./pages/admin/guests/guests.page').then((m) => m.GuestsPage),
+	},
+	{
+		path: 'demo/agenda',
+		canActivate: [demoAdminGuard],
+		loadComponent: () => import('./pages/admin/schedule/schedule-admin.page').then((m) => m.ScheduleAdminPage),
+	},
+	{
+		path: 'demo/presentes',
+		canActivate: [demoAdminGuard],
+		loadComponent: () => import('./pages/admin/gifts/gifts-admin.page').then((m) => m.GiftsAdminPage),
+	},
+	{
+		path: 'demo/padrinhos',
+		canActivate: [demoAdminGuard],
+		loadComponent: () =>
+			import('./pages/admin/wedding-party/wedding-party-admin.page').then((m) => m.WeddingPartyAdminPage),
+	},
+	{
+		path: 'demo/pessoas',
+		canActivate: [demoAdminGuard],
+		loadComponent: () =>
+			import('./pages/admin/important-people/important-people-admin.page').then((m) => m.ImportantPeopleAdminPage),
+	},
+	{
+		path: 'demo/fornecedores',
+		canActivate: [demoAdminGuard],
+		loadComponent: () => import('./pages/admin/vendors/vendors-admin.page').then((m) => m.VendorsAdminPage),
+	},
+	{
+		path: 'demo/musicas',
+		canActivate: [demoAdminGuard],
+		loadComponent: () =>
+			import('./pages/admin/entrance-songs/entrance-songs-admin.page').then((m) => m.EntranceSongsAdminPage),
+	},
+	{
+		path: 'demo/relatorio',
+		canActivate: [demoAdminGuard],
+		loadComponent: () =>
+			import('./pages/admin/capacity-report/capacity-report.page').then((m) => m.CapacityReportPage),
+	},
+	{
+		path: 'demo/recados',
+		canActivate: [demoAdminGuard],
+		loadComponent: () => import('./pages/admin/messages/messages-admin.page').then((m) => m.MessagesAdminPage),
+	},
+	{
+		path: 'demo/mais',
+		canActivate: [demoAdminGuard],
+		loadComponent: () => import('./pages/admin/more/more-admin.page').then((m) => m.MoreAdminPage),
+	},
+];
+
 export const routes: Routes = [
+	...demoAdminRoutes,
 	{
 		path: '',
 		loadComponent: () => import('./pages/public/landing/landing-page.component').then((m) => m.LandingPageComponent),
@@ -119,6 +183,15 @@ export const routes: Routes = [
 		path: 'admin/configuracoes',
 		canActivate: [adminGuard],
 		loadComponent: () => import('./pages/admin/settings/settings.page').then((m) => m.SettingsPage),
+	},
+	{
+		path: 'default/admin',
+		redirectTo: 'demo',
+		pathMatch: 'full',
+	},
+	{
+		path: 'default/admin/:section',
+		redirectTo: 'demo/:section',
 	},
 	{
 		path: ':slug',

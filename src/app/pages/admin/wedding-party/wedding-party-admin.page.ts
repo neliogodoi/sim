@@ -2,6 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { Auth, authState } from '@angular/fire/auth';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { firstValueFrom, switchMap } from 'rxjs';
 
 import { WeddingPartyMember } from '../../../core/models/wedding.models';
@@ -20,7 +21,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 
     <main class="admin-page">
       <h1>Padrinhos</h1>
-      @if (shouldShowForm(members)) {
+      @if (!isDemoMode() && shouldShowForm(members)) {
         <form class="form-card" (ngSubmit)="saveMember()">
           <label>
             Primeira pessoa
@@ -60,13 +61,14 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
           }
         </form>
-      } @else if (members?.length) {
+      } @else if (!isDemoMode() && members?.length) {
         <button class="primary-action form-toggle-action" type="button" (click)="openForm()">Adicionar padrinhos</button>
       }
 
       <div class="list-stack">
         @for (member of members; track member.id) {
           <article class="info-card admin-list-card wedding-party-card compact-person-card">
+            @if (!isDemoMode()) {
             <div class="card-actions">
               <a class="icon-action" [href]="groomsmenPrintUrl(member)" target="_blank" rel="noreferrer" aria-label="Imprimir convite dos padrinhos">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -97,6 +99,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
                 </svg>
               </button>
             </div>
+            }
             <div class="compact-card-media">
               @if (member.photoUrl) {
                 <img class="person-photo" [src]="imageUrl(member.photoUrl)" [alt]="shortCoupleName(member)" />
@@ -124,6 +127,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 })
 export class WeddingPartyAdminPage {
 	private readonly auth = inject(Auth);
+	private readonly router = inject(Router);
 	private readonly r2UploadService = inject(R2UploadService);
 	private readonly weddingContextService = inject(WeddingContextService);
 	private readonly weddingService = inject(WeddingService);
@@ -144,6 +148,9 @@ export class WeddingPartyAdminPage {
 	protected uploadError = '';
 
 	async saveMember(): Promise<void> {
+		if (this.isDemoMode()) {
+			return;
+		}
 		if (!this.firstName.trim() || !this.secondName.trim()) {
 			return;
 		}
@@ -178,6 +185,9 @@ export class WeddingPartyAdminPage {
 	}
 
 	editMember(member: WeddingPartyMember): void {
+		if (this.isDemoMode()) {
+			return;
+		}
 		this.formExpanded = true;
 		this.editingMemberId = member.id;
 		this.firstName = member.firstName;
@@ -189,7 +199,14 @@ export class WeddingPartyAdminPage {
 	}
 
 	removeMember(memberId: string): Promise<void> {
+		if (this.isDemoMode()) {
+			return Promise.resolve();
+		}
 		return this.weddingService.deleteWeddingPartyMember(memberId, this.weddingContextService.currentAdminWeddingId());
+	}
+
+	protected isDemoMode(): boolean {
+		return this.router.url.startsWith('/demo') || this.router.url.startsWith('/default/admin');
 	}
 
 	protected openForm(): void {

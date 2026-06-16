@@ -1,6 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { firstValueFrom, switchMap } from 'rxjs';
 
 import { GiftLink } from '../../../core/models/wedding.models';
@@ -17,7 +18,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 
     <main class="admin-page">
       <h1>Presentes</h1>
-      @if (shouldShowForm(gifts)) {
+      @if (!isDemoMode() && shouldShowForm(gifts)) {
         <form class="form-card" (ngSubmit)="saveGift()">
           <label>
             Titulo
@@ -45,13 +46,14 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
           }
         </form>
-      } @else if (gifts?.length) {
+      } @else if (!isDemoMode() && gifts?.length) {
         <button class="primary-action form-toggle-action" type="button" (click)="openForm()">Adicionar presente</button>
       }
 
       <div class="list-stack">
         @for (gift of gifts; track gift.id) {
           <article class="info-card admin-list-card">
+            @if (!isDemoMode()) {
             <div class="card-actions">
               <button class="icon-action" type="button" (click)="editGift(gift)" aria-label="Editar presente">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -69,6 +71,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
                 </svg>
               </button>
             </div>
+            }
             <h2>{{ gift.title }}</h2>
             <p>{{ gift.description || gift.type }}</p>
             <a class="inline-link" [href]="gift.url" target="_blank" rel="noreferrer">Abrir link</a>
@@ -81,6 +84,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 export class GiftsAdminPage {
   private readonly weddingContextService = inject(WeddingContextService);
   private readonly weddingService = inject(WeddingService);
+  private readonly router = inject(Router);
 
   protected readonly weddingId$ = this.weddingContextService.activeWeddingId$;
   protected readonly gifts$ = this.weddingId$.pipe(switchMap((weddingId) => this.weddingService.gifts$(weddingId)));
@@ -92,6 +96,9 @@ export class GiftsAdminPage {
   protected formExpanded = false;
 
   async saveGift(): Promise<void> {
+    if (this.isDemoMode()) {
+      return;
+    }
     if (!this.title.trim() || !this.url.trim()) {
       return;
     }
@@ -116,6 +123,9 @@ export class GiftsAdminPage {
   }
 
   editGift(gift: GiftLink): void {
+    if (this.isDemoMode()) {
+      return;
+    }
     this.formExpanded = true;
     this.editingGiftId = gift.id;
     this.title = gift.title;
@@ -125,7 +135,14 @@ export class GiftsAdminPage {
   }
 
   removeGift(giftId: string): Promise<void> {
+    if (this.isDemoMode()) {
+      return Promise.resolve();
+    }
     return this.weddingService.deleteGiftLink(giftId, this.weddingContextService.currentAdminWeddingId());
+  }
+
+  protected isDemoMode(): boolean {
+    return this.router.url.startsWith('/demo') || this.router.url.startsWith('/default/admin');
   }
 
   protected openForm(): void {

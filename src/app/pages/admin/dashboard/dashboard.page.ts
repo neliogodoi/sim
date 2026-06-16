@@ -33,6 +33,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
               <path d="M8 13l8 5" />
             </svg>
           </button>
+        @if (!isDemoMode()) {
           <a class="round-icon-action" routerLink="/admin/configuracoes" aria-label="Configuracoes">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <circle cx="12" cy="12" r="3" />
@@ -52,6 +53,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
               <path d="M5 12h14" />
             </svg>
           </button>
+        }
         </div>
       </div>
 
@@ -105,6 +107,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
       }
 
       <section class="dashboard-shortcuts" aria-label="Atalhos administrativos">
+        @if (!isDemoMode()) {
         <a class="dashboard-shortcut" routerLink="/admin/configuracoes" aria-label="Configuracoes">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="12" r="3" />
@@ -119,7 +122,8 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
           </svg>
           <span>Config.</span>
         </a>
-        <a class="dashboard-shortcut" routerLink="/admin/convidados" aria-label="Convidados">
+        }
+        <a class="dashboard-shortcut" [routerLink]="adminLink('convidados')" aria-label="Convidados">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="9" cy="8" r="3" />
             <path d="M3.5 19c.7-3 2.6-5 5.5-5s4.8 2 5.5 5" />
@@ -128,7 +132,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
           </svg>
           <span>Convidados</span>
         </a>
-        <a class="dashboard-shortcut" routerLink="/admin/presentes" aria-label="Presentes">
+        <a class="dashboard-shortcut" [routerLink]="adminLink('presentes')" aria-label="Presentes">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M4 10h16v10H4z" />
             <path d="M3 6h18v4H3z" />
@@ -138,7 +142,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
           </svg>
           <span>Presentes</span>
         </a>
-        <a class="dashboard-shortcut" routerLink="/admin/agenda" aria-label="Agenda">
+        <a class="dashboard-shortcut" [routerLink]="adminLink('agenda')" aria-label="Agenda">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <rect x="4" y="5" width="16" height="15" rx="2" />
             <path d="M8 3v4" />
@@ -147,20 +151,20 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
           </svg>
           <span>Agenda</span>
         </a>
-        <a class="dashboard-shortcut" routerLink="/admin/padrinhos" aria-label="Padrinhos">
+        <a class="dashboard-shortcut" [routerLink]="adminLink('padrinhos')" aria-label="Padrinhos">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.7A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z" />
           </svg>
           <span>Padrinhos</span>
         </a>
-        <a class="dashboard-shortcut" routerLink="/admin/pessoas" aria-label="Pessoas importantes">
+        <a class="dashboard-shortcut" [routerLink]="adminLink('pessoas')" aria-label="Pessoas importantes">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="7" r="3" />
             <path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6" />
           </svg>
           <span>Pessoas importantes</span>
         </a>
-        <a class="dashboard-shortcut" routerLink="/admin/fornecedores" aria-label="Fornecedores">
+        <a class="dashboard-shortcut" [routerLink]="adminLink('fornecedores')" aria-label="Fornecedores">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M4 9h16" />
             <path d="M6 9V5h12v4" />
@@ -170,7 +174,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
           </svg>
           <span>Fornec.</span>
         </a>
-        <a class="dashboard-shortcut" routerLink="/admin/relatorio" aria-label="Relatorio de pessoas">
+        <a class="dashboard-shortcut" [routerLink]="adminLink('relatorio')" aria-label="Relatorio de pessoas">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M4 19V5" />
             <path d="M8 19v-6" />
@@ -180,7 +184,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
           </svg>
           <span>Relatório</span>
         </a>
-        <a class="dashboard-shortcut" routerLink="/admin/mais" aria-label="Mais">
+        <a class="dashboard-shortcut" [routerLink]="adminLink('mais')" aria-label="Mais">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="5" cy="12" r="1.4" />
             <circle cx="12" cy="12" r="1.4" />
@@ -226,7 +230,19 @@ export class DashboardPage {
   protected error = '';
   protected isCreateFormOpen = false;
 
+  protected isDemoMode(): boolean {
+    return this.router.url.startsWith('/demo') || this.router.url.startsWith('/default/admin');
+  }
+
+  protected adminLink(path = ''): string {
+    const base = this.isDemoMode() ? '/demo' : '/admin';
+    return path ? `${base}/${path}` : base;
+  }
+
   protected toggleCreateWedding(): void {
+    if (this.isDemoMode()) {
+      return;
+    }
     this.isCreateFormOpen = !this.isCreateFormOpen;
     this.error = '';
   }

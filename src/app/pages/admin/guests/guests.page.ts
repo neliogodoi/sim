@@ -2,6 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Auth, authState } from '@angular/fire/auth';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { firstValueFrom, switchMap } from 'rxjs';
 
 import { Guest } from '../../../core/models/wedding.models';
@@ -22,7 +23,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
         {{ totalGuests(guests) }} convidados, {{ confirmedGuests(guests) }} confirmaram
       </section>
 
-      @if (shouldShowForm(guests)) {
+      @if (!isDemoMode() && shouldShowForm(guests)) {
         <form class="form-card" (ngSubmit)="addGuest()">
           <label>
             Nome
@@ -54,13 +55,14 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
           }
         </form>
-      } @else if (guests?.length) {
+      } @else if (!isDemoMode() && guests?.length) {
         <button class="primary-action form-toggle-action" type="button" (click)="openForm()">Adicionar convidado</button>
       }
 
       <div class="list-stack">
         @for (guest of guests; track guest.id) {
           <article class="info-card admin-list-card">
+            @if (!isDemoMode()) {
             <div class="card-actions">
               <a class="icon-action" [href]="whatsappInviteLink(guest)" target="_blank" rel="noreferrer" aria-label="Enviar convite do convidado">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -84,6 +86,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
                 </svg>
               </button>
             </div>
+            }
             <h2>{{ guest.name }}</h2>
             <p>
               <span class="status-pill" [class.confirmed]="guest.rsvpStatus === 'confirmed'">
@@ -101,6 +104,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 })
 export class GuestsPage {
   private readonly auth = inject(Auth);
+  private readonly router = inject(Router);
   private readonly weddingContextService = inject(WeddingContextService);
   private readonly weddingService = inject(WeddingService);
 
@@ -115,6 +119,9 @@ export class GuestsPage {
   protected formExpanded = false;
 
   async addGuest(): Promise<void> {
+    if (this.isDemoMode()) {
+      return;
+    }
     if (!this.name.trim()) {
       return;
     }
@@ -150,6 +157,9 @@ export class GuestsPage {
   }
 
   editGuest(guest: Guest): void {
+    if (this.isDemoMode()) {
+      return;
+    }
     this.formExpanded = true;
     this.editingGuestId = guest.id;
     this.name = guest.name;
@@ -160,7 +170,14 @@ export class GuestsPage {
   }
 
   removeGuest(guestId: string): Promise<void> {
+    if (this.isDemoMode()) {
+      return Promise.resolve();
+    }
     return this.weddingService.deleteGuest(guestId, this.weddingContextService.currentAdminWeddingId());
+  }
+
+  protected isDemoMode(): boolean {
+    return this.router.url.startsWith('/demo') || this.router.url.startsWith('/default/admin');
   }
 
   protected openForm(): void {
