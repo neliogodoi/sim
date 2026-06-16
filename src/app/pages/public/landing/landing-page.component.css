@@ -127,13 +127,13 @@ main {
 	box-shadow: 0 14px 30px rgba(111, 132, 113, 0.22);
 }
 
-.hero {
+.landing-hero {
 	min-height: calc(100svh - 69px);
 	display: grid;
 	align-items: center;
 }
 
-.hero-grid {
+.landing-hero-grid {
 	padding: 90px 0 110px;
 }
 
@@ -190,14 +190,14 @@ strong {
 	font-weight: 700;
 }
 
-.hero-copy {
+.landing-hero-copy {
 	position: relative;
 	max-width: 980px;
 	margin: 0 auto;
 	text-align: center;
 }
 
-.hero-copy::after {
+.landing-hero-copy::after {
 	content: '';
 	display: block;
 	width: 84px;
@@ -206,12 +206,12 @@ strong {
 	background: var(--line);
 }
 
-.hero-copy p {
+.landing-hero-copy p {
 	max-width: 690px;
 	margin: 22px auto 0;
 }
 
-.hero-actions {
+.landing-hero-actions {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -435,7 +435,7 @@ strong {
 		grid-template-columns: 1fr;
 	}
 
-	.hero-grid {
+	.landing-hero-grid {
 		padding: 78px 0 96px;
 	}
 
@@ -523,11 +523,11 @@ strong {
 		border-radius: 999px;
 	}
 
-	.hero {
+	.landing-hero {
 		min-height: auto;
 	}
 
-	.hero-grid {
+	.landing-hero-grid {
 		padding: 54px 0 68px;
 	}
 
@@ -554,12 +554,12 @@ strong {
 		line-height: 1.58;
 	}
 
-	.hero-copy p {
+	.landing-hero-copy p {
 		max-width: 31rem;
 		margin-top: 18px;
 	}
 
-	.hero-actions {
+	.landing-hero-actions {
 		gap: 10px;
 		margin: 28px 0 20px;
 	}
