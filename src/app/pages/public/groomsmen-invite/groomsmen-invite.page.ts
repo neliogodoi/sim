@@ -152,6 +152,7 @@ export class GroomsmenInvitePage implements OnInit {
     this.setSvgFont(document, 'nomes-noivos', normalizeScriptFont(wedding.theme?.scriptFont));
     this.setSvgFont(document, 'data', 'Cormorant Garamond');
     this.setSvgFont(document, 'nomes-padrinhos', 'Cormorant Garamond');
+    this.applyTemplateTheme(document, wedding);
 
     const imageElement = document.getElementById('foto-casal') ?? document.querySelector('image');
     if (imageUrl && imageElement) {
@@ -195,6 +196,153 @@ export class GroomsmenInvitePage implements OnInit {
         .trim();
       target.setAttribute('style', `${nextStyle}${nextStyle ? ';' : ''}font-family:'${fontFamily}'`);
     }
+  }
+
+  private applyTemplateTheme(document: Document, wedding: Wedding): void {
+    const primary = this.normalizeHex(wedding.theme?.primary, '#173f25');
+    const secondary = this.normalizeHex(wedding.theme?.secondary || wedding.theme?.tertiary, '#c9a35a');
+    const background = this.normalizeHex(wedding.theme?.background || wedding.theme?.neutral, '#fffaf3');
+
+    for (const target of ['nomes-noivos', 'data', 'pergunta', 'nomes-padrinhos', 'mensagem']) {
+      this.setSvgColor(document, target, primary, 'fill');
+    }
+
+    this.setSvgColor(document, 'subtitulo', primary, 'fill');
+    this.setSvgColor(document, 'cor-de fundo', background, 'fill');
+
+    for (const target of [
+      'divisor-nomes-data',
+      'adornos-padrinhos',
+      'divior-padrinhos-mensagem',
+      'divisor-titulo-pergunta',
+      'icone-dos-noivos',
+    ]) {
+      this.setSvgColor(document, target, secondary, 'both');
+    }
+
+    this.setSvgColor(document, 'moldura', secondary, 'stroke');
+    this.applyFloralTint(document, primary);
+  }
+
+  private setSvgColor(document: Document, targetName: string, color: string, mode: 'fill' | 'stroke' | 'both'): void {
+    const root = this.findSvgTarget(document, targetName);
+    if (!root) {
+      return;
+    }
+
+    const elements = [root, ...Array.from(root.querySelectorAll('*'))];
+    for (const element of elements) {
+      const tagName = element.tagName.toLowerCase();
+      const isText = tagName === 'text' || tagName === 'tspan';
+      const isLine = tagName === 'line' || tagName === 'polyline';
+      const isPaintableShape = ['path', 'rect', 'circle', 'ellipse', 'polygon'].includes(tagName);
+
+      if ((mode === 'fill' || mode === 'both') && !isLine) {
+        this.setPaintAttribute(element, 'fill', color, isText || isPaintableShape);
+      }
+
+      if (mode === 'stroke' || mode === 'both') {
+        this.setPaintAttribute(element, 'stroke', color, isLine || isPaintableShape);
+      }
+    }
+  }
+
+  private setPaintAttribute(element: Element, property: 'fill' | 'stroke', color: string, force: boolean): void {
+    const current = element.getAttribute(property);
+    if (current && current !== 'none') {
+      element.setAttribute(property, color);
+    } else if (force && current !== 'none') {
+      element.setAttribute(property, color);
+    }
+
+    const currentStyle = element.getAttribute('style');
+    if (currentStyle?.includes(`${property}:`)) {
+      element.setAttribute('style', this.replaceStylePaint(currentStyle, property, color));
+    }
+  }
+
+  private replaceStylePaint(style: string, property: 'fill' | 'stroke', color: string): string {
+    return style
+      .split(';')
+      .map((declaration) => {
+        const [name, ...valueParts] = declaration.split(':');
+        if (name?.trim() !== property) {
+          return declaration;
+        }
+
+        const currentValue = valueParts.join(':').trim();
+        return currentValue === 'none' ? declaration : `${property}:${color}`;
+      })
+      .join(';');
+  }
+
+  private applyFloralTint(document: Document, color: string): void {
+    const floral = this.findSvgTarget(document, 'floral-borda');
+    if (!floral) {
+      return;
+    }
+
+    const svg = document.documentElement;
+    const namespace = svg.namespaceURI || 'http://www.w3.org/2000/svg';
+    const filterId = 'sim-template-floral-tint';
+    const defs = document.querySelector('defs') ?? svg.insertBefore(document.createElementNS(namespace, 'defs'), svg.firstChild);
+    document.getElementById(filterId)?.remove();
+
+    const filter = document.createElementNS(namespace, 'filter');
+    filter.setAttribute('id', filterId);
+    filter.setAttribute('color-interpolation-filters', 'sRGB');
+
+    const flood = document.createElementNS(namespace, 'feFlood');
+    flood.setAttribute('flood-color', color);
+    flood.setAttribute('flood-opacity', '0.32');
+    flood.setAttribute('result', 'themeTint');
+
+    const blend = document.createElementNS(namespace, 'feBlend');
+    blend.setAttribute('in', 'SourceGraphic');
+    blend.setAttribute('in2', 'themeTint');
+    blend.setAttribute('mode', 'multiply');
+    blend.setAttribute('result', 'tinted');
+
+    const saturate = document.createElementNS(namespace, 'feColorMatrix');
+    saturate.setAttribute('in', 'tinted');
+    saturate.setAttribute('type', 'saturate');
+    saturate.setAttribute('values', '0.75');
+
+    filter.append(flood, blend, saturate);
+    defs.append(filter);
+    floral.setAttribute('filter', `url(#${filterId})`);
+  }
+
+  private findSvgTarget(document: Document, targetName: string): Element | undefined {
+    const byId = document.getElementById(targetName);
+    if (byId) {
+      return byId;
+    }
+
+    return Array.from(document.querySelectorAll('*')).find((element) => {
+      const label =
+        element.getAttribute('inkscape:label') ||
+        element.getAttributeNS('http://www.inkscape.org/namespaces/inkscape', 'label');
+      return label === targetName;
+    });
+  }
+
+  private normalizeHex(value: string | undefined, fallback: string): string {
+    if (!value) {
+      return fallback;
+    }
+
+    const trimmed = value.trim();
+    if (/^#[0-9a-f]{6}$/i.test(trimmed)) {
+      return trimmed;
+    }
+
+    if (/^#[0-9a-f]{3}$/i.test(trimmed)) {
+      const [, red, green, blue] = trimmed;
+      return `#${red}${red}${green}${green}${blue}${blue}`;
+    }
+
+    return fallback;
   }
 
   private firstWord(value: string): string {
