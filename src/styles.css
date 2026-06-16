@@ -360,13 +360,20 @@ a {
 	padding: 0;
 }
 
+.special-invite-page .hero,
+.special-invite-page .hero img,
+.screen-invite-content {
+	border: 0;
+	box-shadow: none;
+}
+
 .special-invite-content {
 	position: relative;
 	z-index: 1;
 	display: grid;
 	gap: 18px;
 	max-width: 620px;
-	margin: -56px auto 0;
+	margin: -58px auto 0;
 	padding: 0 28px 44px;
 }
 
