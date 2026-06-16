@@ -6,7 +6,7 @@
 
 		<div class="nav-actions">
 			<a class="nav-link nav-link-ghost btn-login" routerLink="/admin/login">Entrar</a>
-			<a class="nav-link nav-link-solid nav-signup" routerLink="/admin/cadastro">Criar conta</a>
+			<a class="nav-link nav-link-solid nav-signup" routerLink="/admin/cadastro">Criar meu casamento</a>
 		</div>
 
 		<button class="nav-toggle" type="button" aria-label="Abrir menu" [attr.aria-expanded]="menuOpen"
@@ -30,11 +30,12 @@
 				<span class="eyebrow">Para casais que querem encantar</span>
 				<h1>Organize seu casamento em um só lugar e transforme cada detalhe em uma lembrança inesquecível.</h1>
 				<p>
-					<strong>SIM:</strong> Menos mensagens perdidas. Menos dúvidas dos convidados. Menos estresse. Mais
-					tempo para viver o que realmente importa.
+					Do pedido aos padrinhos ao grande dia, o SIM reúne convites, confirmações, presentes e informações
+					em uma experiência
+					elegante para vocês e seus convidados.
 				</p>
 				<div class="landing-hero-actions">
-					<a class="btn btn-primary" routerLink="/admin/cadastro">Criar conta</a>
+					<a class="btn btn-primary" routerLink="/admin/cadastro">Criar meu casamento</a>
 					<a class="btn btn-secondary" routerLink="/admin/login">Entrar</a>
 				</div>
 				<div class="trust-line">
@@ -43,72 +44,179 @@
 					<span>Pronto agora</span>
 				</div>
 			</div>
+			<div class="landing-hero-visual reveal delay-1" aria-hidden="true"></div>
+		</div>
+	</section>
+
+	<div class="promise-line">
+		<div class="container">
+			<p>
+				<span>❤</span>
+			</p>
+			<p>Convites digitais elegantes • Convites especiais para padrinhos • RSVP simplificado • Lista de presentes
+				• Localização • Álbum compartilhado</p>
+		</div>
+	</div>
+
+	<section class="moments-band">
+		<div class="container moments-grid">
+			<article class="moment-card reveal">
+				<span>❤</span>
+				<h3>Convide quem faz parte da sua história</h3>
+				<p>Convites personalizados para padrinhos e pessoas especiais.</p>
+			</article>
+			<article class="moment-card reveal delay-1">
+				<span>❤</span>
+				<h3>Encante seus convidados</h3>
+				<p>Uma página elegante com tudo o que eles precisam saber.</p>
+			</article>
+			<article class="moment-card reveal delay-2">
+				<span>❤</span>
+				<h3>Viva o momento com tranquilidade</h3>
+				<p>Menos mensagens, menos dúvidas e mais tempo para aproveitar.</p>
+			</article>
+			<article class="moment-card reveal">
+				<span>❤</span>
+				<h3>Guarde lembranças</h3>
+				<p>Do primeiro convite ao grande dia, cada detalhe merece ser especial.</p>
+			</article>
 		</div>
 	</section>
 
 	<section class="section story" id="experiencia">
 		<div class="container narrow reveal">
 			<span class="section-kicker">O diferencial</span>
-			<h2>Uma presença digital para o casamento, sem ruído.</h2>
+			<h2>Seu casamento merece mais do que um grupo no WhatsApp.</h2>
 			<p>
-				Página do evento, confirmação de presença e informações para convidados em um só lugar. Para você
-				acompanhar tudo com mais tranquilidade.
+				Reúna tudo em um só lugar: convites, confirmação de presença, localização, lista de presentes e
+				informações importantes.
+				Menos mensagens repetidas. Mais tempo para aproveitar esse momento.
 			</p>
 		</div>
 	</section>
 
 	<section class="section features" id="recursos">
 		<div class="container">
+			<h2>O essencial, apresentado com cuidado.</h2>
+			<br><br>
 			<div class="section-heading reveal">
 				<span class="section-kicker">O que você recebe</span>
-				<h2>O essencial, apresentado com cuidado.</h2>
 			</div>
-
 			<div class="feature-grid">
 				<article class="feature-card reveal">
 					<span class="icon">✦</span>
-					<h3>Compartilhe um link elegante com todos os convidados</h3>
-					<p>Um link elegante com história, data, local e informações essenciais.</p>
+					<h3>Um único link para compartilhar.</h3>
+					<p>Seus convidados encontram data, local, mapa e todas as informações importantes sem precisar
+						perguntar.</p>
 				</article>
 				<article class="feature-card reveal delay-1">
 					<span class="icon">✓</span>
-					<h3>Descubra quem confirmou presença sem precisar cobrar ninguém</h3>
-					<p>Os convidados respondem de forma simples, e você acompanha pelo painel.</p>
+					<h3>Confirmações sem cobranças.</h3>
+					<p>Descubra quem vai ao casamento sem enviar dezenas de mensagens ou montar planilhas.</p>
 				</article>
 				<article class="feature-card reveal delay-2">
 					<span class="icon">☰</span>
-					<h3>Centralize padrinhos, presentes e informações importantes em um único lugar</h3>
-					<p>Gerencie convidados, padrinhos e detalhes importantes em um lugar só.</p>
+					<h3>Tudo organizado em um só lugar.</h3>
+					<p>Convites, padrinhos, presentes e detalhes importantes reunidos em uma experiência simples e
+						elegante.</p>
 				</article>
 			</div>
 		</div>
 	</section>
 
-	<section class="section split" id="convites">
-		<div class="container split-grid">
-
+	<section class="invite-showcase" id="convites">
+		<img class="invite-showcase-image" src="/mockup-convites.png" alt="Convites digitais do SIM" />
+		<div class="container invite-showcase-content reveal">
+			<span class="section-kicker">Convites especiais</span>
+			<h2>O primeiro "sim" do casamento pode acontecer antes da cerimônia.</h2>
+			<p>
+				Convide padrinhos e pessoas especiais com páginas personalizadas que emocionam, podem ser compartilhadas
+				digitalmente ou
+				impressas com elegância.
+			</p>
+			<a class="btn btn-primary" routerLink="/admin/cadastro">Ver um exemplo de convite</a>
 		</div>
+	</section>
+
+	<section class="section guest-tools">
+		<div class="container narrow reveal">
+			<span class="section-kicker">Para convidados</span>
+			<h2>Tudo o que seus convidados precisam. Em um único lugar.</h2>
+		</div>
+		<div class="container tools-grid">
+			<span>
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M12 21s6-5.4 6-11a6 6 0 0 0-12 0c0 5.6 6 11 6 11Z" />
+					<circle cx="12" cy="10" r="2.4" />
+				</svg>
+				Localização
+			</span>
+			<span>
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M5 12.5 10 17 19 7" />
+					<path d="M4 5h16v14H4z" />
+				</svg>
+				Confirmação de presença
+			</span>
+			<span>
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M4 10h16v10H4z" />
+					<path d="M3 7h18v3H3z" />
+					<path d="M12 7v13" />
+					<path d="M8.5 7C6 7 6 3.5 8.5 4c1.8.4 3.5 3 3.5 3s1.7-2.6 3.5-3c2.5-.5 2.5 3 0 3" />
+				</svg>
+				Lista de presentes
+			</span>
+			<span>
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M4 6h16v12H4z" />
+					<path d="m7 15 3-3 2.5 2.5L15 12l2 3" />
+					<circle cx="8.5" cy="9.5" r="1.2" />
+				</svg>
+				Álbum
+			</span>
+			<span>
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M4 6h16v12H4z" />
+					<path d="m4 7 8 6 8-6" />
+				</svg>
+				Recados
+			</span>
+			<span>
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M5 6h14v14H5z" />
+					<path d="M8 4v4M16 4v4M5 10h14" />
+					<path d="M9 14h2M13 14h2M9 17h2" />
+				</svg>
+				Agenda
+			</span>
+		</div>
+		<p class="tools-note">Compartilhe apenas um link. O SIM cuida do resto.</p>
 	</section>
 
 	<section class="section split" id="publicos">
 		<div class="container split-grid">
-			<div class="reveal">
-				<span class="section-kicker">Seus convidados</span>
-				<h2>Tudo claro para quem recebe o convite.</h2>
+			<h2>Menos dúvidas para os convidados. Menos preocupação para vocês.</h2>
+			<br>
+			<div class="panel reveal delay-1">
+				<span class="panel-label">Seus convidados</span>
 				<p>
-					Seus convidados encontram data, local, informações práticas e confirmação de presença sem precisar
-					procurar em conversas.
+					Quando todas as informações estão organizadas em um só lugar, vocês deixam de responder as mesmas
+					perguntas e passam a
+					aproveitar melhor a preparação do casamento.
 				</p>
+			</div>
+			<div class="panel reveal">
+				<span class="panel-label">Para os noivos</span>
+				<p>Acompanhe confirmações, padrinhos e informações importantes com menos troca de mensagens e menos
+					retrabalho.</p>
+			</div>
+			<div class="reveal">
 				<ul class="check-list">
 					<li>Funciona perfeito em qualquer celular</li>
 					<li>Informações claras e organizadas</li>
 					<li>Confirmação em poucos toques</li>
 				</ul>
-			</div>
-			<div class="panel reveal delay-1">
-				<span class="panel-label">Para os noivos</span>
-				<p>Acompanhe confirmações, padrinhos e informações importantes com menos troca de mensagens e menos
-					retrabalho.</p>
 			</div>
 		</div>
 	</section>
@@ -117,7 +225,7 @@
 		<div class="container pricing-grid reveal">
 			<div>
 				<span class="section-kicker">Começar agora</span>
-				<h2>Crie um casamento memorável com SIM.</h2>
+				<h2>Comece hoje a criar uma experiência inesquecível para vocês e seus convidados.</h2>
 				<p>
 					Organize o essencial, apresente tudo com elegância e deixe seus convidados seguros sobre cada
 					detalhe.
@@ -127,7 +235,7 @@
 				<a class="btn btn-primary full"
 					href="https://wa.me/5528999950993?text=Olá%2C%20quero%20conhecer%20o%20SIM" target="_blank"
 					rel="noreferrer">
-					Falar com nossa equipe no WhatsApp e criar meu casamento
+					Quero criar meu casamento no SIM
 				</a>
 			</div>
 		</div>

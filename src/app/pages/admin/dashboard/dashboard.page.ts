@@ -158,7 +158,7 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             <circle cx="12" cy="7" r="3" />
             <path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6" />
           </svg>
-          <span>Pessoas</span>
+          <span>Pessoas importantes</span>
         </a>
         <a class="dashboard-shortcut" routerLink="/admin/fornecedores" aria-label="Fornecedores">
           <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -169,6 +169,16 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
             <path d="M9 16h4" />
           </svg>
           <span>Fornec.</span>
+        </a>
+        <a class="dashboard-shortcut" routerLink="/admin/relatorio" aria-label="Relatorio de pessoas">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 19V5" />
+            <path d="M8 19v-6" />
+            <path d="M13 19V9" />
+            <path d="M18 19v-9" />
+            <path d="M3 19h18" />
+          </svg>
+          <span>Relatório</span>
         </a>
         <a class="dashboard-shortcut" routerLink="/admin/mais" aria-label="Mais">
           <svg viewBox="0 0 24 24" aria-hidden="true">

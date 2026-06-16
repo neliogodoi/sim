@@ -29,6 +29,10 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
           <h2>Fornecedores</h2>
           <p>Buffet, fotografia, espaco, lojas e contatos.</p>
         </a>
+        <a class="info-card link-card" routerLink="/admin/relatorio">
+          <h2>Relatório de pessoas</h2>
+          <p>Total geral para estimar espaco, buffet e estrutura.</p>
+        </a>
         <a class="info-card link-card" routerLink="/admin/recados">
           <h2>Recados</h2>
           <p>Moderar mensagens dos convidados.</p>

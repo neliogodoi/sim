@@ -100,6 +100,12 @@ export const routes: Routes = [
 		loadComponent: () => import('./pages/admin/vendors/vendors-admin.page').then((m) => m.VendorsAdminPage),
 	},
 	{
+		path: 'admin/relatorio',
+		canActivate: [adminGuard],
+		loadComponent: () =>
+			import('./pages/admin/capacity-report/capacity-report.page').then((m) => m.CapacityReportPage),
+	},
+	{
 		path: 'admin/recados',
 		canActivate: [adminGuard],
 		loadComponent: () => import('./pages/admin/messages/messages-admin.page').then((m) => m.MessagesAdminPage),
