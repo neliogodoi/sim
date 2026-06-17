@@ -12,67 +12,9 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 @Component({
 	selector: 'app-entrance-songs-admin-page',
 	imports: [AdminHeaderComponent, AsyncPipe, FormsModule],
-	template: `
-    <app-admin-header />
-    @let songs = songs$ | async;
+	templateUrl: './entrance-songs-admin.page.html',
 
-    <main class="admin-page">
-      <h1>Musicas de entrada</h1>
-      @if (shouldShowForm(songs)) {
-        <form class="form-card" (ngSubmit)="saveSong()">
-          <label>
-            Momento
-            <input name="moment" [(ngModel)]="moment" placeholder="Entrada da noiva" required />
-          </label>
-          <label>
-            Musica
-            <input name="songTitle" [(ngModel)]="songTitle" required />
-          </label>
-          <label>
-            Link
-            <input name="url" [(ngModel)]="url" />
-          </label>
-          <button class="primary-action" type="submit" [disabled]="isDemoMode()">{{ editingSongId ? 'Salvar musica' : 'Adicionar musica' }}</button>
-          @if (songs?.length) {
-            <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
-          }
-        </form>
-      } @else if (songs?.length) {
-        <button class="primary-action form-toggle-action" type="button" [disabled]="isDemoMode()" (click)="openForm()">Adicionar musica</button>
-      }
-
-      <div class="list-stack">
-        @for (song of songs; track song.id) {
-          <article class="info-card admin-list-card">
-            <div class="card-actions" [class.demo-disabled]="isDemoMode()" [attr.aria-disabled]="isDemoMode()">
-              <button class="icon-action" type="button" (click)="editSong(song)" aria-label="Editar musica">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z" />
-                  <path d="m14 6 4 4" />
-                </svg>
-              </button>
-              <button class="icon-action" type="button" (click)="removeSong(song.id)" aria-label="Remover musica">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M5 7h14" />
-                  <path d="M9 7V5h6v2" />
-                  <path d="M8 10v8" />
-                  <path d="M16 10v8" />
-                  <path d="M6.5 7 7 21h10l.5-14" />
-                </svg>
-              </button>
-            </div>
-            <h2>{{ song.moment }}</h2>
-            <p>{{ song.songTitle }}</p>
-            @if (song.url) {
-              <a class="inline-link" [href]="song.url" target="_blank" rel="noreferrer">Abrir link</a>
-            }
-          </article>
-        } @empty {
-          <p>Nenhuma musica cadastrada ainda.</p>
-        }
-      </div>
-    </main>
-  `,
+	styleUrl: './entrance-songs-admin.page.css',
 })
 export class EntranceSongsAdminPage {
 	private readonly weddingContextService = inject(WeddingContextService);

@@ -12,93 +12,9 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 @Component({
   selector: 'app-vendors-admin-page',
   imports: [AdminHeaderComponent, AsyncPipe, FormsModule],
-  template: `
-    <app-admin-header />
-    @let vendors = vendors$ | async;
+  templateUrl: './vendors-admin.page.html',
 
-    <main class="admin-page">
-      <h1>Fornecedores</h1>
-      @if (shouldShowForm(vendors)) {
-        <form class="form-card" (ngSubmit)="saveVendor()">
-          <label>
-            Nome
-            <input name="name" [(ngModel)]="name" required />
-          </label>
-          <label>
-            Categoria
-            <select name="category" [(ngModel)]="category">
-              <option value="buffet">Buffet</option>
-              <option value="photography">Fotografia</option>
-              <option value="venue">Espaco</option>
-              <option value="store">Loja</option>
-              <option value="decor">Decoracao</option>
-              <option value="music">Musica</option>
-              <option value="other">Outro</option>
-            </select>
-          </label>
-          <label>
-            Contato
-            <input name="contactName" [(ngModel)]="contactName" />
-          </label>
-          <label>
-            Telefone
-            <input name="phone" [(ngModel)]="phone" />
-          </label>
-          <label>
-            Link
-            <input name="url" [(ngModel)]="url" />
-          </label>
-          <label>
-            Observacoes
-            <textarea name="notes" [(ngModel)]="notes"></textarea>
-          </label>
-          <button class="primary-action" type="submit" [disabled]="isDemoMode()">{{ editingVendorId ? 'Salvar fornecedor' : 'Adicionar fornecedor' }}</button>
-          @if (vendors?.length) {
-            <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
-          }
-        </form>
-      } @else if (vendors?.length) {
-        <button class="primary-action form-toggle-action" type="button" [disabled]="isDemoMode()" (click)="openForm()">Adicionar fornecedor</button>
-      }
-
-      <div class="list-stack">
-        @for (vendor of vendors; track vendor.id) {
-          <article class="info-card admin-list-card">
-            <div class="card-actions" [class.demo-disabled]="isDemoMode()" [attr.aria-disabled]="isDemoMode()">
-              <button class="icon-action" type="button" (click)="editVendor(vendor)" aria-label="Editar fornecedor">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z" />
-                  <path d="m14 6 4 4" />
-                </svg>
-              </button>
-              <button class="icon-action" type="button" (click)="removeVendor(vendor.id)" aria-label="Remover fornecedor">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M5 7h14" />
-                  <path d="M9 7V5h6v2" />
-                  <path d="M8 10v8" />
-                  <path d="M16 10v8" />
-                  <path d="M6.5 7 7 21h10l.5-14" />
-                </svg>
-              </button>
-            </div>
-            <h2>{{ vendor.name }}</h2>
-            <p>{{ categoryLabel(vendor.category) }}</p>
-            @if (vendor.contactName || vendor.phone) {
-              <p>{{ vendor.contactName || 'Contato' }}{{ vendor.phone ? ' · ' + vendor.phone : '' }}</p>
-            }
-            @if (vendor.url) {
-              <a class="inline-link" [href]="vendor.url" target="_blank" rel="noreferrer">Abrir link</a>
-            }
-            @if (vendor.notes) {
-              <p>{{ vendor.notes }}</p>
-            }
-          </article>
-        } @empty {
-          <p>Nenhum fornecedor cadastrado ainda.</p>
-        }
-      </div>
-    </main>
-  `,
+  styleUrl: './vendors-admin.page.css',
 })
 export class VendorsAdminPage {
   private readonly weddingContextService = inject(WeddingContextService);

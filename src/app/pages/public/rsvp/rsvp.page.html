@@ -1,0 +1,62 @@
+    <main class="public-page content-page">
+      @let guest = guest$ | async;
+      @let wedding = wedding$ | async;
+      @let isReadOnly = isReadOnly$ | async;
+
+      <section class="print-invite-card guest-invite-card">
+        <h1>{{ wedding?.coupleNames || 'Noiva e Noivo' }}</h1>
+        @if (wedding?.eventDate) {
+          <p class="print-invite-date">{{ wedding?.eventDate }}</p>
+        }
+        @if (wedding?.ceremonyAddress || wedding?.receptionAddress) {
+          <p class="invite-location">{{ wedding?.ceremonyAddress || wedding?.receptionAddress }}</p>
+        }
+        <p class="invite-message">
+          É com muito carinho que convidamos você para celebrar conosco esse momento tão especial.
+        </p>
+        <p class="eyebrow">Convidado</p>
+        <h2>{{ name || guest?.name || 'Convidado' }}</h2>
+        @if (guest?.groupName) {
+          <p class="invite-group">Estendendo-se a {{ guest?.groupName }}</p>
+        }
+        @if (isReadOnly) {
+          <p class="invite-help">Este casamento está disponível apenas para visualização.</p>
+        } @else {
+          <p class="invite-help">Confirme sua presença para ajudar os noivos na organização.</p>
+          <label>
+            Número de pessoas
+            <input
+              type="number"
+              min="1"
+              name="guestCount"
+              [(ngModel)]="guestCount"
+              [placeholder]="guest?.guestCount?.toString() || '1'"
+              (ngModelChange)="guestCountChanged = true"
+            />
+          </label>
+          @if (!guest) {
+            <label>
+              Nome
+              <input name="name" [(ngModel)]="name" required />
+            </label>
+          }
+          <div class="acceptance-actions rsvp-actions">
+            <button class="acceptance-button" type="button" (click)="submit('confirmed')">Sim</button>
+            <button class="acceptance-button ghost" type="button" (click)="submit('declined')">Não</button>
+            <button class="acceptance-button ghost" type="button" (click)="submit('maybe')">Talvez</button>
+          </div>
+        }
+      </section>
+
+      @if (saved()) {
+        <p class="success-state">Resposta enviada. Obrigado!</p>
+      }
+
+      <button class="floating-print-action" type="button" (click)="print()" aria-label="Gerar PDF ou imprimir">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 8V4h10v4" />
+          <path d="M6 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-1" />
+          <path d="M7 14h10v6H7z" />
+        </svg>
+      </button>
+    </main>

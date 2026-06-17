@@ -1,0 +1,114 @@
+.home-page {
+	background: var(--color-background);
+}
+
+.hero {
+	position: relative;
+	height: min(58dvh, 420px);
+	min-height: 320px;
+	overflow: hidden;
+	background: linear-gradient(135deg, var(--color-soft), var(--color-background));
+}
+
+.hero.hero-empty {
+	height: 300px;
+	min-height: 300px;
+}
+
+.hero img,
+.hero-placeholder {
+	width: 100%;
+	height: calc(100% - 1px);
+	object-fit: cover;
+	display: block;
+}
+
+.hero:not(.hero-empty)::after {
+	content: '';
+	position: absolute;
+	inset: auto 0 0;
+	height: 52%;
+	pointer-events: none;
+	background: linear-gradient(to bottom,
+			rgba(255, 255, 255, 0) 0%,
+			rgba(var(--color-background-rgb, 248, 248, 248), 0.72) 66%,
+			var(--color-background) 100%);
+}
+
+.hero-placeholder {
+	background:
+		radial-gradient(circle at 25% 25%, rgba(var(--color-primary-rgb), 0.22), transparent 32%),
+		linear-gradient(135deg, var(--color-soft), var(--color-background));
+}
+
+.home-content {
+	position: relative;
+	z-index: 1;
+	max-width: 620px;
+	margin: -56px auto 0;
+	padding: 0 28px 56px;
+	text-align: center;
+}
+
+.ornament {
+	color: var(--color-text);
+	font-family: var(--font-script);
+	font-size: 30px;
+	line-height: 1;
+}
+
+.home-content h1 {
+	margin: 10px 0 0;
+	color: var(--color-text);
+	font-family: var(--font-script);
+	font-size: clamp(4rem, 16vw, 6.4rem);
+	font-weight: 400;
+	line-height: 0.82;
+}
+
+.date {
+	margin: 16px 0 0;
+	color: var(--color-text);
+	font-family: var(--font-display);
+	font-size: 2rem;
+	font-weight: 600;
+}
+
+.countdown {
+	margin: 10px 0 0;
+	color: var(--color-text);
+	font-weight: 900;
+}
+
+.message {
+	max-width: 520px;
+	margin: 28px auto 0;
+	color: var(--color-muted);
+	font-family: var(--font-display);
+	font-size: 1.12rem;
+	line-height: 1.55;
+}
+
+.palette-dots {
+	display: flex;
+	align-items: center;
+}
+
+.palette-dots span {
+	display: block;
+	border: 1px solid rgba(var(--color-shadow), 0.14);
+	border-radius: 50%;
+}
+
+.public-palette-dots {
+	justify-content: center;
+	gap: 10px;
+	width: 40%;
+	min-width: 128px;
+	margin: 24px auto 0;
+}
+
+.public-palette-dots span {
+	width: clamp(16px, 4.2vw, 24px);
+	height: clamp(16px, 4.2vw, 24px);
+}

@@ -9,38 +9,8 @@ import { AuthService } from '../../../core/services/auth.service';
 @Component({
 	selector: 'app-login-page',
 	imports: [FormsModule, RouterLink],
-	styleUrls: ['../auth/auth.page.css'],
-  template: `
-    <main class="auth-shell auth-shell-login">
-      <form class="auth-card auth-card-login" (ngSubmit)="login()">
-        <span class="eyebrow">Administração</span>
-        <h1>Entrar</h1>
-        <p class="auth-intro">Acesse o painel para editar o casamento e acompanhar convidados.</p>
-        <button class="auth-google" type="button" [disabled]="isGoogleLoginLoading || isSubmitting || isCheckingRedirect" (click)="loginWithGoogle()">
-          {{ isGoogleLoginLoading ? 'Entrando com Google...' : 'Entrar com Google' }}
-        </button>
-        <div class="auth-divider">ou use seu email</div>
-        <label>
-          Email
-          <input type="email" name="email" [(ngModel)]="email" required autocomplete="email" />
-        </label>
-        <label>
-          Senha
-          <input type="password" name="password" [(ngModel)]="password" required autocomplete="current-password" />
-        </label>
-        <button class="auth-button" type="submit" [disabled]="isSubmitting || isGoogleLoginLoading || isCheckingRedirect">
-          {{ isSubmitting ? 'Entrando...' : 'Entrar' }}
-        </button>
-        <div class="auth-link-row">
-          <span class="auth-note">Ainda não tem conta?</span>
-          <a routerLink="/admin/cadastro">Criar acesso</a>
-        </div>
-        @if (error) {
-          <p class="auth-error">{{ error }}</p>
-        }
-      </form>
-    </main>
-  `,
+	styleUrls: ['./login.page.css', '../auth/auth.page.css'],
+  templateUrl: './login.page.html',
 })
 export class LoginPage implements OnInit {
 	private readonly adminWeddingBootstrapService = inject(AdminWeddingBootstrapService);

@@ -12,66 +12,9 @@ import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 @Component({
   selector: 'app-schedule-admin-page',
   imports: [AdminHeaderComponent, AsyncPipe, FormsModule],
-  template: `
-    <app-admin-header />
-    @let items = schedule$ | async;
+  templateUrl: './schedule-admin.page.html',
 
-    <main class="admin-page">
-      <h1>Agenda</h1>
-      @if (shouldShowForm(items)) {
-        <form class="form-card" (ngSubmit)="saveItem()">
-          <label>
-            Titulo
-            <input name="title" [(ngModel)]="title" required />
-          </label>
-          <label>
-            Horario
-            <input name="startsAt" [(ngModel)]="startsAt" placeholder="16:00" required />
-          </label>
-          <label>
-            Local
-            <input name="locationLabel" [(ngModel)]="locationLabel" />
-          </label>
-          <label>
-            Descricao
-            <textarea name="description" [(ngModel)]="description"></textarea>
-          </label>
-          <button class="primary-action" type="submit" [disabled]="isDemoMode()">{{ editingItemId ? 'Salvar item' : 'Adicionar item' }}</button>
-          @if (items?.length) {
-            <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
-          }
-        </form>
-      } @else if (items?.length) {
-        <button class="primary-action form-toggle-action" type="button" [disabled]="isDemoMode()" (click)="openForm()">Adicionar item</button>
-      }
-
-      <div class="list-stack">
-        @for (item of items; track item.id) {
-          <article class="info-card admin-list-card">
-            <div class="card-actions" [class.demo-disabled]="isDemoMode()" [attr.aria-disabled]="isDemoMode()">
-              <button class="icon-action" type="button" (click)="editItem(item)" aria-label="Editar item">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z" />
-                  <path d="m14 6 4 4" />
-                </svg>
-              </button>
-              <button class="icon-action" type="button" (click)="removeItem(item.id)" aria-label="Remover item">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M5 7h14" />
-                  <path d="M9 7V5h6v2" />
-                  <path d="M8 10v8" />
-                  <path d="M16 10v8" />
-                  <path d="M6.5 7 7 21h10l.5-14" />
-                </svg>
-              </button>
-            </div>
-            <h2>{{ item.title }}</h2>
-            <p>{{ item.startsAt }} · {{ item.locationLabel || 'Sem local especifico' }}</p>
-          </article>
-        }
-      </div>
-    </main>
-  `,
+  styleUrl: './schedule-admin.page.css',
 })
 export class ScheduleAdminPage {
   private readonly weddingContextService = inject(WeddingContextService);

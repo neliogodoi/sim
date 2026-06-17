@@ -1,0 +1,259 @@
+.dashboard-page {
+	display: grid;
+	gap: 20px;
+	min-width: 0;
+}
+
+.dashboard-topbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	min-width: 0;
+}
+
+.dashboard-topbar h1 {
+	margin: 0;
+	min-width: 0;
+}
+
+.dashboard-actions {
+	display: flex;
+	flex-shrink: 0;
+	gap: 8px;
+}
+
+.round-icon-action {
+	display: inline-grid;
+	place-items: center;
+	width: 42px;
+	height: 42px;
+	border: 1px solid var(--color-border);
+	border-radius: 50%;
+	background: var(--color-surface);
+	color: var(--color-text);
+	cursor: pointer;
+}
+
+.round-icon-action svg,
+.dashboard-shortcut svg {
+	width: 22px;
+	height: 22px;
+	fill: none;
+	stroke: currentColor;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	stroke-width: 1.8;
+}
+
+.discreet-create-card {
+	margin-top: 0;
+}
+
+.dashboard-wedding-card {
+	display: grid;
+	grid-template-columns: minmax(88px, 112px) minmax(0, 1fr);
+	gap: 16px;
+	align-items: center;
+	min-width: 0;
+	padding: 14px;
+	border: 1px solid var(--color-border);
+	border-radius: 12px;
+	background: var(--color-surface);
+}
+
+.dashboard-cover {
+	width: 100%;
+	height: auto;
+	aspect-ratio: 1;
+	overflow: hidden;
+	border-radius: 10px;
+	background:
+		radial-gradient(circle at 30% 25%, rgba(var(--color-primary-rgb), 0.28), transparent 36%),
+		linear-gradient(135deg, var(--color-soft), var(--color-background));
+}
+
+.dashboard-cover img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.dashboard-wedding-copy {
+	min-width: 0;
+}
+
+.dashboard-wedding-copy .eyebrow {
+	margin: 0 0 4px;
+	color: var(--color-muted);
+	font-size: 0.78rem;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+}
+
+.dashboard-wedding-copy h2 {
+	margin: 0;
+	color: var(--color-text);
+	font-size: clamp(1.25rem, 4.2vw, 1.55rem);
+	font-weight: 800;
+	line-height: 1.1;
+}
+
+.dashboard-wedding-copy p {
+	margin: 6px 0 0;
+	color: var(--color-muted);
+	overflow-wrap: anywhere;
+}
+
+.dashboard-card-palette {
+	justify-content: flex-start;
+	gap: 6px;
+	margin-top: 10px;
+}
+
+.dashboard-card-palette span {
+	width: 10px;
+	height: 10px;
+}
+
+.dashboard-party-strip {
+	display: grid;
+	gap: 10px;
+	padding: 14px;
+	border: 1px solid var(--color-border);
+	border-radius: 12px;
+	background: var(--color-surface);
+}
+
+.dashboard-party-strip h2 {
+	margin: 0;
+	font-size: 1rem;
+}
+
+.party-avatar-row {
+	display: flex;
+	gap: 8px;
+	overflow: hidden;
+}
+
+.party-avatar-row .person-photo {
+	width: 54px;
+	height: 54px;
+	border: 2px solid var(--color-surface-strong);
+}
+
+.dashboard-shortcuts {
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	gap: 10px;
+	min-width: 0;
+}
+
+.dashboard-shortcut {
+	display: grid;
+	place-items: center;
+	gap: 8px;
+	min-width: 0;
+	min-height: 92px;
+	padding: 12px 8px;
+	border: 1px solid var(--color-border);
+	border-radius: 12px;
+	background: var(--color-surface);
+	color: var(--color-text);
+	font-weight: 800;
+	text-align: center;
+}
+
+.dashboard-shortcut svg {
+	width: 30px;
+	height: 30px;
+}
+
+.dashboard-shortcut span {
+	font-size: 0.84rem;
+	max-width: 100%;
+	line-height: 1.12;
+}
+
+.compact-wedding-list h2 {
+	margin: 12px 0 0;
+	font-size: 1rem;
+}
+
+.wedding-select-card {
+	display: grid;
+	gap: 4px;
+	width: 100%;
+	padding: 14px;
+	border: 1px solid var(--color-border);
+	border-radius: 10px;
+	background: var(--color-surface);
+	color: var(--color-text);
+	text-align: left;
+	cursor: pointer;
+}
+
+.wedding-select-card span {
+	font-weight: 800;
+}
+
+.wedding-select-card small {
+	color: var(--color-muted);
+}
+
+@media (max-width: 430px) {
+	.dashboard-page {
+		gap: 16px;
+	}
+
+	.dashboard-topbar {
+		gap: 10px;
+	}
+
+	.round-icon-action {
+		width: 40px;
+		height: 40px;
+	}
+
+	.dashboard-wedding-card {
+		grid-template-columns: 92px minmax(0, 1fr);
+		gap: 12px;
+		padding: 12px;
+	}
+
+	.dashboard-wedding-copy h2 {
+		font-size: clamp(1.25rem, 6.2vw, 1.55rem);
+	}
+
+	.dashboard-shortcuts {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 8px;
+	}
+
+	.dashboard-shortcut {
+		min-height: 78px;
+		padding: 10px 6px;
+	}
+
+	.dashboard-shortcut svg {
+		width: 26px;
+		height: 26px;
+	}
+
+	.dashboard-shortcut span {
+		font-size: 0.72rem;
+	}
+}
+
+@media (max-width: 360px) {
+	.dashboard-shortcut span {
+		font-size: 0.68rem;
+	}
+
+	.dashboard-shortcut {
+		min-height: 72px;
+		padding-inline: 4px;
+	}
+}

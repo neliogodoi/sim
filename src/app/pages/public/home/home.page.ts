@@ -11,39 +11,9 @@ import { toDisplayImageUrl } from '../../../core/utils/image-url';
 @Component({
 	selector: 'app-home-page',
 	imports: [AsyncPipe, PublicNavComponent],
-	template: `
-    @let wedding = wedding$ | async;
+	templateUrl: './home.page.html',
 
-    <main class="public-page home-page">
-      <section class="hero" [class.hero-empty]="!wedding?.coverImageUrl">
-        @if (wedding?.coverImageUrl) {
-          <img [src]="imageUrl(wedding?.coverImageUrl)" alt="Foto do casal" />
-        } @else {
-          <div class="hero-placeholder"></div>
-        }
-      </section>
-
-      <section class="home-content">
-        <div class="ornament" aria-hidden="true">♥</div>
-        <h1>{{ wedding?.coupleNames || 'Os noivos' }}</h1>
-        <p class="date">{{ wedding?.eventDate || '10/06/2026' }}</p>
-        <p class="countdown">{{ countdownLabel(wedding?.eventDate) }}</p>
-        <p class="message">
-          {{
-            wedding?.welcomeMessage ||
-              'Estamos preparando esse momento com muito carinho e queremos viver cada detalhe ao lado de pessoas especiais.'
-          }}
-        </p>
-        <div class="palette-dots public-palette-dots" aria-label="Paleta do casamento">
-          @for (color of paletteColors(wedding); track $index) {
-            <span [style.background]="color"></span>
-          }
-        </div>
-      </section>
-    </main>
-
-    <app-public-nav />
-  `,
+	styleUrl: './home.page.css',
 })
 export class HomePage {
 	private readonly route = inject(ActivatedRoute);

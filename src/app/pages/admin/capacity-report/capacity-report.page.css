@@ -1,0 +1,65 @@
+.capacity-report-page {
+	display: grid;
+	gap: 14px;
+}
+
+.capacity-hero-card {
+	display: grid;
+	gap: 8px;
+	padding: 22px;
+	border-radius: 18px;
+	background: var(--color-text);
+	color: var(--color-surface);
+}
+
+.capacity-hero-card span,
+.capacity-metrics span {
+	font-size: 0.78rem;
+	font-weight: 900;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.capacity-hero-card strong {
+	font-size: clamp(3.2rem, 18vw, 5.5rem);
+	line-height: 0.95;
+}
+
+.capacity-hero-card p {
+	margin: 0;
+	color: color-mix(in srgb, var(--color-surface) 76%, transparent);
+	line-height: 1.45;
+}
+
+.capacity-metrics {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 10px;
+}
+
+.capacity-metrics strong {
+	font-size: 1.65rem;
+	line-height: 1;
+}
+
+.capacity-status-card div {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.capacity-line-card {
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+}
+
+.capacity-line-card strong {
+	font-size: 1.8rem;
+}
+
+@media (max-width: 430px) {
+	.capacity-metrics,
+	.capacity-line-card {
+		grid-template-columns: 1fr;
+	}
+}

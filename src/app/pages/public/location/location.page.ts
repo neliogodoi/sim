@@ -10,29 +10,9 @@ import { PublicNavComponent } from '../../../layout/public-nav.component';
 @Component({
   selector: 'app-location-page',
   imports: [AsyncPipe, PublicNavComponent],
-  template: `
-    @let wedding = wedding$ | async;
+  templateUrl: './location.page.html',
 
-    <main class="public-page content-page">
-      <h1>Local</h1>
-      <section class="info-card">
-        <h2>Cerimonia</h2>
-        <p>{{ wedding?.ceremonyAddress || 'Endereco ainda nao configurado.' }}</p>
-        @if (wedding?.ceremonyMapUrl) {
-          <a class="secondary-action" [href]="wedding?.ceremonyMapUrl" target="_blank" rel="noreferrer">Abrir mapa</a>
-        }
-      </section>
-      <section class="info-card">
-        <h2>Recepcao</h2>
-        <p>{{ wedding?.receptionAddress || 'Mesmo local da cerimonia ou endereco a confirmar.' }}</p>
-        @if (wedding?.receptionMapUrl) {
-          <a class="secondary-action" [href]="wedding?.receptionMapUrl" target="_blank" rel="noreferrer">Abrir mapa</a>
-        }
-      </section>
-    </main>
-
-    <app-public-nav />
-  `,
+  styleUrl: './location.page.css',
 })
 export class LocationPage {
   private readonly route = inject(ActivatedRoute);

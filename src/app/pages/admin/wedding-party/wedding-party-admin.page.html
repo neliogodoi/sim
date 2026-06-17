@@ -1,0 +1,105 @@
+    <app-admin-header />
+    @let members = members$ | async;
+
+    <main class="admin-page">
+      <h1>Padrinhos</h1>
+      @if (shouldShowForm(members)) {
+        <form class="form-card" (ngSubmit)="saveMember()">
+          <label>
+            Primeira pessoa
+            <input name="firstName" [(ngModel)]="firstName" required />
+          </label>
+          <label>
+            Segunda pessoa
+            <input name="secondName" [(ngModel)]="secondName" required />
+          </label>
+          <label>
+            Lado
+            <select name="side" [(ngModel)]="side">
+              <option value="couple">Casal</option>
+              <option value="bride">Noiva</option>
+              <option value="groom">Noivo</option>
+            </select>
+          </label>
+          <label>
+            URL da foto
+            <input name="photoUrl" [(ngModel)]="photoUrl" />
+          </label>
+          <label>
+            Enviar foto
+            <input type="file" accept="image/*" [disabled]="isUploadingPhoto" (change)="uploadPhoto($event)" />
+          </label>
+          @if (photoUrl) {
+            <img class="cover-preview" [src]="imageUrl(photoUrl)" alt="Previa da foto dos padrinhos" />
+          }
+          @if (uploadMessage) {
+            <p class="muted-state">{{ uploadMessage }}</p>
+          }
+          @if (uploadError) {
+            <p class="error-state">{{ uploadError }}</p>
+          }
+          <button class="primary-action" type="submit" [disabled]="isDemoMode()">{{ editingMemberId ? 'Salvar padrinhos' : 'Adicionar padrinhos' }}</button>
+          @if (members?.length) {
+            <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
+          }
+        </form>
+      } @else if (members?.length) {
+        <button class="primary-action form-toggle-action" type="button" [disabled]="isDemoMode()" (click)="openForm()">Adicionar padrinhos</button>
+      }
+
+      <div class="list-stack">
+        @for (member of members; track member.id) {
+          <article class="info-card admin-list-card wedding-party-card compact-person-card">
+            <div class="card-actions">
+              <a class="icon-action" [href]="groomsmenPrintUrl(member)" target="_blank" rel="noreferrer" aria-label="Imprimir convite dos padrinhos">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7 8V4h10v4" />
+                  <path d="M6 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-1" />
+                  <path d="M7 14h10v6H7z" />
+                </svg>
+              </a>
+              <a class="icon-action" [class.demo-disabled]="isDemoMode()" [attr.aria-disabled]="isDemoMode()" [href]="groomsmenWhatsappInviteLink(member)" target="_blank" rel="noreferrer" aria-label="Enviar convite dos padrinhos">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 6h16v12H4z" />
+                  <path d="m4 7 8 6 8-6" />
+                </svg>
+              </a>
+              <button class="icon-action" type="button" [disabled]="isDemoMode()" (click)="editMember(member)" aria-label="Editar padrinhos">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z" />
+                  <path d="m14 6 4 4" />
+                </svg>
+              </button>
+              <button class="icon-action" type="button" [disabled]="isDemoMode()" (click)="removeMember(member.id)" aria-label="Remover padrinhos">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 7h14" />
+                  <path d="M9 7V5h6v2" />
+                  <path d="M8 10v8" />
+                  <path d="M16 10v8" />
+                  <path d="M6.5 7 7 21h10l.5-14" />
+                </svg>
+              </button>
+            </div>
+            <div class="compact-card-media">
+              @if (member.photoUrl) {
+                <img class="person-photo" [src]="imageUrl(member.photoUrl)" [alt]="shortCoupleName(member)" />
+              }
+            </div>
+            <div class="compact-card-copy">
+              <h2>{{ shortCoupleName(member) }}</h2>
+              <p>
+                {{ sideLabel(member.side) }}
+                @if (member.invitationStatus) {
+                  ·
+                  <span class="status-pill" [class.confirmed]="member.invitationStatus === 'accepted'">
+                    {{ invitationLabel(member.invitationStatus) }}
+                  </span>
+                }
+              </p>
+            </div>
+          </article>
+        } @empty {
+          <p>Nenhum padrinho cadastrado ainda.</p>
+        }
+      </div>
+    </main>

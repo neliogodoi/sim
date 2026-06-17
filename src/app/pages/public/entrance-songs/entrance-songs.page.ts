@@ -10,30 +10,9 @@ import { PublicNavComponent } from '../../../layout/public-nav.component';
 @Component({
   selector: 'app-entrance-songs-page',
   imports: [AsyncPipe, PublicNavComponent],
-  template: `
-    @let songs = songs$ | async;
+  templateUrl: './entrance-songs.page.html',
 
-    <main class="public-page content-page">
-      <h1>Musicas</h1>
-      @if (songs?.length) {
-        <div class="list-stack">
-          @for (song of songs; track song.id) {
-            <article class="info-card">
-              <h2>{{ song.moment }}</h2>
-              <p>{{ song.songTitle }}</p>
-              @if (song.url) {
-                <a class="secondary-action" [href]="song.url" target="_blank" rel="noreferrer">Ouvir</a>
-              }
-            </article>
-          }
-        </div>
-      } @else {
-        <p>Lista de musicas ainda nao configurada.</p>
-      }
-    </main>
-
-    <app-public-nav />
-  `,
+  styleUrl: './entrance-songs.page.css',
 })
 export class EntranceSongsPage {
   private readonly route = inject(ActivatedRoute);

@@ -1,0 +1,29 @@
+.more-admin-page {
+	align-content: start;
+	padding-top: 20px;
+}
+
+.more-admin-page h1 {
+	margin-bottom: 8px;
+}
+
+.more-admin-page .list-stack {
+	gap: 8px;
+}
+
+.more-admin-page .link-card {
+	padding: 12px 14px;
+}
+
+.more-admin-page .link-card h2 {
+	font-size: 1rem;
+}
+
+.more-admin-page .link-card p {
+	margin-top: 4px;
+	font-size: 0.9rem;
+}
+
+.more-admin-page .secondary-action {
+	margin-top: 8px;
+}

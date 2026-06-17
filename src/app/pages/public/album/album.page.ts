@@ -12,29 +12,9 @@ import { PublicNavComponent } from '../../../layout/public-nav.component';
 @Component({
   selector: 'app-album-page',
   imports: [AsyncPipe, PublicNavComponent],
-  template: `
-    @let wedding = wedding$ | async;
+  templateUrl: './album.page.html',
 
-    <main class="public-page content-page album-page">
-      <h1>Album compartilhado</h1>
-      <p>Abra o album no Google Fotos ou aponte a camera para o QR Code.</p>
-
-      @if (wedding?.sharedAlbumUrl) {
-        @if (qrCodeUrl()) {
-          <img class="qr-image" [src]="qrCodeUrl()" alt="QR Code do album compartilhado" />
-        } @else {
-          <div class="qr-placeholder" aria-label="QR Code do album">QR</div>
-        }
-        <a class="primary-action" [href]="wedding?.sharedAlbumUrl" target="_blank" rel="noreferrer">
-          Abrir album
-        </a>
-      } @else {
-        <p>Album ainda nao configurado.</p>
-      }
-    </main>
-
-    <app-public-nav />
-  `,
+  styleUrl: './album.page.css',
 })
 export class AlbumPage implements OnInit {
   private readonly route = inject(ActivatedRoute);

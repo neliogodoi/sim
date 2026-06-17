@@ -1,0 +1,56 @@
+    @let wedding = wedding$ | async;
+    @let template = templateSvg$ | async;
+    @let isReadOnly = isReadOnly$ | async;
+
+    <main class="print-invite-page special-invite-page">
+      <section class="print-invite-card groomsmen-invite-card">
+        <div class="screen-invite-content">
+          <section class="hero" [class.hero-empty]="!wedding?.coverImageUrl">
+            @if (wedding?.coverImageUrl) {
+              <img [src]="imageUrl(wedding?.coverImageUrl)" [alt]="wedding?.coupleNames || 'Casamento'" />
+            } @else {
+              <div class="hero-placeholder"></div>
+            }
+          </section>
+
+          <div class="special-invite-content">
+            <div class="ornament" aria-hidden="true">♥</div>
+            <h2 class="invite-couple-name">{{ wedding?.coupleNames || 'Os noivos' }}</h2>
+            @if (wedding?.eventDate) {
+              <p class="date">{{ wedding?.eventDate }}</p>
+            }
+            <p class="eyebrow">Convite especial</p>
+            <h1 class="groomsmen-question">Vocês aceitam ser nossos padrinhos?</h1>
+            @let member = member$ | async;
+            @if (member) {
+              <p class="groomsmen-names">{{ shortCoupleName(member) }}</p>
+            }
+            <p class="invite-message">
+              Queremos ter vocês ainda mais perto nesse momento. A presença de vocês na nossa história é importante,
+              e seria uma alegria contar com vocês como padrinhos.
+            </p>
+          </div>
+        </div>
+
+        @if (template) {
+          <div class="groomsmen-template-svg print-template-only" [innerHTML]="template"></div>
+        }
+
+        @if (!isReadOnly) {
+          <div class="template-acceptance-panel screen-only">
+            <div class="acceptance-actions">
+              <button class="acceptance-button" type="button" (click)="respond('accepted')">Sim</button>
+              <button class="acceptance-button ghost" type="button" (click)="respond('declined')">Não</button>
+            </div>
+            @if (responseMessage()) {
+              <p class="success-state">{{ responseMessage() }}</p>
+            }
+          </div>
+        } @else {
+          <div class="template-acceptance-panel screen-only">
+            <p class="muted-state">Este convite está disponível apenas para visualização.</p>
+          </div>
+        }
+      </section>
+
+    </main>

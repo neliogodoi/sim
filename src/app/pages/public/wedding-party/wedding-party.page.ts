@@ -12,30 +12,9 @@ import { PublicNavComponent } from '../../../layout/public-nav.component';
 @Component({
   selector: 'app-wedding-party-page',
   imports: [AsyncPipe, PublicNavComponent],
-  template: `
-    @let members = members$ | async;
+  templateUrl: './wedding-party.page.html',
 
-    <main class="public-page content-page">
-      <h1>Padrinhos</h1>
-      @if (members?.length) {
-        <div class="list-stack">
-          @for (member of members; track member.id) {
-            <article class="info-card">
-              @if (member.photoUrl) {
-                <img class="person-photo" [src]="imageUrl(member.photoUrl)" [alt]="coupleName(member)" />
-              }
-              <h2>{{ coupleName(member) }}</h2>
-              <p>{{ sideLabel(member.side) }}</p>
-            </article>
-          }
-        </div>
-      } @else {
-        <p>Lista de padrinhos ainda nao configurada.</p>
-      }
-    </main>
-
-    <app-public-nav />
-  `,
+  styleUrl: './wedding-party.page.css',
 })
 export class WeddingPartyPage {
   private readonly route = inject(ActivatedRoute);

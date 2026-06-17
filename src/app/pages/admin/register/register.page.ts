@@ -9,63 +9,8 @@ import { AuthService } from '../../../core/services/auth.service';
 @Component({
 	selector: 'app-register-page',
 	imports: [FormsModule, RouterLink],
-	styleUrls: ['../auth/auth.page.css'],
-	template: `
-    <main class="auth-shell">
-      <section class="auth-hero">
-        <span class="eyebrow">Novo acesso</span>
-        <h1>Criar conta no SIM</h1>
-        <p>
-          Cadastre a conta principal do casamento e comece com uma base já preparada para convite, convidados e painel administrativo.
-        </p>
-        <div class="auth-points">
-          <div class="auth-point">
-            <strong>Conta separada</strong>
-            <span>Cadastro dedicado, sem misturar com o login de usuários já existentes.</span>
-          </div>
-          <div class="auth-point">
-            <strong>Preparado para casar</strong>
-            <span>Ao concluir, o painel é liberado e o casamento é configurado automaticamente.</span>
-          </div>
-          <div class="auth-point">
-            <strong>Tempo de espera</strong>
-            <span>Indicamos o carregamento sem deixar a tela em silêncio.</span>
-          </div>
-        </div>
-      </section>
-
-      <form class="auth-card" (ngSubmit)="register()">
-        <span class="eyebrow">Primeiro acesso</span>
-        <h2>Crie sua conta</h2>
-        <button class="auth-google" type="button" [disabled]="isGoogleLoginLoading || isSubmitting || isCheckingRedirect" (click)="registerWithGoogle()">
-          {{ isGoogleLoginLoading ? 'Cadastrando com Google...' : 'Criar conta com Google' }}
-        </button>
-        <div class="auth-divider">ou preencha os dados</div>
-        <label>
-          Nome dos noivos
-          <input name="displayName" [(ngModel)]="displayName" autocomplete="name" />
-        </label>
-        <label>
-          Email
-          <input type="email" name="email" [(ngModel)]="email" required autocomplete="email" />
-        </label>
-        <label>
-          Senha
-          <input type="password" name="password" [(ngModel)]="password" required autocomplete="new-password" />
-        </label>
-        <button class="auth-button" type="submit" [disabled]="isSubmitting || isGoogleLoginLoading || isCheckingRedirect">
-          {{ isSubmitting ? 'Criando conta...' : 'Criar conta' }}
-        </button>
-        <div class="auth-link-row">
-          <span class="auth-note">Já tem acesso?</span>
-          <a routerLink="/admin/login">Voltar para login</a>
-        </div>
-        @if (error) {
-          <p class="auth-error">{{ error }}</p>
-        }
-      </form>
-    </main>
-  `,
+	styleUrls: ['./register.page.css', '../auth/auth.page.css'],
+	templateUrl: './register.page.html',
 })
 export class RegisterPage implements OnInit {
 	private readonly adminWeddingBootstrapService = inject(AdminWeddingBootstrapService);
