@@ -19,12 +19,17 @@
             @if (wedding?.eventDate) {
               <p class="date">{{ wedding?.eventDate }}</p>
             }
+            <div class="invite-divider ornate" aria-hidden="true"><span></span></div>
             <p class="eyebrow">Convite especial</p>
+            <div class="invite-divider short" aria-hidden="true"></div>
             <h1 class="groomsmen-question">Vocês aceitam ser nossos padrinhos?</h1>
             @let member = member$ | async;
             @if (member) {
-              <p class="groomsmen-names">{{ shortCoupleName(member) }}</p>
+              <div class="invite-honoree-row">
+                <p class="groomsmen-names">{{ shortCoupleName(member) }}</p>
+              </div>
             }
+            <div class="invite-divider message-divider" aria-hidden="true"><span>♥</span></div>
             <p class="invite-message">
               Queremos ter vocês ainda mais perto nesse momento. A presença de vocês na nossa história é importante,
               e seria uma alegria contar com vocês como padrinhos.

@@ -23,7 +23,7 @@
           }
         </form>
       } @else if (songs?.length) {
-        <button class="primary-action form-toggle-action" type="button" [disabled]="isDemoMode()" (click)="openForm()">Adicionar musica</button>
+        <app-floating-add-button label="Adicionar musica" [disabled]="isDemoMode()" (pressed)="openForm()" />
       }
 
       <div class="list-stack">

@@ -3,6 +3,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest, filter, firstValueFrom, map, of, switchMap, take } from 'rxjs';
 
+import { SCRIPT_FONT_OPTIONS } from '../../../core/constants/script-fonts';
 import { ImportantPerson } from '../../../core/models/wedding.models';
 import { WeddingContextService } from '../../../core/services/wedding-context.service';
 import { DEFAULT_WEDDING_ID, WeddingService } from '../../../core/services/wedding.service';
@@ -45,7 +46,9 @@ export class ImportantPersonInvitePage implements OnInit {
 				filter(([params, wedding, person]) => params.get('print') === '1' && !!wedding && !!person),
 				take(1),
 			)
-			.subscribe(() => setTimeout(() => window.print()));
+			.subscribe(() => {
+				void this.printWhenReady();
+			});
 	}
 
 	protected async respond(invitationStatus: 'accepted' | 'declined'): Promise<void> {
@@ -82,5 +85,51 @@ export class ImportantPersonInvitePage implements OnInit {
 		return person.secondName && person.secondRole
 			? `${this.roleLabel(person.role)} & ${this.roleLabel(person.secondRole)}`
 			: this.roleLabel(person.role);
+	}
+
+	private async printWhenReady(): Promise<void> {
+		await this.waitForFonts();
+		await this.waitForImages();
+		await this.nextFrame();
+		window.print();
+	}
+
+	private async waitForFonts(): Promise<void> {
+		if (!('fonts' in document)) {
+			return;
+		}
+
+		const fontLoads = [
+			...SCRIPT_FONT_OPTIONS.map((option) => document.fonts.load(`16px "${option.value}"`)),
+			document.fonts.load('16px "Cormorant Garamond"'),
+			document.fonts.load('16px "Playfair Display"'),
+			document.fonts.ready,
+		];
+
+		await Promise.allSettled(fontLoads);
+	}
+
+	private async waitForImages(): Promise<void> {
+		const images = Array.from(document.images);
+		if (!images.length) {
+			return;
+		}
+
+		await Promise.allSettled(
+			images.map((image) => {
+				if (image.complete) {
+					return Promise.resolve();
+				}
+
+				return new Promise<void>((resolve) => {
+					image.addEventListener('load', () => resolve(), { once: true });
+					image.addEventListener('error', () => resolve(), { once: true });
+				});
+			}),
+		);
+	}
+
+	private nextFrame(): Promise<void> {
+		return new Promise((resolve) => requestAnimationFrame(() => resolve()));
 	}
 }

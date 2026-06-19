@@ -55,9 +55,19 @@ const demoAdminRoutes: Routes = [
 			import('./pages/admin/capacity-report/capacity-report.page').then((m) => m.CapacityReportPage),
 	},
 	{
+		path: 'demo/configuracoes',
+		canActivate: [demoAdminGuard],
+		loadComponent: () => import('./pages/admin/settings/settings.page').then((m) => m.SettingsPage),
+	},
+	{
 		path: 'demo/recados',
 		canActivate: [demoAdminGuard],
 		loadComponent: () => import('./pages/admin/messages/messages-admin.page').then((m) => m.MessagesAdminPage),
+	},
+	{
+		path: 'demo/tema',
+		canActivate: [demoAdminGuard],
+		loadComponent: () => import('./pages/admin/theme/theme-admin.page').then((m) => m.ThemeAdminPage),
 	},
 	{
 		path: 'demo/mais',
@@ -173,6 +183,11 @@ export const routes: Routes = [
 		path: 'admin/recados',
 		canActivate: [adminGuard],
 		loadComponent: () => import('./pages/admin/messages/messages-admin.page').then((m) => m.MessagesAdminPage),
+	},
+	{
+		path: 'admin/tema',
+		canActivate: [adminGuard],
+		loadComponent: () => import('./pages/admin/theme/theme-admin.page').then((m) => m.ThemeAdminPage),
 	},
 	{
 		path: 'admin/mais',

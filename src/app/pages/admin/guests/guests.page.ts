@@ -9,10 +9,12 @@ import { Guest } from '../../../core/models/wedding.models';
 import { WeddingContextService } from '../../../core/services/wedding-context.service';
 import { WeddingService } from '../../../core/services/wedding.service';
 import { AdminHeaderComponent } from '../../../layout/admin-header.component';
+import { FloatingAddButtonComponent } from '../../../shared/ui/floating-add-button.component';
+import { StatusCheckComponent } from '../../../shared/ui/status-check.component';
 
 @Component({
   selector: 'app-guests-page',
-  imports: [AdminHeaderComponent, AsyncPipe, FormsModule],
+  imports: [AdminHeaderComponent, AsyncPipe, FormsModule, FloatingAddButtonComponent, StatusCheckComponent],
   templateUrl: './guests.page.html',
 
   styleUrl: './guests.page.css',

@@ -20,23 +20,14 @@
           Mensagem
           <textarea name="welcomeMessage" [(ngModel)]="welcomeMessage" [placeholder]="wedding?.welcomeMessage || 'Mensagem dos noivos'"></textarea>
         </label>
-        <label>
-          URL da foto de capa
-          <input name="coverImageUrl" [(ngModel)]="coverImageUrl" placeholder="Link publico do Google Drive ou URL direta" />
-        </label>
-        <label>
-          Enviar foto de capa
-          <input type="file" accept="image/*" [disabled]="isUploadingCover" (change)="uploadCoverImage($event)" />
-        </label>
-        @if (coverImageUrl) {
-          <img class="cover-preview" [src]="imageUrl(coverImageUrl)" alt="Previa da foto de capa" />
-        }
-        @if (uploadMessage) {
-          <p class="muted-state">{{ uploadMessage }}</p>
-        }
-        @if (uploadError) {
-          <p class="error-state">{{ uploadError }}</p>
-        }
+        <app-image-upload-field
+          [imageUrl]="imageUrl(coverImageUrl)"
+          alt="Previa da foto de capa"
+          emptyTitle="Adicionar foto de capa"
+          emptyDescription="Toque para enviar uma foto. URLs manuais nao sao mais usadas."
+          [uploading]="isUploadingCover"
+          (fileSelected)="uploadCoverImage($event)"
+        />
         <label>
           Link do album Google Fotos
           <input name="sharedAlbumUrl" [(ngModel)]="sharedAlbumUrl" [placeholder]="wedding?.sharedAlbumUrl || 'https://photos.app.goo.gl/...'" />
@@ -57,33 +48,6 @@
           Link Google Maps da recepcao
           <input name="receptionMapUrl" [(ngModel)]="receptionMapUrl" [placeholder]="wedding?.receptionMapUrl || 'https://maps.google.com/...'" />
         </label>
-        <label>
-          Cor principal
-          <input type="color" name="primary" [(ngModel)]="primary" />
-        </label>
-        <label>
-          Cor secundaria
-          <input type="color" name="secondary" [(ngModel)]="secondary" />
-        </label>
-        <label>
-          Cor terciaria
-          <input type="color" name="tertiary" [(ngModel)]="tertiary" />
-        </label>
-        <label>
-          Branco / base
-          <input type="color" name="neutral" [(ngModel)]="neutral" />
-        </label>
-        <fieldset class="font-picker">
-          <legend>Fonte dos nomes dos noivos</legend>
-          <div class="font-option-list">
-            @for (font of scriptFontOptions; track font.value) {
-              	<label class="font-option" [class.active]="scriptFont === font.value" >
-					<input type="radio" name="font" [value]="font.value" [(ngModel)]="scriptFont" />
-					<span [style.font-family]="font.cssFamily"> {{ coupleNames || font.label }} </span>
-				</label>
-            }
-          </div>
-        </fieldset>
         <button class="primary-action" type="submit">Salvar</button>
       </form>
     </main>

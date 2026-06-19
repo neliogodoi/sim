@@ -1,23 +1,17 @@
 .dashboard-page {
 	display: grid;
-	gap: 20px;
+	gap: 14px;
 	min-width: 0;
-}
-
-.dashboard-topbar {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 16px;
-	min-width: 0;
-}
-
-.dashboard-topbar h1 {
-	margin: 0;
-	min-width: 0;
+	padding: 0 1.2em 1.2em;
+	align-content: start;
+	color: var(--color-text) !important;
 }
 
 .dashboard-actions {
+	position: absolute;
+	top: 18px;
+	right: 18px;
+	z-index: 3;
 	display: flex;
 	flex-shrink: 0;
 	gap: 8px;
@@ -28,11 +22,13 @@
 	place-items: center;
 	width: 42px;
 	height: 42px;
-	border: 1px solid var(--color-border);
 	border-radius: 50%;
-	background: var(--color-surface);
 	color: var(--color-text);
 	cursor: pointer;
+	background-color: rgba(255, 255, 255, 0.86);
+	border: 0;
+	backdrop-filter: blur(12px);
+	box-shadow: 0 10px 26px rgba(var(--color-shadow), 0.14);
 }
 
 .round-icon-action svg,
@@ -51,26 +47,30 @@
 }
 
 .dashboard-wedding-card {
+	position: relative;
+	isolation: isolate;
 	display: grid;
-	grid-template-columns: minmax(88px, 112px) minmax(0, 1fr);
-	gap: 16px;
-	align-items: center;
+	align-items: end;
 	min-width: 0;
-	padding: 14px;
-	border: 1px solid var(--color-border);
-	border-radius: 12px;
-	background: var(--color-surface);
+	min-height: clamp(420px, 94vw, 560px);
+	overflow: hidden;
+	margin: 0 -1.2em;
+	padding: 0 28px 28px !important;
+	border: 0;
+	border-radius: 0;
+	background-color: var(--color-surface);
+	box-shadow: none;
+	color: var(--color-text);
 }
 
 .dashboard-cover {
+	position: absolute;
+	inset: 0;
+	z-index: -2;
 	width: 100%;
-	height: auto;
-	aspect-ratio: 1;
+	height: 100%;
 	overflow: hidden;
-	border-radius: 10px;
-	background:
-		radial-gradient(circle at 30% 25%, rgba(var(--color-primary-rgb), 0.28), transparent 36%),
-		linear-gradient(135deg, var(--color-soft), var(--color-background));
+	background-color: var(--color-soft);
 }
 
 .dashboard-cover img {
@@ -78,53 +78,90 @@
 	height: 100%;
 	object-fit: cover;
 	display: block;
+	filter: saturate(0.95) contrast(0.94) brightness(0.84);
+}
+
+.dashboard-cover::after {
+	content: '';
+	position: absolute;
+	inset: auto 0 0;
+	height: 72%;
+	pointer-events: none;
+	background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.72) 45%, var(--color-surface) 100%);
+}
+
+.dashboard-wedding-card-empty::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-color: color-mix(in srgb, var(--wedding-primary) 18%, transparent);
 }
 
 .dashboard-wedding-copy {
+	position: relative;
+	z-index: 1;
 	min-width: 0;
+	max-width: 330px;
+	margin: 0 auto;
+	padding: 0;
+	text-align: center;
 }
 
-.dashboard-wedding-copy .eyebrow {
-	margin: 0 0 4px;
-	color: var(--color-muted);
-	font-size: 0.78rem;
-	font-weight: 800;
-	text-transform: uppercase;
-	letter-spacing: 0.06em;
+.dashboard-wedding-heart {
+	color: var(--color-text);
+	font-family: var(--font-script);
+	font-size: 1.25rem;
+	line-height: 1;
 }
 
 .dashboard-wedding-copy h2 {
-	margin: 0;
+	max-width: 300px;
+	margin: 6px auto 0;
 	color: var(--color-text);
-	font-size: clamp(1.25rem, 4.2vw, 1.55rem);
-	font-weight: 800;
-	line-height: 1.1;
+	font-size: clamp(2.95rem, 15vw, 4.55rem);
+	font-weight: 400;
+	line-height: 0.72;
+	text-wrap: balance;
 }
 
-.dashboard-wedding-copy p {
-	margin: 6px 0 0;
-	color: var(--color-muted);
-	overflow-wrap: anywhere;
+.dashboard-wedding-date {
+	margin: 18px 0 0;
+	color: var(--color-text);
+	font-family: var(--font-display);
+	font-size: clamp(1.08rem, 5.3vw, 1.55rem);
+	font-weight: 700;
+	letter-spacing: 0.03em;
+}
+
+.dashboard-wedding-countdown {
+	display: block;
+	margin-top: 4px;
+	color: var(--color-text);
+	font-size: 0.78rem;
+	font-weight: 950;
 }
 
 .dashboard-card-palette {
-	justify-content: flex-start;
-	gap: 6px;
-	margin-top: 10px;
+	justify-content: center;
+	gap: 8px;
+	margin-top: 14px;
 }
 
 .dashboard-card-palette span {
-	width: 10px;
-	height: 10px;
+	width: 12px;
+	height: 12px;
 }
 
 .dashboard-party-strip {
 	display: grid;
 	gap: 10px;
 	padding: 14px;
-	border: 1px solid var(--color-border);
 	border-radius: 12px;
-	background: var(--color-surface);
+	color: var(--color-text);
+	box-shadow: 0 22px 46px rgba(var(--color-shadow), 0.08);
+	background-color: var(--color-surface);
+	text-decoration: none;
+	cursor: pointer;
 }
 
 .dashboard-party-strip h2 {
@@ -142,37 +179,41 @@
 	width: 54px;
 	height: 54px;
 	border: 2px solid var(--color-surface-strong);
+	filter: saturate(50%);
 }
 
 .dashboard-shortcuts {
 	display: grid;
-	grid-template-columns: repeat(5, minmax(0, 1fr));
-	gap: 10px;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 9px;
 	min-width: 0;
 }
 
 .dashboard-shortcut {
 	display: grid;
 	place-items: center;
-	gap: 8px;
+	gap: 6px;
 	min-width: 0;
-	min-height: 92px;
-	padding: 12px 8px;
-	border: 1px solid var(--color-border);
+	min-height: 82px;
+	padding: 10px 6px;
 	border-radius: 12px;
-	background: var(--color-surface);
 	color: var(--color-text);
+	box-shadow: 0 22px 46px rgba(var(--color-shadow), 0.08);
+	background-color: var(--color-surface);
 	font-weight: 800;
 	text-align: center;
 }
 
 .dashboard-shortcut svg {
-	width: 30px;
-	height: 30px;
+	width: 36px;
+	height: 36px;
+	padding: 6px;
+	border-radius: 999px;
+	color: var(--color-primary);
 }
 
 .dashboard-shortcut span {
-	font-size: 0.84rem;
+	font-size: 0.74rem;
 	max-width: 100%;
 	line-height: 1.12;
 }
@@ -187,7 +228,6 @@
 	gap: 4px;
 	width: 100%;
 	padding: 14px;
-	border: 1px solid var(--color-border);
 	border-radius: 10px;
 	background: var(--color-surface);
 	color: var(--color-text);
@@ -205,51 +245,52 @@
 
 @media (max-width: 430px) {
 	.dashboard-page {
-		gap: 16px;
-	}
-
-	.dashboard-topbar {
-		gap: 10px;
+		gap: 14px;
+		height: 100%;
 	}
 
 	.round-icon-action {
-		width: 40px;
-		height: 40px;
+		width: 38px;
+		height: 38px;
 	}
 
 	.dashboard-wedding-card {
-		grid-template-columns: 92px minmax(0, 1fr);
-		gap: 12px;
-		padding: 12px;
+		min-height: min(72dvh, 520px);
+		padding: 0 22px 26px !important;
+	}
+
+	.dashboard-wedding-copy {
+		max-width: 300px;
 	}
 
 	.dashboard-wedding-copy h2 {
-		font-size: clamp(1.25rem, 6.2vw, 1.55rem);
+		font-size: clamp(2.9rem, 14.5vw, 4.35rem);
 	}
 
 	.dashboard-shortcuts {
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: 8px;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 7px;
 	}
 
 	.dashboard-shortcut {
-		min-height: 78px;
-		padding: 10px 6px;
+		min-height: 70px;
+		padding: 8px 4px;
 	}
 
 	.dashboard-shortcut svg {
-		width: 26px;
-		height: 26px;
+		width: 30px;
+		height: 30px;
+		padding: 5px;
 	}
 
 	.dashboard-shortcut span {
-		font-size: 0.72rem;
+		font-size: 0.62rem;
 	}
 }
 
 @media (max-width: 360px) {
 	.dashboard-shortcut span {
-		font-size: 0.68rem;
+		font-size: 0.58rem;
 	}
 
 	.dashboard-shortcut {

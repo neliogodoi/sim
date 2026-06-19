@@ -10,9 +10,7 @@
 	display: grid;
 	place-items: center;
 	padding: 24px;
-	background:
-		radial-gradient(circle at top, rgba(var(--color-primary-rgb), 0.18), transparent 34%),
-		color-mix(in srgb, var(--color-background) 88%, transparent);
+	background: var(--color-background);
 	backdrop-filter: blur(18px);
 }
 

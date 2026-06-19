@@ -5,24 +5,18 @@ import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs';
 
-import { DEFAULT_SCRIPT_FONT, SCRIPT_FONT_OPTIONS, normalizeScriptFont } from '../../../core/constants/script-fonts';
 import { Wedding } from '../../../core/models/wedding.models';
 import { R2UploadService } from '../../../core/services/r2-upload.service';
 import { WeddingContextService } from '../../../core/services/wedding-context.service';
 import { WeddingService } from '../../../core/services/wedding.service';
 import { toDisplayImageUrl } from '../../../core/utils/image-url';
 import { AdminHeaderComponent } from '../../../layout/admin-header.component';
-
-const DEFAULT_PALETTE = {
-	primary: '#f2f2f2',
-	secondary: '#ffffff',
-	tertiary: '#eeeeee',
-	neutral: '#ffffff',
-};
+import { ImageUploadFieldComponent } from '../../../shared/ui/image-upload-field.component';
+import { ToastService } from '../../../shared/ui/toast.service';
 
 @Component({
 	selector: 'app-settings-page',
-	imports: [AdminHeaderComponent, AsyncPipe, FormsModule],
+	imports: [AdminHeaderComponent, AsyncPipe, FormsModule, ImageUploadFieldComponent],
 	templateUrl: './settings.page.html',
 
 	styleUrl: './settings.page.css',
@@ -34,6 +28,7 @@ export class SettingsPage implements OnInit {
 	private readonly auth = inject(Auth);
 	private readonly destroyRef = inject(DestroyRef);
 	private readonly changeDetectorRef = inject(ChangeDetectorRef);
+	private readonly toastService = inject(ToastService);
 	private hasLoadedWedding = false;
 
 	protected readonly weddingId$ = this.weddingContextService.activeWeddingId$;
@@ -49,12 +44,6 @@ export class SettingsPage implements OnInit {
 
 	protected receptionAddress = '';
 	protected receptionMapUrl = '';
-	protected primary = DEFAULT_PALETTE.primary;
-	protected secondary = DEFAULT_PALETTE.secondary;
-	protected tertiary = DEFAULT_PALETTE.tertiary;
-	protected neutral = DEFAULT_PALETTE.neutral;
-	protected scriptFont = DEFAULT_SCRIPT_FONT;
-	protected readonly scriptFontOptions = SCRIPT_FONT_OPTIONS;
 	protected isUploadingCover = false;
 	protected uploadMessage = '';
 	protected uploadError = '';
@@ -77,7 +66,7 @@ export class SettingsPage implements OnInit {
 			await this.weddingService.ensureOwner(uid, weddingId);
 		}
 
-		return this.weddingService.saveWedding({
+		await this.weddingService.saveWedding({
 			slug: weddingId,
 			coupleNames: this.coupleNames || 'Os noivos',
 			eventDate: this.eventDate || '10/06/2026',
@@ -88,14 +77,8 @@ export class SettingsPage implements OnInit {
 			ceremonyMapUrl: this.ceremonyMapUrl,
 			receptionAddress: this.receptionAddress,
 			receptionMapUrl: this.receptionMapUrl,
-			theme: {
-				primary: this.normalizeColor(this.primary, DEFAULT_PALETTE.primary),
-				secondary: this.normalizeColor(this.secondary, DEFAULT_PALETTE.secondary),
-				tertiary: this.normalizeColor(this.tertiary, DEFAULT_PALETTE.tertiary),
-				neutral: this.normalizeColor(this.neutral, DEFAULT_PALETTE.neutral),
-				scriptFont: normalizeScriptFont(this.scriptFont),
-			},
 		}, weddingId);
+		this.toastService.success('Configurações salvas.');
 	}
 
 	protected imageUrl(url?: string): string {
@@ -118,9 +101,11 @@ export class SettingsPage implements OnInit {
 			this.coverImageUrl = url;
 			await this.saveCoverImageUrl(url);
 			this.uploadMessage = 'Foto enviada e salva.';
+			this.toastService.success('Foto enviada e salva.');
 		} catch (error) {
 			this.uploadMessage = '';
 			this.uploadError = error instanceof Error ? error.message : 'Nao foi possivel enviar a foto.';
+			this.toastService.error(this.uploadError);
 		} finally {
 			this.isUploadingCover = false;
 			input.value = '';
@@ -151,15 +136,5 @@ export class SettingsPage implements OnInit {
 		this.ceremonyMapUrl = wedding.ceremonyMapUrl || '';
 		this.receptionAddress = wedding.receptionAddress || '';
 		this.receptionMapUrl = wedding.receptionMapUrl || '';
-		this.primary = this.normalizeColor(wedding.theme?.primary, DEFAULT_PALETTE.primary);
-		this.secondary = this.normalizeColor(wedding.theme?.secondary, DEFAULT_PALETTE.secondary);
-		this.tertiary = this.normalizeColor(wedding.theme?.tertiary, DEFAULT_PALETTE.tertiary);
-		this.neutral = this.normalizeColor(wedding.theme?.neutral, DEFAULT_PALETTE.neutral);
-		this.scriptFont = normalizeScriptFont(wedding.theme?.scriptFont);
-	}
-
-	private normalizeColor(value: string | undefined, fallback: string): string {
-		const normalized = (value || '').trim();
-		return /^#[0-9a-fA-F]{6}$/.test(normalized) ? normalized : fallback;
 	}
 }

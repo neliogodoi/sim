@@ -5,10 +5,11 @@ import { take } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { ThemeService } from './core/services/theme.service';
+import { ToastOutletComponent } from './shared/ui/toast-outlet.component';
 
 @Component({
 	selector: 'app-root',
-	imports: [RouterOutlet],
+	imports: [RouterOutlet, ToastOutletComponent],
 	templateUrl: './app.html',
 	styleUrl: './app.css',
 })

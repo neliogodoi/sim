@@ -43,7 +43,7 @@
           }
         </form>
       } @else if (vendors?.length) {
-        <button class="primary-action form-toggle-action" type="button" [disabled]="isDemoMode()" (click)="openForm()">Adicionar fornecedor</button>
+        <app-floating-add-button label="Adicionar fornecedor" [disabled]="isDemoMode()" (pressed)="openForm()" />
       }
 
       <div class="list-stack">

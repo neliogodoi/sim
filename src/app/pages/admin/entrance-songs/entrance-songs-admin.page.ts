@@ -8,10 +8,11 @@ import { EntranceSong } from '../../../core/models/wedding.models';
 import { WeddingContextService } from '../../../core/services/wedding-context.service';
 import { WeddingService } from '../../../core/services/wedding.service';
 import { AdminHeaderComponent } from '../../../layout/admin-header.component';
+import { FloatingAddButtonComponent } from '../../../shared/ui/floating-add-button.component';
 
 @Component({
 	selector: 'app-entrance-songs-admin-page',
-	imports: [AdminHeaderComponent, AsyncPipe, FormsModule],
+	imports: [AdminHeaderComponent, AsyncPipe, FormsModule, FloatingAddButtonComponent],
 	templateUrl: './entrance-songs-admin.page.html',
 
 	styleUrl: './entrance-songs-admin.page.css',

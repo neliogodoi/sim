@@ -40,7 +40,7 @@
           }
         </form>
       } @else if (guests?.length) {
-        <button class="primary-action form-toggle-action" type="button" [disabled]="isDemoMode()" (click)="openForm()">Adicionar convidado</button>
+        <app-floating-add-button label="Adicionar convidado" [disabled]="isDemoMode()" (pressed)="openForm()" />
       }
 
       <div class="list-stack">
@@ -71,9 +71,11 @@
             </div>
             <h2>{{ guest.name }}</h2>
             <p>
-              <span class="status-pill" [class.confirmed]="guest.rsvpStatus === 'confirmed'">
-                {{ rsvpLabel(guest.rsvpStatus) }}
-              </span>
+              @if (guest.rsvpStatus === 'confirmed') {
+                <app-status-check label="Confirmou" />
+              } @else {
+                <span class="status-pill">{{ rsvpLabel(guest.rsvpStatus) }}</span>
+              }
               · {{ guest.guestCount }} pessoa(s)
             </p>
           </article>

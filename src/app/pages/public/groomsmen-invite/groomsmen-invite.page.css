@@ -95,6 +95,46 @@
 
 .special-invite-page {
 	padding: 0;
+	--invite-secondary: var(--color-secondary, #c9a35a);
+}
+
+.special-invite-page .hero {
+	position: relative;
+	height: min(58dvh, 420px);
+	min-height: 320px;
+	overflow: hidden;
+	background: linear-gradient(135deg, var(--color-soft), var(--color-background));
+}
+
+.special-invite-page .hero.hero-empty {
+	height: 300px;
+	min-height: 300px;
+}
+
+.special-invite-page .hero img,
+.special-invite-page .hero-placeholder {
+	display: block;
+	width: 100%;
+	height: calc(100% - 1px);
+	object-fit: cover;
+}
+
+.special-invite-page .hero:not(.hero-empty)::after {
+	content: '';
+	position: absolute;
+	inset: auto 0 0;
+	height: 52%;
+	pointer-events: none;
+	background: linear-gradient(to bottom,
+			rgba(255, 255, 255, 0) 0%,
+			rgba(var(--color-background-rgb, 248, 248, 248), 0.72) 66%,
+			var(--color-background) 100%);
+}
+
+.special-invite-page .hero-placeholder {
+	background:
+		radial-gradient(circle at 25% 25%, rgba(var(--color-primary-rgb), 0.22), transparent 32%),
+		linear-gradient(135deg, var(--color-soft), var(--color-background));
 }
 
 .special-invite-page .hero,
@@ -104,42 +144,144 @@
 	box-shadow: none;
 }
 
+.screen-invite-content {
+	position: relative;
+	overflow: hidden;
+	background: var(--color-background);
+}
+
+.screen-invite-content::before {
+	content: '';
+	position: absolute;
+	inset: 14px;
+	z-index: 2;
+	pointer-events: none;
+	border: 1px solid var(--invite-secondary);
+	opacity: 0.78;
+}
+
 .special-invite-content {
 	position: relative;
 	z-index: 1;
 	display: grid;
-	gap: 18px;
+	gap: 14px;
 	max-width: 620px;
 	margin: -58px auto 0;
 	padding: 0 28px 44px;
 }
 
 .special-invite-content .invite-couple-name {
+	margin: 10px 0 0;
+	color: var(--color-text);
+	font-family: var(--font-script);
 	font-size: clamp(4rem, 13vw, 5.8rem);
+	font-weight: 400;
 	line-height: 0.84;
 }
 
-.special-invite-content .print-invite-date {
-	margin: 4px 0 22px;
+.special-invite-content .ornament {
+	color: var(--invite-secondary);
+	font-family: var(--font-script);
+	font-size: 34px;
+	line-height: 1;
+}
+
+.special-invite-content .date {
+	margin: 8px 0 4px;
 	color: var(--color-text);
+	font-family: var(--font-display);
 	font-size: 1.35rem;
+	font-weight: 600;
+}
+
+.invite-divider {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: min(46%, 240px);
+	margin: 4px auto;
+	color: var(--invite-secondary);
+}
+
+.invite-divider::before,
+.invite-divider::after {
+	content: '';
+	flex: 1;
+	border-top: 1px solid currentColor;
+}
+
+.invite-divider span {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 18px;
+	margin: 0 8px;
+	color: currentColor;
+	font-family: var(--font-display);
+	font-size: 15px;
+	line-height: 1;
+}
+
+.invite-divider.ornate span::before {
+	content: '♥';
+}
+
+.invite-divider.ornate {
+	width: min(54%, 300px);
+	margin: 8px auto 2px;
+}
+
+.invite-divider.ornate::before,
+.invite-divider.ornate::after,
+.invite-divider.message-divider::before,
+.invite-divider.message-divider::after {
+	max-width: 124px;
+}
+
+.invite-divider.short {
+	width: 88px;
+	margin: -2px auto 2px;
+}
+
+.invite-divider.message-divider {
+	width: min(56%, 320px);
+	margin: 8px auto 10px;
+}
+
+.invite-honoree-row {
+	display: block;
+	width: 100%;
+}
+
+.invite-honoree-row::before,
+.invite-honoree-row::after {
+	content: none;
+}
+
+@media (max-width: 420px) {
+	.invite-honoree-row {
+		display: block;
+	}
 }
 
 .groomsmen-invite-card .eyebrow {
 	margin-top: 0;
+	color: var(--color-muted);
 	font-size: 0.9rem;
 }
 
 .groomsmen-question {
 	max-width: 480px;
 	margin: 0 auto;
+	color: var(--color-text);
 	font-size: clamp(1.55rem, 5vw, 2.15rem) !important;
 	line-height: 1.18;
 }
 
 .groomsmen-names {
 	max-width: 520px;
-	margin: 6px auto 20px;
+	margin: 6px auto 0;
 	color: var(--color-text);
 	font-family: var(--font-display) !important;
 	font-size: clamp(2rem, 7vw, 2.85rem) !important;
@@ -190,14 +332,14 @@
 }
 
 .invite-role {
-	margin: -8px 0 12px;
+	margin: -4px 0 4px;
 	color: var(--color-muted);
 	font-weight: 800;
 }
 
 .special-person-invite-card .invite-message {
 	max-width: 460px;
-	margin: 12px auto 4px;
+	margin: 4px auto;
 	font-family: var(--font-body);
 	font-weight: 400;
 	font-size: 1.04rem;
@@ -342,6 +484,7 @@
 	.acceptance-actions,
 	.template-acceptance-panel,
 	.screen-invite-content,
+	.invite-divider,
 	.success-state {
 		display: none;
 	}

@@ -11,10 +11,23 @@ import { WeddingContextService } from '../../../core/services/wedding-context.se
 import { WeddingService } from '../../../core/services/wedding.service';
 import { toDisplayImageUrl } from '../../../core/utils/image-url';
 import { AdminHeaderComponent } from '../../../layout/admin-header.component';
+import { FloatingAddButtonComponent } from '../../../shared/ui/floating-add-button.component';
+import { ImageUploadFieldComponent } from '../../../shared/ui/image-upload-field.component';
+import { PhotoActionCardComponent } from '../../../shared/ui/photo-action-card.component';
+import { StatusCheckComponent } from '../../../shared/ui/status-check.component';
+import { ToastService } from '../../../shared/ui/toast.service';
 
 @Component({
 	selector: 'app-wedding-party-admin-page',
-	imports: [AdminHeaderComponent, AsyncPipe, FormsModule],
+	imports: [
+		AdminHeaderComponent,
+		AsyncPipe,
+		FormsModule,
+		FloatingAddButtonComponent,
+		ImageUploadFieldComponent,
+		PhotoActionCardComponent,
+		StatusCheckComponent,
+	],
 	templateUrl: './wedding-party-admin.page.html',
 
 	styleUrl: './wedding-party-admin.page.css',
@@ -26,6 +39,7 @@ export class WeddingPartyAdminPage {
 	private readonly weddingContextService = inject(WeddingContextService);
 	private readonly weddingService = inject(WeddingService);
 	private readonly changeDetectorRef = inject(ChangeDetectorRef);
+	private readonly toastService = inject(ToastService);
 
 	protected readonly weddingId$ = this.weddingContextService.activeWeddingId$;
 	protected readonly members$ = this.weddingId$.pipe(
@@ -40,6 +54,8 @@ export class WeddingPartyAdminPage {
 	protected isUploadingPhoto = false;
 	protected uploadMessage = '';
 	protected uploadError = '';
+	protected openActionsMemberId = '';
+	protected expandedMemberId = '';
 
 	async saveMember(): Promise<void> {
 		if (this.isDemoMode()) {
@@ -55,6 +71,8 @@ export class WeddingPartyAdminPage {
 		if (user) {
 			await this.weddingService.ensureOwner(user.uid, weddingId);
 		}
+
+		const isEditing = !!this.editingMemberId;
 
 		await this.weddingService.saveWeddingPartyMember(
 			{
@@ -77,12 +95,14 @@ export class WeddingPartyAdminPage {
 		this.formExpanded = false;
 		this.uploadMessage = '';
 		this.uploadError = '';
+		this.toastService.success(isEditing ? 'Padrinhos salvos.' : 'Padrinhos adicionados.');
 	}
 
 	editMember(member: WeddingPartyMember): void {
 		if (this.isDemoMode()) {
 			return;
 		}
+		this.openActionsMemberId = '';
 		this.formExpanded = true;
 		this.editingMemberId = member.id;
 		this.firstName = member.firstName;
@@ -97,7 +117,25 @@ export class WeddingPartyAdminPage {
 		if (this.isDemoMode()) {
 			return Promise.resolve();
 		}
+		this.openActionsMemberId = '';
 		return this.weddingService.deleteWeddingPartyMember(memberId, this.weddingContextService.currentAdminWeddingId());
+	}
+
+	protected toggleActions(memberId: string): void {
+		this.openActionsMemberId = this.openActionsMemberId === memberId ? '' : memberId;
+	}
+
+	protected setExpandedMember(memberId: string, expanded: boolean): void {
+		this.expandedMemberId = expanded ? memberId : '';
+		this.openActionsMemberId = '';
+	}
+
+	protected isExpanded(memberId: string): boolean {
+		return this.expandedMemberId === memberId;
+	}
+
+	protected isActionsOpen(memberId: string): boolean {
+		return this.openActionsMemberId === memberId;
 	}
 
 	protected isDemoMode(): boolean {
@@ -137,9 +175,11 @@ export class WeddingPartyAdminPage {
 		try {
 			this.photoUrl = await this.r2UploadService.uploadImage(file);
 			this.uploadMessage = 'Foto enviada. Salve para concluir.';
+			this.toastService.success('Foto enviada. Salve para concluir.');
 		} catch (error) {
 			this.uploadMessage = '';
 			this.uploadError = error instanceof Error ? error.message : 'Nao foi possivel enviar a foto.';
+			this.toastService.error(this.uploadError);
 		} finally {
 			this.isUploadingPhoto = false;
 			input.value = '';

@@ -18,14 +18,19 @@
           @if (wedding?.eventDate) {
             <p class="date">{{ wedding?.eventDate }}</p>
           }
+          <div class="invite-divider ornate" aria-hidden="true"><span></span></div>
           <p class="eyebrow">Convite especial</p>
+          <div class="invite-divider short" aria-hidden="true"></div>
           @if (person) {
             <h1 class="special-person-question">
               {{ person.secondName ? 'Vocês aceitam participar desse momento conosco?' : 'Você aceita participar desse momento conosco?' }}
             </h1>
-            <p class="special-person-name">{{ personDisplayName(person) }}</p>
+            <div class="invite-honoree-row">
+              <p class="special-person-name">{{ personDisplayName(person) }}</p>
+            </div>
             <p class="invite-role">{{ roleDisplay(person) }}</p>
           }
+          <div class="invite-divider message-divider" aria-hidden="true"><span>♥</span></div>
           <p class="invite-message">
             {{ person?.secondName ? 'A presença de vocês tem' : 'Sua presença tem' }} um significado especial para nós.
             Queremos celebrar esse dia ao lado de pessoas que fazem parte da nossa história.

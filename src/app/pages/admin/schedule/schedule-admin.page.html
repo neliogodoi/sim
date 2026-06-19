@@ -27,7 +27,7 @@
           }
         </form>
       } @else if (items?.length) {
-        <button class="primary-action form-toggle-action" type="button" [disabled]="isDemoMode()" (click)="openForm()">Adicionar item</button>
+        <app-floating-add-button label="Adicionar item da agenda" [disabled]="isDemoMode()" (pressed)="openForm()" />
       }
 
       <div class="list-stack">

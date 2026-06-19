@@ -5,11 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Observable, of, switchMap } from 'rxjs';
 
+import { DEFAULT_THEME_PRESET } from '../../../core/constants/theme-presets';
+import { scriptFontCssFamily } from '../../../core/constants/script-fonts';
 import { Wedding, WeddingPartyMember } from '../../../core/models/wedding.models';
 import { WeddingContextService } from '../../../core/services/wedding-context.service';
 import { WeddingService } from '../../../core/services/wedding.service';
 import { toDisplayImageUrl } from '../../../core/utils/image-url';
 import { AdminHeaderComponent } from '../../../layout/admin-header.component';
+import { ToastService } from '../../../shared/ui/toast.service';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -23,6 +26,7 @@ export class DashboardPage {
   private readonly router = inject(Router);
   private readonly weddingContextService = inject(WeddingContextService);
   private readonly weddingService = inject(WeddingService);
+  private readonly toastService = inject(ToastService);
 
   protected readonly weddings$: Observable<Wedding[]> = authState(this.auth).pipe(
     switchMap((user) =>
@@ -62,18 +66,25 @@ export class DashboardPage {
     const weddingId = this.generateWeddingId(coupleNames);
 
     if (!user) {
-      this.error = 'Entre novamente para criar um casamento.';
+      this.toastService.error('Entre novamente para criar um casamento.');
       return;
     }
 
     if (!coupleNames) {
-      this.error = 'Informe os nomes do casal.';
+      this.toastService.error('Informe os nomes do casal.');
       return;
     }
 
     await this.weddingService.createWedding(weddingId, user.uid, {
       coupleNames,
       eventDate: '',
+      theme: {
+        presetId: DEFAULT_THEME_PRESET.id,
+        primary: DEFAULT_THEME_PRESET.primary,
+        secondary: DEFAULT_THEME_PRESET.secondary,
+        tertiary: DEFAULT_THEME_PRESET.tertiary,
+        neutral: DEFAULT_THEME_PRESET.neutral,
+      },
     });
     this.weddingContextService.setActiveWeddingId(weddingId);
     this.newWeddingNames = '';
@@ -92,11 +103,49 @@ export class DashboardPage {
 
   protected paletteColors(wedding?: Wedding | null): string[] {
     return [
-      wedding?.theme?.primary || '#f2f2f2',
-      wedding?.theme?.secondary || '#ffffff',
-      wedding?.theme?.tertiary || '#eeeeee',
-      wedding?.theme?.neutral || '#ffffff',
+      wedding?.theme?.primary || DEFAULT_THEME_PRESET.primary,
+      wedding?.theme?.secondary || DEFAULT_THEME_PRESET.secondary,
+      wedding?.theme?.tertiary || DEFAULT_THEME_PRESET.tertiary,
+      wedding?.theme?.neutral || DEFAULT_THEME_PRESET.neutral,
     ];
+  }
+
+  protected scriptFontCssFamily(wedding?: Wedding | null): string {
+    return scriptFontCssFamily(wedding?.theme?.scriptFont);
+  }
+
+  protected weddingThemeColor(
+    wedding: Wedding | null | undefined,
+    color: 'primary' | 'secondary' | 'tertiary' | 'neutral',
+  ): string {
+    return wedding?.theme?.[color] || DEFAULT_THEME_PRESET[color];
+  }
+
+  protected countdownLabel(eventDate?: string): string {
+    if (!eventDate) {
+      return 'Faltam alguns dias para o grande momento';
+    }
+
+    const target = this.parseDate(eventDate);
+    if (!target) {
+      return 'Faltam alguns dias para o grande momento';
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    target.setHours(0, 0, 0, 0);
+
+    const days = Math.ceil((target.getTime() - today.getTime()) / 86_400_000);
+
+    if (days === 0) {
+      return 'Hoje e o grande dia';
+    }
+
+    if (days < 0) {
+      return 'Esse momento ja ficou na memoria';
+    }
+
+    return days === 1 ? 'Falta 1 dia' : `Faltam ${days} dias`;
   }
 
   protected shortCoupleName(member: WeddingPartyMember): string {
@@ -105,6 +154,21 @@ export class DashboardPage {
 
   private firstWord(value: string): string {
     return value.trim().split(/\s+/)[0] || value;
+  }
+
+  private parseDate(value: string): Date | null {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      return new Date(`${value}T00:00:00`);
+    }
+
+    const parts = value.split('/');
+    if (parts.length === 3) {
+      const [day, month, year] = parts;
+      return new Date(`${year}-${month}-${day}T00:00:00`);
+    }
+
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? null : date;
   }
 
   private generateWeddingId(coupleNames: string): string {
@@ -122,7 +186,7 @@ export class DashboardPage {
 
   protected async shareWedding(wedding?: Wedding | null): Promise<void> {
     if (!wedding) {
-      this.error = 'Selecione um casamento para compartilhar.';
+      this.toastService.error('Selecione um casamento para compartilhar.');
       return;
     }
 
@@ -139,5 +203,6 @@ export class DashboardPage {
     }
 
     await navigator.clipboard.writeText(url);
+    this.toastService.success('Link copiado.');
   }
 }

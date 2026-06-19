@@ -19,10 +19,17 @@ export interface Wedding {
 }
 
 export interface WeddingTheme {
+  presetId?: string;
   primary: string;
   secondary?: string;
   tertiary?: string;
   neutral?: string;
+  primarySoft?: string;
+  primaryLight?: string;
+  primaryPale?: string;
+  contrast?: string;
+  contrastSoft?: string;
+  contrastRule?: 'analogous' | 'complementary' | 'splitComplementary' | 'triadic' | 'tetradic' | 'square';
   scriptFont?: string;
   primaryContrast?: string;
   background?: string;
@@ -103,6 +110,7 @@ export interface ImportantPerson {
   weddingId: string;
   name: string;
   secondName?: string;
+  photoUrl?: string;
   role: ImportantPersonRole;
   secondRole?: ImportantPersonRole | null;
   description?: string;

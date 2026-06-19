@@ -21,36 +21,38 @@
               <option value="groom">Noivo</option>
             </select>
           </label>
-          <label>
-            URL da foto
-            <input name="photoUrl" [(ngModel)]="photoUrl" />
-          </label>
-          <label>
-            Enviar foto
-            <input type="file" accept="image/*" [disabled]="isUploadingPhoto" (change)="uploadPhoto($event)" />
-          </label>
-          @if (photoUrl) {
-            <img class="cover-preview" [src]="imageUrl(photoUrl)" alt="Previa da foto dos padrinhos" />
-          }
-          @if (uploadMessage) {
-            <p class="muted-state">{{ uploadMessage }}</p>
-          }
-          @if (uploadError) {
-            <p class="error-state">{{ uploadError }}</p>
-          }
+          <app-image-upload-field
+            [imageUrl]="imageUrl(photoUrl)"
+            alt="Previa da foto dos padrinhos"
+            emptyTitle="Adicionar foto dos padrinhos"
+            emptyDescription="Toque para enviar uma foto. URLs manuais nao sao mais usadas."
+            [disabled]="isDemoMode()"
+            [uploading]="isUploadingPhoto"
+            (fileSelected)="uploadPhoto($event)"
+          />
           <button class="primary-action" type="submit" [disabled]="isDemoMode()">{{ editingMemberId ? 'Salvar padrinhos' : 'Adicionar padrinhos' }}</button>
           @if (members?.length) {
             <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
           }
         </form>
       } @else if (members?.length) {
-        <button class="primary-action form-toggle-action" type="button" [disabled]="isDemoMode()" (click)="openForm()">Adicionar padrinhos</button>
+        <app-floating-add-button label="Adicionar padrinhos" [disabled]="isDemoMode()" (pressed)="openForm()" />
       }
 
       <div class="list-stack">
         @for (member of members; track member.id) {
-          <article class="info-card admin-list-card wedding-party-card compact-person-card">
-            <div class="card-actions">
+          <app-photo-action-card
+            [title]="shortCoupleName(member)"
+            [subtitle]="sideLabel(member.side)"
+            [imageUrl]="imageUrl(member.photoUrl)"
+            [initials]="shortCoupleName(member).slice(0, 1)"
+            [expanded]="isExpanded(member.id)"
+            (expandedChange)="setExpandedMember(member.id, $event)"
+          >
+            @if (member.invitationStatus === 'accepted') {
+              <app-status-check status label="Aceitou" />
+            }
+            <ng-container actions>
               <a class="icon-action" [href]="groomsmenPrintUrl(member)" target="_blank" rel="noreferrer" aria-label="Imprimir convite dos padrinhos">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M7 8V4h10v4" />
@@ -79,25 +81,8 @@
                   <path d="M6.5 7 7 21h10l.5-14" />
                 </svg>
               </button>
-            </div>
-            <div class="compact-card-media">
-              @if (member.photoUrl) {
-                <img class="person-photo" [src]="imageUrl(member.photoUrl)" [alt]="shortCoupleName(member)" />
-              }
-            </div>
-            <div class="compact-card-copy">
-              <h2>{{ shortCoupleName(member) }}</h2>
-              <p>
-                {{ sideLabel(member.side) }}
-                @if (member.invitationStatus) {
-                  ·
-                  <span class="status-pill" [class.confirmed]="member.invitationStatus === 'accepted'">
-                    {{ invitationLabel(member.invitationStatus) }}
-                  </span>
-                }
-              </p>
-            </div>
-          </article>
+            </ng-container>
+          </app-photo-action-card>
         } @empty {
           <p>Nenhum padrinho cadastrado ainda.</p>
         }
