@@ -1,86 +1,113 @@
-    <app-admin-header />
-    @let guests = guests$ | async;
+<app-admin-header />
+@let guests = guests$ | async;
+@let visibleGuests = filteredGuests(guests);
 
-    <main class="admin-page">
-      <h1>Convidados</h1>
-      <section class="summary-card">
-        {{ totalGuests(guests) }} convidados, {{ confirmedGuests(guests) }} confirmaram
-      </section>
+<main class="admin-page guests-admin-page">
+	<h1>Convidados</h1>
 
-      @if (shouldShowForm(guests)) {
-        <form class="form-card" (ngSubmit)="addGuest()">
-          <label>
-            Nome
-            <input name="name" [(ngModel)]="name" required />
-          </label>
-          <label>
-            Telefone
-            <input name="phone" [(ngModel)]="phone" />
-          </label>
-          <label>
-            Grupo ou familia
-            <input name="groupName" [(ngModel)]="groupName" />
-          </label>
-          <label>
-            Quantidade
-            <input type="number" min="1" name="guestCount" [(ngModel)]="guestCount" />
-          </label>
-          <label>
-            Status
-            <select name="rsvpStatus" [(ngModel)]="rsvpStatus">
-              <option value="pending">Pendente</option>
-              <option value="confirmed">Confirmado</option>
-              <option value="declined">Nao vai</option>
-              <option value="maybe">Talvez</option>
-            </select>
-          </label>
-          <button class="primary-action" type="submit" [disabled]="isDemoMode()">{{ editingGuestId ? 'Salvar convidado' : 'Adicionar convidado' }}</button>
-          @if (guests?.length) {
-            <button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
-          }
-        </form>
-      } @else if (guests?.length) {
-        <app-floating-add-button label="Adicionar convidado" [disabled]="isDemoMode()" (pressed)="openForm()" />
-      }
+	<section class="guest-stats" aria-label="Resumo dos convidados">
+		<article>
+			<div class="guest-stat-icon" aria-hidden="true">
+				<app-icon name="people-outline" />
+			</div>
+			<strong>{{ totalGuests(guests) }}</strong>
+			<span>Total</span>
+		</article>
+		<article class="confirmed">
+			<div class="guest-stat-icon" aria-hidden="true">
+				<app-icon name="checkmark-circle-outline" />
+			</div>
+			<strong>{{ confirmedGuests(guests) }}</strong>
+			<span>Confirmados</span>
+		</article>
+		<article>
+			<div class="guest-stat-icon" aria-hidden="true">
+				<app-icon name="pie-chart-outline" />
+			</div>
+			<strong>{{ attendanceRate(guests) }}%</strong>
+			<span>Presença</span>
+		</article>
+	</section>
 
-      <div class="list-stack">
-        @for (guest of guests; track guest.id) {
-          <article class="info-card admin-list-card">
-            <div class="card-actions" [class.demo-disabled]="isDemoMode()" [attr.aria-disabled]="isDemoMode()">
-              <a class="icon-action" [href]="whatsappInviteLink(guest)" target="_blank" rel="noreferrer" aria-label="Enviar convite do convidado">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M4 6h16v12H4z" />
-                  <path d="m4 7 8 6 8-6" />
-                </svg>
-              </a>
-              <button class="icon-action" type="button" (click)="editGuest(guest)" aria-label="Editar convidado">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z" />
-                  <path d="m14 6 4 4" />
-                </svg>
-              </button>
-              <button class="icon-action" type="button" (click)="removeGuest(guest.id)" aria-label="Remover convidado">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M5 7h14" />
-                  <path d="M9 7V5h6v2" />
-                  <path d="M8 10v8" />
-                  <path d="M16 10v8" />
-                  <path d="M6.5 7 7 21h10l.5-14" />
-                </svg>
-              </button>
-            </div>
-            <h2>{{ guest.name }}</h2>
-            <p>
-              @if (guest.rsvpStatus === 'confirmed') {
-                <app-status-check label="Confirmou" />
-              } @else {
-                <span class="status-pill">{{ rsvpLabel(guest.rsvpStatus) }}</span>
-              }
-              · {{ guest.guestCount }} pessoa(s)
-            </p>
-          </article>
-        } @empty {
-          <p>Nenhum convidado cadastrado ainda.</p>
-        }
-      </div>
-    </main>
+	@if (shouldShowForm(guests)) {
+	<form class="form-card" (ngSubmit)="addGuest()">
+		<label>
+			Nome
+			<input name="name" [(ngModel)]="name" required />
+		</label>
+		<label>
+			Telefone
+			<input name="phone" [(ngModel)]="phone" />
+		</label>
+		<label>
+			Grupo ou familia
+			<input name="groupName" [(ngModel)]="groupName" />
+		</label>
+		<label>
+			Quantidade
+			<input type="number" min="1" name="guestCount" [(ngModel)]="guestCount" />
+		</label>
+		<label>
+			Status
+			<select name="rsvpStatus" [(ngModel)]="rsvpStatus">
+				<option value="pending">Pendente</option>
+				<option value="confirmed">Confirmado</option>
+				<option value="declined">Nao vai</option>
+				<option value="maybe">Talvez</option>
+			</select>
+		</label>
+		<button class="primary-action" type="submit" [disabled]="isDemoMode()">{{ editingGuestId ? 'Salvar convidado' :
+			'Adicionar convidado' }}</button>
+		@if (guests?.length) {
+		<button class="secondary-action" type="button" (click)="closeForm()">Cancelar</button>
+		}
+	</form>
+	} @else if (guests?.length) {
+	<app-floating-add-button label="Adicionar convidado" [disabled]="isDemoMode()" (pressed)="openForm()" />
+	}
+
+	@if (guests?.length) {
+	<label class="guest-search">
+		<span>Buscar convidado</span>
+		<input name="guestSearch" [(ngModel)]="searchTerm" placeholder="Buscar por nome, telefone ou status" />
+	</label>
+	}
+
+	<div class="guest-list">
+		@for (guest of visibleGuests; track guest.id) {
+		<article [class]="'guest-item ' + rsvpStatusClass(guest.rsvpStatus)">
+			<div class="guest-avatar" aria-hidden="true">{{ guestInitials(guest.name) }}</div>
+
+			<div class="guest-card-main">
+				<div class="guest-item-header">
+					<h2>{{ guest.name }}</h2>
+					<div class="guest-actions" [class.demo-disabled]="isDemoMode()" [attr.aria-disabled]="isDemoMode()">
+						<a [href]="whatsappInviteLink(guest)" target="_blank" rel="noreferrer"
+							aria-label="Enviar convite do convidado">
+							<app-icon name="mail-outline" />
+						</a>
+						<button type="button" (click)="editGuest(guest)" aria-label="Editar convidado">
+							<app-icon name="create-outline" />
+						</button>
+						<button type="button" (click)="removeGuest(guest.id)" aria-label="Remover convidado">
+							<app-icon name="trash-outline" />
+						</button>
+					</div>
+				</div>
+				<small>{{ guest.groupName || 'Sem grupo definido' }}</small>
+				<div class="guest-meta">
+					<span class="guest-status">
+						<i aria-hidden="true">{{ rsvpIcon(guest.rsvpStatus) }}</i>
+						{{ rsvpLabel(guest.rsvpStatus) }}
+					</span>
+					<span class="guest-meta-separator" aria-hidden="true">•</span>
+					<span>{{ guestCountLabel(guest.guestCount) }}</span>
+				</div>
+			</div>
+		</article>
+		} @empty {
+		<p class="empty-state">{{ guests?.length ? 'Nenhum convidado encontrado.' : 'Nenhum convidado cadastrado ainda.'
+			}}</p>
+		}
+	</div>
+</main>

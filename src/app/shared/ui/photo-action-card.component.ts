@@ -20,11 +20,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 					</span>
 				</span>
 				<span class="ds-photo-card-more" aria-hidden="true">
-					<svg viewBox="0 0 24 24">
-						<circle cx="5" cy="12" r="1.4" />
-						<circle cx="12" cy="12" r="1.4" />
-						<circle cx="19" cy="12" r="1.4" />
-					</svg>
+					⌄
 				</span>
 			</button>
 
@@ -112,14 +108,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 			}
 
 			.ds-photo-card-more {
-				color: var(--color-text);
-				margin-right: 0.5rem;
-			}
-
-			.ds-photo-card-more svg {
+				display: grid;
+				place-items: center;
 				width: 24px;
 				height: 24px;
-				fill: currentColor;
+				color: var(--color-text);
+				margin-right: 0.5rem;
+				font-size: 1.5rem;
+				line-height: 1;
 			}
 
 			.ds-photo-card-expanded {

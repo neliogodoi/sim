@@ -1,21 +1,50 @@
     @let items = schedule$ | async;
 
-    <main class="public-page content-page">
-      <h1>Agenda</h1>
+    <main class="public-page content-page simple-themed-page">
+      <header class="simple-page-header">
+        <div>
+          <p class="simple-page-kicker">Planejamento</p>
+          <h1>Agenda</h1>
+          <p class="simple-page-description">Cronograma do casamento com horarios, locais e orientacoes essenciais.</p>
+        </div>
+        <div class="simple-page-badge" aria-hidden="true">
+          <app-icon name="calendar-clear-outline" />
+        </div>
+      </header>
       @if (items?.length) {
-        <div class="list-stack">
+        <div class="schedule-list">
           @for (item of items; track item.id) {
-            <article class="info-card">
-              <h2>{{ item.title }}</h2>
-              <p>{{ item.startsAt }}</p>
-              @if (item.description) {
-                <p>{{ item.description }}</p>
-              }
+            <article class="schedule-item">
+              <div class="schedule-date">
+                <span class="schedule-date-day">{{ dayLabel(item.date) }}</span>
+                <span class="schedule-date-month">{{ monthLabel(item.date) }}</span>
+              </div>
+              <div class="schedule-body">
+                <div class="schedule-meta">
+                  <span>{{ formattedDate(item.date) }}</span>
+                  <span>{{ item.startsAt }}</span>
+                  @if (item.locationLabel) {
+                    <span>{{ item.locationLabel }}</span>
+                  }
+                </div>
+                <h2>{{ item.title }}</h2>
+                @if (item.description) {
+                  <p>{{ item.description }}</p>
+                }
+              </div>
             </article>
           }
         </div>
       } @else {
-        <p>Agenda ainda nao configurada.</p>
+        <article class="empty-simple-state">
+          <div class="song-item-icon" aria-hidden="true">
+            <app-icon name="calendar-outline" />
+          </div>
+          <div>
+            <h2>Agenda ainda nao configurada</h2>
+            <p>Os horarios e eventos do casamento serao adicionados em breve.</p>
+          </div>
+        </article>
       }
     </main>
 

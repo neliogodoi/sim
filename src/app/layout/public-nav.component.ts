@@ -2,10 +2,11 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 
 import { DEFAULT_WEDDING_ID } from '../core/services/wedding.service';
+import { AppIconComponent } from '../shared/ui/app-icon.component';
 
 @Component({
   selector: 'app-public-nav',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, AppIconComponent],
   templateUrl: './public-nav.component.html',
 
   styleUrl: './public-nav.component.css',

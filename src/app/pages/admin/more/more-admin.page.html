@@ -3,17 +3,52 @@
     <main class="admin-page more-admin-page">
       <h1>Mais</h1>
       <div class="list-stack">
+        <a class="info-card link-card" [routerLink]="adminLink('tema')" [class.demo-disabled]="isDemoMode()" [attr.aria-disabled]="isDemoMode()">
+          <span class="more-item-icon" aria-hidden="true"><app-icon name="color-palette-outline" /></span>
+          <div class="more-item-copy">
+            <h2>Tema</h2>
+            <p>Cores, tipografia e identidade visual do casamento.</p>
+          </div>
+        </a>
+        <a class="info-card link-card" [routerLink]="adminLink('pessoas')">
+          <span class="more-item-icon" aria-hidden="true"><app-icon name="people-circle-outline" /></span>
+          <div class="more-item-copy">
+            <h2>Pessoas especiais</h2>
+            <p>Pais, mães, daminhas, pajens e outras pessoas importantes.</p>
+          </div>
+        </a>
+        <a
+          class="info-card link-card"
+          [routerLink]="adminLink('configuracoes')"
+          [class.demo-disabled]="isDemoMode()"
+          [attr.aria-disabled]="isDemoMode()"
+        >
+          <span class="more-item-icon" aria-hidden="true"><app-icon name="settings-outline" /></span>
+          <div class="more-item-copy">
+            <h2>Configurações</h2>
+            <p>Informações do evento, capa, álbum e ajustes gerais.</p>
+          </div>
+        </a>
         <a class="info-card link-card" [routerLink]="adminLink('fornecedores')">
-          <h2>Fornecedores</h2>
-          <p>Buffet, fotografia, espaco, lojas e contatos.</p>
+          <span class="more-item-icon" aria-hidden="true"><app-icon name="briefcase-outline" /></span>
+          <div class="more-item-copy">
+            <h2>Fornecedores</h2>
+            <p>Buffet, fotografia, espaco, lojas e contatos.</p>
+          </div>
         </a>
         <a class="info-card link-card" [routerLink]="adminLink('recados')">
-          <h2>Recados</h2>
-          <p>Moderar mensagens dos convidados.</p>
+          <span class="more-item-icon" aria-hidden="true"><app-icon name="mail-open-outline" /></span>
+          <div class="more-item-copy">
+            <h2>Recados</h2>
+            <p>Moderar mensagens dos convidados.</p>
+          </div>
         </a>
         <a class="info-card link-card" [routerLink]="adminLink('relatorio')">
-          <h2>Relatórios</h2>
-          <p>Total geral para estimar espaco, buffet e estrutura.</p>
+          <span class="more-item-icon" aria-hidden="true"><app-icon name="bar-chart-outline" /></span>
+          <div class="more-item-copy">
+            <h2>Relatórios</h2>
+            <p>Total geral para estimar espaco, buffet e estrutura.</p>
+          </div>
         </a>
         <button class="secondary-action" type="button" [disabled]="isDemoMode()" (click)="logout()">Sair</button>
       </div>

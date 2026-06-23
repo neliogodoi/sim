@@ -262,36 +262,24 @@ export class GroomsmenInvitePage implements OnInit {
 			return;
 		}
 
-		const parts = value.split('&').map((part) => part.trim()).filter(Boolean);
-		if (parts.length < 2) {
-			firstTextNode.textContent = value;
-			return;
-		}
-
 		const namespace = element.namespaceURI || 'http://www.w3.org/2000/svg';
-		const x = element.getAttribute('x') || '527.0321';
-		const baseY = Number.parseFloat(element.getAttribute('y') || '574');
+		const x = firstTextNode.getAttribute('x') || element.getAttribute('x') || '527.0321';
+		const y = firstTextNode.getAttribute('y') || element.getAttribute('y') || '574';
 		const style = firstTextNode.getAttribute('style');
 
 		element.textContent = '';
+		element.setAttribute('xml:space', 'preserve');
 
-		const firstLine = document.createElementNS(namespace, 'tspan');
-		firstLine.setAttribute('x', x);
-		firstLine.setAttribute('y', Number.isFinite(baseY) ? `${baseY - 40}` : '534');
+		const singleLine = document.createElementNS(namespace, 'tspan');
+		singleLine.setAttribute('x', x);
+		singleLine.setAttribute('y', y);
+		singleLine.setAttribute('xml:space', 'preserve');
 		if (style) {
-			firstLine.setAttribute('style', style);
+			singleLine.setAttribute('style', style);
 		}
-		firstLine.textContent = `${parts[0]} &`;
+		singleLine.textContent = value;
 
-		const secondLine = document.createElementNS(namespace, 'tspan');
-		secondLine.setAttribute('x', x);
-		secondLine.setAttribute('dy', '0.86em');
-		if (style) {
-			secondLine.setAttribute('style', style);
-		}
-		secondLine.textContent = parts.slice(1).join(' & ');
-
-		element.append(firstLine, secondLine);
+		element.append(singleLine);
 	}
 
 	private setSvgFont(document: Document, id: string, fontFamily: string): void {
@@ -324,7 +312,7 @@ export class GroomsmenInvitePage implements OnInit {
 		style.setAttribute('id', 'sim-template-fonts');
 		style.textContent = `
       @font-face { font-family: '${scriptFont}'; src: url('${scriptFontUrl}') format('truetype'); }
-      #nomes-noivos, #nomes-noivos tspan { font-family: '${scriptFont}', 'Times New Roman', serif !important; }
+      #nomes-noivos, #nomes-noivos tspan { font-family: '${scriptFont}', 'Times New Roman', serif !important; white-space: pre !important; }
       #data, #data tspan, #nomes-padrinhos, #nomes-padrinhos tspan, #pergunta, #pergunta tspan, #mensagem, #mensagem tspan {
         font-family: 'Cormorant Garamond', 'Times New Roman', serif !important;
       }

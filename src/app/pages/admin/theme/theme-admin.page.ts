@@ -6,8 +6,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs';
 
 import { DEFAULT_SCRIPT_FONT, SCRIPT_FONT_OPTIONS, normalizeScriptFont } from '../../../core/constants/script-fonts';
-import { Wedding } from '../../../core/models/wedding.models';
-import { ContrastRule, GeneratedWeddingTheme, ThemeGeneratorService } from '../../../core/services/theme-generator.service';
+import { Wedding, WeddingTheme } from '../../../core/models/wedding.models';
+import {
+	GeneratedWeddingTheme,
+	ThemeGeneratorService,
+	WEDDING_THEME_RECIPES,
+	WeddingThemeRecipe,
+	WeddingThemeRecipeId,
+} from '../../../core/services/theme-generator.service';
 import { WeddingContextService } from '../../../core/services/wedding-context.service';
 import { WeddingService } from '../../../core/services/wedding.service';
 import { AdminHeaderComponent } from '../../../layout/admin-header.component';
@@ -32,19 +38,14 @@ export class ThemeAdminPage implements OnInit {
 	protected readonly weddingId$ = this.weddingContextService.activeWeddingId$;
 	protected readonly wedding$ = this.weddingId$.pipe(switchMap((weddingId) => this.weddingService.wedding$(weddingId)));
 	protected readonly scriptFontOptions = SCRIPT_FONT_OPTIONS;
+	protected readonly themeRecipes = WEDDING_THEME_RECIPES;
 	protected scriptFont = DEFAULT_SCRIPT_FONT;
 	protected coupleNames = 'Os noivos';
 	protected creatorPrimaryColor = '#8A3A4A';
-	protected contrastRule: ContrastRule = 'analogous';
+	protected recipeId: WeddingThemeRecipeId = 'elegant';
+	protected isFontPickerOpen = false;
+	protected isRecipePickerOpen = false;
 	protected isApplyingGeneratedTheme = false;
-	protected readonly contrastRules: Array<{ value: ContrastRule; label: string; description: string }> = [
-		{ value: 'analogous', label: 'Elegante', description: 'Harmonico, suave e romantico.' },
-		{ value: 'complementary', label: 'Marcante', description: 'Mais contraste e presenca visual.' },
-		{ value: 'splitComplementary', label: 'Refinado', description: 'Contraste equilibrado sem pesar.' },
-		{ value: 'triadic', label: 'Editorial', description: 'Criativo, sofisticado e autoral.' },
-		{ value: 'tetradic', label: 'Cerimonial', description: 'Rico em nuances para composicoes classicas.' },
-		{ value: 'square', label: 'Moderno', description: 'Mais ousado, ritmado e contemporaneo.' },
-	];
 
 	ngOnInit(): void {
 		this.wedding$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((wedding) => {
@@ -58,19 +59,45 @@ export class ThemeAdminPage implements OnInit {
 	}
 
 	protected generatedTheme(): GeneratedWeddingTheme {
-		return this.themeGenerator.generateTheme(this.creatorPrimaryColor, this.contrastRule);
+		return this.themeGenerator.generateTheme(this.creatorPrimaryColor, this.recipeId);
 	}
 
 	protected generatedPaletteSwatches(): Array<{ label: string; token: string; color: string }> {
 		const theme = this.generatedTheme();
 		return [
 			{ label: 'Principal', token: 'primary', color: theme.primary },
-			{ label: 'Suave', token: 'primarySoft', color: theme.primarySoft },
-			{ label: 'Claro', token: 'primaryLight', color: theme.primaryLight },
-			{ label: 'Palido', token: 'primaryPale', color: theme.primaryPale },
-			{ label: 'Contraste', token: 'contrast', color: theme.contrast },
-			{ label: 'Contraste suave', token: 'contrastSoft', color: theme.contrastSoft },
+			{ label: 'Acento', token: 'contrast', color: theme.contrast },
+			{ label: 'Fundo', token: 'background', color: theme.background },
+			{ label: 'Superficie', token: 'surface', color: theme.surface },
+			{ label: 'Texto', token: 'text', color: theme.text },
+			{ label: 'Borda', token: 'border', color: theme.border },
 		];
+	}
+
+	protected selectedRecipe(): WeddingThemeRecipe {
+		return this.themeRecipes.find((recipe) => recipe.id === this.recipeId) || this.themeRecipes[0];
+	}
+
+	protected selectRecipe(recipeId: WeddingThemeRecipeId): void {
+		this.recipeId = recipeId;
+		this.isRecipePickerOpen = false;
+	}
+
+	protected selectScriptFont(fontValue: string): void {
+		this.scriptFont = normalizeScriptFont(fontValue);
+		this.isFontPickerOpen = false;
+	}
+
+	protected selectedScriptFontLabel(): string {
+		return this.scriptFontOptions.find((font) => font.value === this.scriptFont)?.label || this.scriptFontOptions[0].label;
+	}
+
+	protected toggleFontPicker(): void {
+		this.isFontPickerOpen = !this.isFontPickerOpen;
+	}
+
+	protected toggleRecipePicker(): void {
+		this.isRecipePickerOpen = !this.isRecipePickerOpen;
 	}
 
 	protected async applyGeneratedTheme(): Promise<void> {
@@ -84,28 +111,7 @@ export class ThemeAdminPage implements OnInit {
 				await this.weddingService.ensureOwner(uid, weddingId);
 			}
 
-			await this.weddingService.saveWedding(
-				{
-					theme: {
-						presetId: 'generated',
-						...generatedTheme,
-						secondary: generatedTheme.contrast,
-						tertiary: generatedTheme.primaryPale,
-						neutral: generatedTheme.background,
-						scriptFont: normalizeScriptFont(this.scriptFont),
-					},
-				},
-				weddingId,
-			);
-
-			this.currentWeddingTheme = {
-				presetId: 'generated',
-				...generatedTheme,
-				secondary: generatedTheme.contrast,
-				tertiary: generatedTheme.primaryPale,
-				neutral: generatedTheme.background,
-				scriptFont: normalizeScriptFont(this.scriptFont),
-			};
+			await this.persistTheme(generatedTheme, weddingId);
 			this.toastService.success('Tema aplicado com sucesso.');
 		} catch {
 			this.toastService.error('Nao foi possivel aplicar o tema. Tente novamente.');
@@ -122,19 +128,11 @@ export class ThemeAdminPage implements OnInit {
 			await this.weddingService.ensureOwner(uid, weddingId);
 		}
 
-		await this.weddingService.saveWedding(
-			{
-				theme: {
-					presetId: 'generated',
-					...generatedTheme,
-					secondary: generatedTheme.contrast,
-					tertiary: generatedTheme.primaryPale,
-					neutral: generatedTheme.background,
-					scriptFont: normalizeScriptFont(this.scriptFont),
-				},
-			},
-			weddingId,
-		);
+		await this.persistTheme(generatedTheme, weddingId);
+		this.toastService.success('Tema salvo.');
+	}
+
+	private async persistTheme(generatedTheme: GeneratedWeddingTheme, weddingId: string): Promise<void> {
 		this.currentWeddingTheme = {
 			presetId: 'generated',
 			...generatedTheme,
@@ -143,7 +141,13 @@ export class ThemeAdminPage implements OnInit {
 			neutral: generatedTheme.background,
 			scriptFont: normalizeScriptFont(this.scriptFont),
 		};
-		this.toastService.success('Tema salvo.');
+
+		await this.weddingService.saveWedding(
+			{
+				theme: this.currentWeddingTheme,
+			},
+			weddingId,
+		);
 	}
 
 	protected selectedScriptFontCssFamily(): string {
@@ -153,8 +157,20 @@ export class ThemeAdminPage implements OnInit {
 	private applyWedding(wedding: Wedding): void {
 		this.currentWeddingTheme = wedding.theme;
 		this.creatorPrimaryColor = wedding.theme?.primary || this.creatorPrimaryColor;
-		this.contrastRule = wedding.theme?.contrastRule || this.contrastRule;
+		this.recipeId = wedding.theme?.recipeId || this.recipeIdFromLegacy(wedding.theme?.contrastRule) || this.recipeId;
 		this.scriptFont = normalizeScriptFont(wedding.theme?.scriptFont);
 		this.coupleNames = wedding.coupleNames || 'Os noivos';
+	}
+
+	private recipeIdFromLegacy(contrastRule?: WeddingTheme['contrastRule']): WeddingThemeRecipeId | undefined {
+		const recipeByLegacyRule: Record<string, WeddingThemeRecipeId> = {
+			analogous: 'elegant',
+			complementary: 'bold',
+			splitComplementary: 'romantic',
+			triadic: 'editorial',
+			tetradic: 'ceremonial',
+			square: 'modern',
+		};
+		return contrastRule ? recipeByLegacyRule[String(contrastRule)] : undefined;
 	}
 }

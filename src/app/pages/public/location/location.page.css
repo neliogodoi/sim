@@ -1,0 +1,14 @@
+.location-list {
+	display: grid;
+	gap: 14px;
+	margin-top: 18px;
+}
+
+.location-card {
+	text-align: center;
+}
+
+.location-card .secondary-action {
+	justify-self: center;
+	margin-top: 2px;
+}

@@ -11,22 +11,18 @@ import { WeddingContextService } from '../../../core/services/wedding-context.se
 import { WeddingService } from '../../../core/services/wedding.service';
 import { toDisplayImageUrl } from '../../../core/utils/image-url';
 import { AdminHeaderComponent } from '../../../layout/admin-header.component';
-import { FloatingAddButtonComponent } from '../../../shared/ui/floating-add-button.component';
+import { AppIconComponent } from '../../../shared/ui/app-icon.component';
 import { ImageUploadFieldComponent } from '../../../shared/ui/image-upload-field.component';
-import { PhotoActionCardComponent } from '../../../shared/ui/photo-action-card.component';
-import { StatusCheckComponent } from '../../../shared/ui/status-check.component';
 import { ToastService } from '../../../shared/ui/toast.service';
 
 @Component({
 	selector: 'app-wedding-party-admin-page',
 	imports: [
 		AdminHeaderComponent,
+		AppIconComponent,
 		AsyncPipe,
 		FormsModule,
-		FloatingAddButtonComponent,
 		ImageUploadFieldComponent,
-		PhotoActionCardComponent,
-		StatusCheckComponent,
 	],
 	templateUrl: './wedding-party-admin.page.html',
 
@@ -56,6 +52,7 @@ export class WeddingPartyAdminPage {
 	protected uploadError = '';
 	protected openActionsMemberId = '';
 	protected expandedMemberId = '';
+	protected searchTerm = '';
 
 	async saveMember(): Promise<void> {
 		if (this.isDemoMode()) {
@@ -121,6 +118,16 @@ export class WeddingPartyAdminPage {
 		return this.weddingService.deleteWeddingPartyMember(memberId, this.weddingContextService.currentAdminWeddingId());
 	}
 
+	protected async copyInviteLink(member: WeddingPartyMember): Promise<void> {
+		try {
+			await navigator.clipboard.writeText(this.groomsmenInviteUrl(member));
+			this.toastService.success('Link copiado.');
+		} catch {
+			this.toastService.error('Nao foi possivel copiar o link.');
+		}
+		this.openActionsMemberId = '';
+	}
+
 	protected toggleActions(memberId: string): void {
 		this.openActionsMemberId = this.openActionsMemberId === memberId ? '' : memberId;
 	}
@@ -130,8 +137,8 @@ export class WeddingPartyAdminPage {
 		this.openActionsMemberId = '';
 	}
 
-	protected isExpanded(memberId: string): boolean {
-		return this.expandedMemberId === memberId;
+	protected isExpanded(memberId: string, isFirst = false): boolean {
+		return this.expandedMemberId ? this.expandedMemberId === memberId : isFirst;
 	}
 
 	protected isActionsOpen(memberId: string): boolean {
@@ -159,6 +166,25 @@ export class WeddingPartyAdminPage {
 
 	protected shouldShowForm(members?: WeddingPartyMember[] | null): boolean {
 		return members?.length === 0 || this.formExpanded || !!this.editingMemberId;
+	}
+
+	protected filteredMembers(members?: WeddingPartyMember[] | null): WeddingPartyMember[] {
+		const term = this.normalizeSearch(this.searchTerm);
+		if (!term) {
+			return members || [];
+		}
+
+		return (members || []).filter((member) =>
+			[
+				member.firstName,
+				member.secondName,
+				this.sideLabel(member.side),
+				this.invitationText(member.invitationStatus),
+				this.fullCoupleName(member),
+			]
+				.filter(Boolean)
+				.some((value) => this.normalizeSearch(value || '').includes(term)),
+		);
 	}
 
 	protected async uploadPhoto(event: Event): Promise<void> {
@@ -195,6 +221,14 @@ export class WeddingPartyAdminPage {
 		return `${this.firstWord(member.firstName)} & ${this.firstWord(member.secondName)}`;
 	}
 
+	protected fullCoupleName(member: WeddingPartyMember): string {
+		return `${member.firstName} & ${member.secondName}`;
+	}
+
+	protected compactInitials(member: WeddingPartyMember): string {
+		return `${this.firstWord(member.firstName)[0] || ''}${this.firstWord(member.secondName)[0] || ''}`.toUpperCase();
+	}
+
 	protected groomsmenInviteUrl(member: WeddingPartyMember): string {
 		return `${window.location.origin}/${this.weddingContextService.currentAdminWeddingId()}/convite-padrinhos/${member.id}`;
 	}
@@ -213,15 +247,59 @@ export class WeddingPartyAdminPage {
 		return status === 'accepted' ? 'Aceitou' : 'Nao aceitou';
 	}
 
+	protected invitationText(status?: 'accepted' | 'declined'): string {
+		if (status === 'accepted') {
+			return 'Convite aceito';
+		}
+
+		if (status === 'declined') {
+			return 'Convite recusado';
+		}
+
+		return 'Convite pendente';
+	}
+
+	protected invitationIcon(status?: 'accepted' | 'declined'): string {
+		if (status === 'accepted') {
+			return '✓';
+		}
+
+		if (status === 'declined') {
+			return '×';
+		}
+
+		return '•';
+	}
+
+	protected acceptedCount(members?: WeddingPartyMember[] | null): number {
+		return (members || []).filter((member) => member.invitationStatus === 'accepted').length;
+	}
+
+	protected categoryBadgeClass(side: 'bride' | 'groom' | 'couple'): string {
+		return `badge-${side}`;
+	}
+
+	protected async goToMore(): Promise<void> {
+		await this.router.navigateByUrl(this.isDemoMode() ? '/demo/mais' : '/admin/mais');
+	}
+
 	private firstWord(value: string): string {
 		return value.trim().split(/\s+/)[0] || value;
 	}
 
 	sideLabel(side: 'bride' | 'groom' | 'couple'): string {
 		return {
-			bride: 'Noiva',
-			groom: 'Noivo',
-			couple: 'Casal',
+			bride: 'Padrinhos da noiva',
+			groom: 'Padrinhos do noivo',
+			couple: 'Padrinhos do casal',
 		}[side];
+	}
+
+	private normalizeSearch(value: string): string {
+		return value
+			.trim()
+			.toLowerCase()
+			.normalize('NFD')
+			.replace(/[\u0300-\u036f]/g, '');
 	}
 }

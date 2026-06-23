@@ -74,7 +74,7 @@
                 }
               ],
               "outputHashing": "all",
-              "allowedCommonJsDependencies": ["qrcode"]
+              "allowedCommonJsDependencies": ["qrcode", "leaflet"]
             },
             "development": {
               "optimization": false,

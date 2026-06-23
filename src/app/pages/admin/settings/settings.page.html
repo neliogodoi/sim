@@ -32,22 +32,46 @@
           Link do album Google Fotos
           <input name="sharedAlbumUrl" [(ngModel)]="sharedAlbumUrl" [placeholder]="wedding?.sharedAlbumUrl || 'https://photos.app.goo.gl/...'" />
         </label>
-        <label>
-          Endereco da cerimonia
-          <input name="ceremonyAddress" [(ngModel)]="ceremonyAddress" [placeholder]="wedding?.ceremonyAddress || 'Endereco'" />
-        </label>
-        <label>
-          Link Google Maps
-          <input name="ceremonyMapUrl" [(ngModel)]="ceremonyMapUrl" [placeholder]="wedding?.ceremonyMapUrl || 'https://maps.google.com/...'" />
-        </label>
-        <label>
-          Endereco da recepcao
-          <input name="receptionAddress" [(ngModel)]="receptionAddress" [placeholder]="wedding?.receptionAddress || 'Endereco'" />
-        </label>
-        <label>
-          Link Google Maps da recepcao
-          <input name="receptionMapUrl" [(ngModel)]="receptionMapUrl" [placeholder]="wedding?.receptionMapUrl || 'https://maps.google.com/...'" />
-        </label>
+        <section class="locations-editor" aria-label="Locais do casamento">
+          <div class="locations-editor-header">
+            <div>
+              <h2>Locais</h2>
+              <p>Cadastre cerimonia, recepcao e outros pontos importantes.</p>
+            </div>
+            <button class="secondary-action" type="button" (click)="addLocation()">Adicionar local</button>
+          </div>
+
+          @for (location of locations; track location.id; let index = $index) {
+            <article class="location-editor-card">
+              <div class="location-editor-title">
+                <strong>{{ location.label || 'Local' }}</strong>
+                @if (locations.length > 1) {
+                  <button type="button" class="text-action danger-action" (click)="removeLocation(location.id)">
+                    Remover
+                  </button>
+                }
+              </div>
+              <label>
+                Nome do local
+                <input [name]="'locationLabel' + index" [(ngModel)]="location.label" placeholder="Local da Cerimonia" />
+              </label>
+              <label>
+                Endereco
+                <input [name]="'locationAddress' + index" [(ngModel)]="location.address" placeholder="Endereco completo ou referencia" />
+              </label>
+              <app-location-map-picker
+                [lat]="location.lat"
+                [lng]="location.lng"
+                (pointSelected)="setLocationPoint(index, $event)"
+              />
+              @if (googleMapsUrl(location)) {
+                <a class="secondary-action map-preview-link" [href]="googleMapsUrl(location)" target="_blank" rel="noreferrer">
+                  Testar no Google Maps
+                </a>
+              }
+            </article>
+          }
+        </section>
         <button class="primary-action" type="submit">Salvar</button>
       </form>
     </main>

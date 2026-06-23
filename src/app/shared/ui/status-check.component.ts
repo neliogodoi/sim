@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
+import { AppIconComponent } from './app-icon.component';
 
 @Component({
 	selector: 'app-status-check',
+	imports: [AppIconComponent],
 	template: `
 		<span class="ds-status-check" [attr.aria-label]="label" role="img">
-			<svg viewBox="0 0 24 24" aria-hidden="true">
-				<path d="m5 12 4.2 4.2L19 6.4" />
-			</svg>
+			<app-icon name="checkmark-outline" />
 		</span>
 	`,
 	styles: [
@@ -23,14 +23,9 @@ import { Component, Input } from '@angular/core';
 				vertical-align: middle;
 			}
 
-			.ds-status-check svg {
-				width: 17px;
-				height: 17px;
-				fill: none;
-				stroke: currentColor;
-				stroke-linecap: round;
-				stroke-linejoin: round;
-				stroke-width: 2.6;
+			.ds-status-check app-icon {
+				font-size: 17px;
+				--app-icon-stroke: 30px;
 			}
 		`,
 	],

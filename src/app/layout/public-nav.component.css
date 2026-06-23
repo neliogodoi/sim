@@ -13,7 +13,7 @@
 	border-top: 1px solid color-mix(in srgb, var(--color-primary) 14%, transparent);
 	background: color-mix(in srgb, var(--color-surface) 90%, transparent);
 	backdrop-filter: blur(16px);
-	box-shadow: 0 -14px 34px rgba(var(--color-shadow), 0.1);
+	box-shadow: 0 -10px 15px rgba(var(--color-shadow), 0.04);
 }
 
 .public-nav a {
@@ -34,11 +34,6 @@
 }
 
 .nav-icon {
-	width: 24px;
-	height: 24px;
-	fill: none;
-	stroke: currentColor;
-	stroke-linecap: round;
-	stroke-linejoin: round;
-	stroke-width: 1.8;
+	font-size: 24px;
+	--app-icon-stroke: 28px;
 }

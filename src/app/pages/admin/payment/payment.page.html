@@ -1,0 +1,49 @@
+@let wedding = activeWedding$ | async;
+
+<main class="payment-page">
+	<section class="payment-hero">
+		<span class="eyebrow">Acesso Premium</span>
+		<h1>Libere seu painel</h1>
+		<p>Finalize o pagamento para editar e publicar todos os detalhes do casamento.</p>
+	</section>
+
+	@if (wedding) {
+	<section class="payment-card">
+		<div class="payment-status" [class.payment-status-active]="isPremium(wedding)">
+			<span>Status</span>
+			<strong>{{ billingStatus(wedding) }}</strong>
+			@if (wedding.billing?.premiumUntil) {
+			<small>Válido até {{ wedding.billing?.premiumUntil | date: 'dd/MM/yyyy' }}</small>
+			}
+		</div>
+
+		<div class="plan-card">
+			<div>
+				<span class="eyebrow">Plano SIM</span>
+				<h2>Premium do casamento</h2>
+				<p>Convites, convidados, padrinhos, agenda, presentes e relatórios em um só lugar.</p>
+			</div>
+			<strong>{{ planPrice | currency: 'BRL' : 'symbol' : '1.2-2' }}</strong>
+		</div>
+
+		@if (isPremium(wedding)) {
+		<a class="primary-action" routerLink="/admin">Ir para o painel</a>
+		} @else {
+		<button class="primary-action" type="button" [disabled]="isCheckoutLoading" (click)="startCheckout(wedding)">
+			{{ isCheckoutLoading ? 'Abrindo pagamento...' : 'Pagar agora' }}
+		</button>
+		<button class="secondary-action" type="button" [disabled]="isSyncLoading" (click)="syncPayment(wedding)">
+			{{ isSyncLoading ? 'Verificando...' : 'Já paguei' }}
+		</button>
+		}
+
+		<p class="payment-note">A liberação acontece automaticamente após a confirmação do pagamento.</p>
+	</section>
+	} @else {
+	<section class="payment-card">
+		<h2>Casamento não encontrado</h2>
+		<p>Entre novamente para continuar.</p>
+		<a class="secondary-action" routerLink="/admin/login">Voltar ao login</a>
+	</section>
+	}
+</main>

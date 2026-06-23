@@ -171,12 +171,14 @@
 }
 
 .special-invite-content .invite-couple-name {
+	max-width: 100%;
 	margin: 10px 0 0;
 	color: var(--color-text);
 	font-family: var(--font-script);
-	font-size: clamp(4rem, 13vw, 5.8rem);
+	font-size: clamp(3.2rem, 11vw, 5.8rem);
 	font-weight: 400;
 	line-height: 0.84;
+	white-space: nowrap;
 }
 
 .special-invite-content .ornament {
@@ -554,8 +556,9 @@
 	}
 
 	.special-invite-content .invite-couple-name {
-		font-size: 42pt;
+		font-size: 34pt;
 		line-height: 0.86;
+		white-space: nowrap;
 	}
 
 	.special-invite-content .date {

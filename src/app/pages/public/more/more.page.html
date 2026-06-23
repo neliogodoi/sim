@@ -1,13 +1,34 @@
-    <main class="public-page content-page">
-      <h1>Mais</h1>
-      <div class="list-stack">
-        <a class="info-card link-card" [routerLink]="link('presentes')">
-          <h2>Presentes</h2>
-          <p>Lista de presentes dos noivos.</p>
+    <main class="public-page content-page simple-themed-page">
+      <header class="simple-page-header">
+        <div>
+          <p class="simple-page-kicker">Acessos extras</p>
+          <h1>Mais</h1>
+          <p class="simple-page-description">Outras areas do casamento para acompanhar presentes e recados.</p>
+        </div>
+        <div class="simple-page-badge" aria-hidden="true">
+          <app-icon name="grid-outline" />
+        </div>
+      </header>
+      <div class="more-list">
+        <a class="more-item" [routerLink]="link('presentes')">
+          <div class="more-item-icon" aria-hidden="true">
+            <app-icon name="gift-outline" />
+          </div>
+          <div class="more-item-body">
+            <h2>Presentes</h2>
+            <p>Lista de presentes dos noivos.</p>
+          </div>
+          <app-icon class="more-item-arrow" name="chevron-forward-outline" aria-hidden="true" />
         </a>
-        <a class="info-card link-card" [routerLink]="link('recados')">
-          <h2>Recados</h2>
-          <p>Mensagens dos convidados.</p>
+        <a class="more-item" [routerLink]="link('recados')">
+          <div class="more-item-icon" aria-hidden="true">
+            <app-icon name="chatbubble-ellipses-outline" />
+          </div>
+          <div class="more-item-body">
+            <h2>Recados</h2>
+            <p>Mensagens dos convidados.</p>
+          </div>
+          <app-icon class="more-item-arrow" name="chevron-forward-outline" aria-hidden="true" />
         </a>
       </div>
     </main>

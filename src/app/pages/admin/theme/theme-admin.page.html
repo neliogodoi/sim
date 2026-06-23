@@ -1,85 +1,133 @@
 <app-admin-header />
 @let wedding = wedding$ | async;
+@let theme = generatedTheme();
+@let recipe = selectedRecipe();
 
 <main class="admin-page theme-admin-page">
-	<header class="theme-page-header">
-		<div>
-			<p class="eyebrow">App e convites</p>
-			<h1>Tema</h1>
-		</div>
-		<p>Escolha a fonte dos noivos e crie uma paleta elegante a partir de uma cor principal.</p>
+	<header class="theme-hero">
+		<p class="eyebrow">App e convites</p>
+		<h1>Direção visual</h1>
+		<p>Escolha uma intenção, uma cor principal e a fonte dos noivos.</p>
 	</header>
 
-	<form class="form-card theme-form" (ngSubmit)="save()">
-		<section class="font-combo-section">
-			<label class="font-combo-field">
-				<span>Fonte dos nomes dos noivos</span>
-				<select name="scriptFont" [(ngModel)]="scriptFont">
-					@for (font of scriptFontOptions; track font.value) {
-						<option [value]="font.value">{{ font.label }}</option>
-					}
-				</select>
-			</label>
-			<p class="font-preview" [style.font-family]="selectedScriptFontCssFamily()">
-				{{ wedding?.coupleNames || coupleNames }}
-			</p>
+	<form class="theme-studio" (ngSubmit)="save()">
+		<section class="theme-preview-card" [style.--preview-primary]="theme.primary"
+			[style.--preview-accent]="theme.contrast" [style.--preview-background]="theme.background"
+			[style.--preview-surface]="theme.surface" [style.--preview-text]="theme.text"
+			[style.--preview-muted]="theme.muted" [style.--preview-border]="theme.border">
+			<div class="preview-orb" aria-hidden="true"></div>
+			<div class="preview-copy">
+				<span>{{ recipe.name }}</span>
+				<small>{{ recipe.description }}</small>
+				<strong [style.font-family]="selectedScriptFontCssFamily()">{{ wedding?.coupleNames || coupleNames
+					}}</strong>
+			</div>
+			<div class="preview-actions">
+				<button type="button">Confirmar presença</button>
+				<i aria-hidden="true">♥</i>
+			</div>
 		</section>
 
-		<section class="theme-creator-section">
-			<div class="theme-creator-header">
+		<section class="theme-panel font-panel">
+			<div class="panel-heading">
+				<span>01</span>
 				<div>
-					<h2>Criador de tema</h2>
-					<p>Escolha uma cor principal e o SIM cria uma paleta elegante para o seu casamento.</p>
+					<h2>Fonte dos noivos</h2>
+					<p>A fonte aparece na home, convites e prévias do casal.</p>
 				</div>
 			</div>
-
-			<div class="creator-controls">
-				<label class="creator-color-field">
-					<span>Cor principal</span>
-					<input type="color" name="creatorPrimaryColor" [(ngModel)]="creatorPrimaryColor" />
-					<input type="text" name="creatorPrimaryColorText" [(ngModel)]="creatorPrimaryColor" />
-				</label>
-
-				<div class="contrast-rule-group" role="radiogroup" aria-label="Regra de contraste">
-					@for (rule of contrastRules; track rule.value) {
-					<label class="contrast-rule" [class.active]="contrastRule === rule.value">
-						<input type="radio" name="contrastRule" [value]="rule.value" [(ngModel)]="contrastRule" />
-						<strong>{{ rule.label }}</strong>
-						<span>{{ rule.description }}</span>
-					</label>
-					}
+			<div class="expandable-choice-card">
+				<div>
+					<span>{{ selectedScriptFontLabel() }}</span>
+					<strong [style.font-family]="selectedScriptFontCssFamily()">{{ wedding?.coupleNames || coupleNames
+						}}</strong>
 				</div>
+				<button type="button" (click)="toggleFontPicker()">
+					{{ isFontPickerOpen ? 'Menos' : 'Mais' }}
+				</button>
 			</div>
-
-			<div class="generated-palette" aria-label="Previa da paleta gerada">
-				@for (swatch of generatedPaletteSwatches(); track swatch.token) {
-				<div class="generated-swatch">
-					<span class="swatch-color" [style.background]="swatch.color"></span>
-					<strong>{{ swatch.label }}</strong>
-					<small>{{ swatch.token }}</small>
-					<code>{{ swatch.color }}</code>
-				</div>
+			@if (isFontPickerOpen) {
+			<div class="font-choice-grid" aria-label="Selecionar fonte dos noivos">
+				@for (font of scriptFontOptions; track font.value) {
+				<button type="button" class="font-choice" [class.active]="scriptFont === font.value"
+					[style.font-family]="font.cssFamily" (click)="selectScriptFont(font.value)">
+					{{ wedding?.coupleNames || coupleNames }}
+				</button>
 				}
 			</div>
-
-			<div class="generated-theme-preview" [style.--generated-primary]="generatedTheme().primary"
-				[style.--generated-primary-pale]="generatedTheme().primaryPale"
-				[style.--generated-contrast]="generatedTheme().contrast"
-				[style.--generated-text]="generatedTheme().text" [style.--generated-muted]="generatedTheme().muted"
-				[style.--generated-border]="generatedTheme().border">
-				<span class="generated-kicker">Prévia pública</span>
-				<strong [style.font-family]="selectedScriptFontCssFamily()">{{ wedding?.coupleNames || coupleNames }}</strong>
-				<small>Faltam 120 dias</small>
-				<p>Estamos preparando cada detalhe para viver esse momento com vocês.</p>
-				<button type="button">Confirmar presença</button>
-			</div>
-
-			<button class="primary-action" type="button" [disabled]="isApplyingGeneratedTheme"
-				(click)="applyGeneratedTheme()">
-				{{ isApplyingGeneratedTheme ? 'Aplicando...' : 'Aplicar tema' }}
-			</button>
+			}
 		</section>
 
-		<button class="primary-action" type="submit">Salvar tema</button>
+		<section class="theme-panel color-panel">
+			<div class="panel-heading">
+				<span>02</span>
+				<div>
+					<h2>Cor principal</h2>
+					<p>Ela guia o clima do casamento.</p>
+				</div>
+			</div>
+			<label class="color-field">
+				<input type="color" name="creatorPrimaryColor" [(ngModel)]="creatorPrimaryColor" />
+				<input type="text" name="creatorPrimaryColorText" [(ngModel)]="creatorPrimaryColor"
+					aria-label="Cor principal em hexadecimal" />
+			</label>
+		</section>
+
+		<section class="theme-panel recipe-panel">
+			<div class="panel-heading">
+				<span>03</span>
+				<div>
+					<h2>Intenção visual</h2>
+					<p>Escolha como a paleta deve se comportar.</p>
+				</div>
+			</div>
+
+			<div class="expandable-choice-card">
+				<div>
+					<span>{{ recipe.name }}</span>
+					<strong>{{ recipe.description }}</strong>
+					<small>{{ recipe.accentStrategy }} · {{ recipe.neutralStrategy }}</small>
+				</div>
+				<button type="button" (click)="toggleRecipePicker()">
+					{{ isRecipePickerOpen ? 'Menos' : 'Mais' }}
+				</button>
+			</div>
+			@if (isRecipePickerOpen) {
+			<div class="recipe-grid" role="radiogroup" aria-label="Intenção visual do tema">
+				@for (item of themeRecipes; track item.id) {
+				<button type="button" class="recipe-card" [class.active]="recipeId === item.id"
+					(click)="selectRecipe(item.id)">
+					<span>{{ item.name }}</span>
+					<strong>{{ item.description }}</strong>
+					<small>{{ item.accentStrategy }} · {{ item.neutralStrategy }}</small>
+				</button>
+				}
+			</div>
+			}
+		</section>
+
+		<section class="theme-panel palette-panel">
+			<div class="panel-heading">
+				<span>04</span>
+				<div>
+					<h2>Paleta gerada</h2>
+					<p>Resultado</p>
+				</div>
+			</div>
+			<div class="palette-dots-strip" aria-label="Prévia da paleta gerada">
+				@for (swatch of generatedPaletteSwatches(); track swatch.token) {
+				<span class="palette-dot" [style.background]="swatch.color"
+					[attr.title]="swatch.label + ': ' + swatch.color"></span>
+				}
+			</div>
+		</section>
+
+		<div class="theme-submit-bar">
+			<button class="secondary-action" type="button" [disabled]="isApplyingGeneratedTheme"
+				(click)="applyGeneratedTheme()">
+				{{ isApplyingGeneratedTheme ? 'Aplicando...' : 'Aplicar agora' }}
+			</button>
+			<button class="primary-action" type="submit">Salvar tema</button>
+		</div>
 	</form>
 </main>

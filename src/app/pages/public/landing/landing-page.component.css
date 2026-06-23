@@ -44,22 +44,50 @@ main {
 	border-bottom: 1px solid var(--line);
 }
 
-.nav { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 14px 0; }
+.nav {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 18px;
+	padding: 14px 0;
+}
 
-.brand { display: inline-flex; align-items: center; line-height: 0; }
+.brand {
+	display: inline-flex;
+	align-items: center;
+	line-height: 0;
+}
 
-.brand-logo { display: block; width: auto; height: 34px; max-width: 150px; object-fit: contain; }
+.brand-logo {
+	display: block;
+	width: auto;
+	height: 34px;
+	max-width: 150px;
+	object-fit: contain;
+}
 
-.nav-actions { display: flex; align-items: center; gap: 10px; }
+.nav-actions {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
 
-.nav-links { display: flex; align-items: center; gap: 24px; color: var(--muted); font-size: 1.04rem; font-weight: 500; }
+.nav-links {
+	display: flex;
+	align-items: center;
+	gap: 24px;
+	color: var(--muted);
+	font-size: 1.04rem;
+	font-weight: 500;
+}
 
 .nav-toggle {
 	display: none;
 	align-items: center;
 	justify-content: center;
 	width: 34px;
-	height: 34px;
+	height: 20px !important;
 	padding: 0;
 	border: 0;
 	background: transparent;
@@ -75,11 +103,20 @@ main {
 	transition: transform .18s ease, opacity .18s ease;
 }
 
-.nav-toggle[aria-expanded='true'] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-.nav-toggle[aria-expanded='true'] span:nth-child(2) { opacity: 0; }
-.nav-toggle[aria-expanded='true'] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+.nav-toggle[aria-expanded='true'] span:nth-child(1) {
+	transform: translateY(6px) rotate(45deg);
+}
 
-.nav-link, .btn-login {
+.nav-toggle[aria-expanded='true'] span:nth-child(2) {
+	opacity: 0;
+}
+
+.nav-toggle[aria-expanded='true'] span:nth-child(3) {
+	transform: translateY(-6px) rotate(-45deg);
+}
+
+.nav-link,
+.btn-login {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -276,7 +313,9 @@ strong {
 	padding: 112px 0;
 }
 
-.section-heading { margin: 24px 0 34px; }
+.section-heading {
+	margin: 24px 0 34px;
+}
 
 .feature-grid,
 .split-grid,

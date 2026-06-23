@@ -2,6 +2,7 @@
 @let weddings = weddings$ | async;
 @let wedding = activeWedding$ | async;
 @let party = weddingParty$ | async;
+@let guests = guests$ | async;
 
 <main class="admin-page dashboard-page">
 	@if (isCreateFormOpen) {
@@ -15,38 +16,15 @@
 	}
 
 	@if (wedding) {
-	<section
-		class="dashboard-wedding-card"
-		[class.dashboard-wedding-card-empty]="!wedding.coverImageUrl"
-		[style.--wedding-primary]="weddingThemeColor(wedding, 'primary')"
-		[style.--wedding-secondary]="weddingThemeColor(wedding, 'secondary')"
-		[style.--wedding-tertiary]="weddingThemeColor(wedding, 'tertiary')"
-		[style.--wedding-neutral]="weddingThemeColor(wedding, 'neutral')"
-	>
-		<div class="dashboard-actions">
-			<button class="round-icon-action" type="button" [disabled]="isDemoMode()" (click)="shareWedding(wedding)"
-				aria-label="Compartilhar">
-				<svg viewBox="0 0 24 24" aria-hidden="true">
-					<circle cx="18" cy="5" r="2" />
-					<circle cx="6" cy="12" r="2" />
-					<circle cx="18" cy="19" r="2" />
-					<path d="M8 11l8-5" />
-					<path d="M8 13l8 5" />
-				</svg>
+	<section class="dashboard-wedding-card" [class.dashboard-wedding-card-empty]="!wedding.coverImageUrl">
+		<div class="dashboard-floating-actions" aria-label="Ações rápidas do painel">
+			<button class="dashboard-floating-action" type="button" [disabled]="isDemoMode()"
+				(click)="shareWedding(wedding)" aria-label="Compartilhar">
+				<app-icon name="share-social-outline" />
 			</button>
-			<a class="round-icon-action" routerLink="/admin/configuracoes" [class.demo-disabled]="isDemoMode()"
-				[attr.aria-disabled]="isDemoMode()" aria-label="Configuracoes">
-				<svg viewBox="0 0 24 24" aria-hidden="true">
-					<path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z" />
-					<path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 0 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 0 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.3 7A2 2 0 0 1 7.1 4.2l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 0 1 19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.1a2 2 0 0 1 0 4H21a1.7 1.7 0 0 0-1.6 1Z" />
-				</svg>
-			</a>
-			<button class="round-icon-action" type="button" [disabled]="isDemoMode()" (click)="toggleCreateWedding()"
-				aria-label="Criar casamento">
-				<svg viewBox="0 0 24 24" aria-hidden="true">
-					<path d="M12 5v14" />
-					<path d="M5 12h14" />
-				</svg>
+			<button class="dashboard-floating-action" type="button" [disabled]="isDemoMode()"
+				(click)="toggleCreateWedding()" aria-label="Novo casamento">
+				<app-icon name="add-outline" />
 			</button>
 		</div>
 		<div class="dashboard-cover">
@@ -55,128 +33,119 @@
 			}
 		</div>
 		<div class="dashboard-wedding-copy">
-			<div class="dashboard-wedding-heart" aria-hidden="true">♥</div>
-			<h2 [style.font-family]="scriptFontCssFamily(wedding)">{{ wedding.coupleNames || wedding.slug || wedding.id }}</h2>
-			@if (wedding.eventDate) {
-			<p class="dashboard-wedding-date">{{ wedding.eventDate }}</p>
-			}
-			<strong class="dashboard-wedding-countdown">{{ countdownLabel(wedding.eventDate) }}</strong>
-			<div class="palette-dots dashboard-card-palette" aria-label="Paleta do casamento">
-				@for (color of paletteColors(wedding); track $index) {
-				<span [style.background]="color"></span>
-				}
+			<div class="dashboard-countdown-block" aria-label="Contagem regressiva">
+				<strong><span></span>{{ countdownValue(wedding.eventDate) }}<span></span></strong>
+				<small>{{ countdownLabel(wedding.eventDate) }}</small>
 			</div>
+			<div class="dashboard-countdown-ornament" aria-hidden="true">
+				<span>♡</span>
+			</div>
+			<h2 [style.font-family]="scriptFontCssFamily(wedding)">{{ wedding.coupleNames || wedding.slug || wedding.id
+				}}</h2>
+			<p class="dashboard-wedding-date">{{ formattedEventDate(wedding.eventDate) }}</p>
+
+
 		</div>
 	</section>
 	}
 
-	@if (party?.length) {
-	<a class="dashboard-party-strip" [routerLink]="adminLink('padrinhos')" aria-label="Abrir padrinhos">
-		<h2>Padrinhos</h2>
-		<div class="party-avatar-row">
-			@for (member of party?.slice(0, 6); track member.id) {
-			@if (member.photoUrl) {
-			<img class="person-photo" [src]="imageUrl(member.photoUrl)" [alt]="shortCoupleName(member)" />
-			}
-			}
+	<section class="dashboard-overview-section">
+		<div class="dashboard-section-heading">
+			<h2>Resumo do casamento</h2>
 		</div>
-	</a>
-	}
+		<div class="dashboard-summary" aria-label="Resumo do casamento">
+			<div class="dashboard-summary-card">
+				<div class="dashboard-summary-icon" aria-hidden="true">
+					<app-icon name="people-outline" />
+				</div>
+				<div class="dashboard-summary-content">
+					<p class="dashboard-summary-title">Convidados</p>
+					<p class="dashboard-summary-value">{{ totalGuests(guests) }}</p>
+					<p class="dashboard-summary-description">{{ confirmedGuests(guests) }} confirmações</p>
+					<div class="dashboard-progress" aria-hidden="true">
+						<div class="dashboard-progress-bar" [style.width.%]="guestConfirmationRate(guests)"></div>
+					</div>
+					<p class="dashboard-summary-progress-label">{{ guestConfirmationRate(guests) }}%</p>
+				</div>
+			</div>
+			<div class="dashboard-summary-card">
+				<div class="dashboard-summary-icon" aria-hidden="true">
+					<app-icon name="heart-outline" />
+				</div>
+				<div class="dashboard-summary-content">
+					<p class="dashboard-summary-title">Padrinhos</p>
+					<p class="dashboard-summary-value">{{ party?.length || 0 }}</p>
+					<p class="dashboard-summary-description">{{ acceptedWeddingParty(party) }} confirmações</p>
+					<div class="dashboard-progress" aria-hidden="true">
+						<div class="dashboard-progress-bar" [style.width.%]="partyConfirmationRate(party)"></div>
+					</div>
+					<p class="dashboard-summary-progress-label">{{ partyConfirmationRate(party) }}%</p>
+				</div>
+			</div>
+		</div>
+	</section>
 
-	<section class="dashboard-shortcuts" aria-label="Atalhos administrativos">
-		<a class="dashboard-shortcut" routerLink="/admin/configuracoes" [class.demo-disabled]="isDemoMode()"
-			[attr.aria-disabled]="isDemoMode()" aria-label="Configuracoes">
-			<svg viewBox="0 0 24 24" aria-hidden="true">
-				<path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z" />
-				<path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 0 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 0 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.3 7A2 2 0 0 1 7.1 4.2l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 0 1 19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.1a2 2 0 0 1 0 4H21a1.7 1.7 0 0 0-1.6 1Z" />
-			</svg>
-			<span>Configurações</span>
-		</a>
-		<a class="dashboard-shortcut" [routerLink]="adminLink('tema')" aria-label="Temas">
-			<svg viewBox="0 0 24 24" aria-hidden="true">
-				<path
-					d="M12 3c5 0 8 3 8 7 0 3-2 5-5 5h-1.4c-.9 0-1.4.9-1 1.7.6 1.3-.4 2.3-1.9 2.3C6.4 19 4 16.2 4 12.2 4 7.1 7.6 3 12 3Z" />
-				<circle cx="8.5" cy="10" r="1" />
-				<circle cx="11.5" cy="7.8" r="1" />
-				<circle cx="15" cy="9.2" r="1" />
-			</svg>
-			<span>Temas</span>
-		</a>
-		<a class="dashboard-shortcut" [routerLink]="adminLink('padrinhos')" aria-label="Padrinhos">
-			<svg viewBox="0 0 24 24" aria-hidden="true">
-				<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.7A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z" />
-			</svg>
-			<span>Padrinhos</span>
-		</a>
-		<a class="dashboard-shortcut" [routerLink]="adminLink('pessoas')" aria-label="Pessoas importantes">
-			<svg viewBox="0 0 24 24" aria-hidden="true">
-				<circle cx="12" cy="7" r="3" />
-				<path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6" />
-			</svg>
-			<span>Pessoas importantes</span>
-		</a>
-		<a class="dashboard-shortcut" [routerLink]="adminLink('convidados')" aria-label="Convidados">
-			<svg viewBox="0 0 24 24" aria-hidden="true">
-				<circle cx="9" cy="8" r="3" />
-				<path d="M3.5 19c.7-3 2.6-5 5.5-5s4.8 2 5.5 5" />
-				<path d="M16 11a2.5 2.5 0 1 0-.8-4.9" />
-				<path d="M17 14c2 .5 3.2 2 3.7 5" />
-			</svg>
-			<span>Convidados</span>
-		</a>
-		<a class="dashboard-shortcut" [routerLink]="adminLink('musicas')" aria-label="Musicas">
-			<svg viewBox="0 0 24 24" aria-hidden="true">
-				<path d="M9 18V5l10-2v13" />
-				<circle cx="6" cy="18" r="3" />
-				<circle cx="16" cy="16" r="3" />
-			</svg>
-			<span>Músicas</span>
-		</a>
-		<a class="dashboard-shortcut" [routerLink]="adminLink('agenda')" aria-label="Agenda">
-			<svg viewBox="0 0 24 24" aria-hidden="true">
-				<rect x="4" y="5" width="16" height="15" rx="2" />
-				<path d="M8 3v4" />
-				<path d="M16 3v4" />
-				<path d="M4 10h16" />
-			</svg>
-			<span>Agenda</span>
-		</a>
-		<a class="dashboard-shortcut" [routerLink]="adminLink('presentes')" aria-label="Presentes">
-			<svg viewBox="0 0 24 24" aria-hidden="true">
-				<path d="M4 10h16v10H4z" />
-				<path d="M3 6h18v4H3z" />
-				<path d="M12 6v14" />
-				<path d="M12 6c-2.8 0-4.2-3-2-3 1.6 0 2 3 2 3Z" />
-				<path d="M12 6c2.8 0 4.2-3 2-3-1.6 0-2 3-2 3Z" />
-			</svg>
-			<span>Presentes</span>
-		</a>
-		<a class="dashboard-shortcut" [routerLink]="adminLink('fornecedores')" aria-label="Fornecedores">
-			<svg viewBox="0 0 24 24" aria-hidden="true">
-				<path d="M4 7h12v10H4z" />
-				<path d="M16 11h3l2 3v3h-5z" />
-				<circle cx="8" cy="18" r="1.5" />
-				<circle cx="18" cy="18" r="1.5" />
-			</svg>
-			<span>Fornecedores</span>
-		</a>
-		<a class="dashboard-shortcut" [routerLink]="adminLink('recados')" aria-label="Recados">
-			<svg viewBox="0 0 24 24" aria-hidden="true">
-				<path d="M5 6h14v10H9l-4 4z" />
-				<path d="M8 10h8" />
-				<path d="M8 13h5" />
-			</svg>
-			<span>Recados</span>
-		</a>
-		<a class="dashboard-shortcut" [routerLink]="adminLink('relatorio')" aria-label="Relatórios">
-			<svg viewBox="0 0 24 24" aria-hidden="true">
-				<path d="M5 19V9" />
-				<path d="M12 19V5" />
-				<path d="M19 19v-7" />
-				<path d="M4 19h16" />
-			</svg>
-			<span>Relatórios</span>
-		</a>
+	<section class="dashboard-modules-section">
+		<div class="dashboard-section-heading">
+			<h2>Acesso rápido</h2>
+		</div>
+		<nav class="dashboard-module-list" aria-label="Módulos administrativos">
+			<a class="dashboard-module-link" [routerLink]="adminLink('convidados')">
+				<div class="dashboard-module-icon" aria-hidden="true">
+					<app-icon name="people-outline" />
+				</div>
+				<div class="dashboard-module-copy">
+					<span>Convidados</span>
+					<small>Confirmações e lista geral</small>
+				</div>
+			</a>
+			<a class="dashboard-module-link" [routerLink]="adminLink('padrinhos')">
+				<div class="dashboard-module-icon" aria-hidden="true">
+					<app-icon name="heart-outline" />
+				</div>
+				<div class="dashboard-module-copy">
+					<span>Padrinhos</span>
+					<small>Convites e respostas</small>
+				</div>
+			</a>
+			<a class="dashboard-module-link" [routerLink]="adminLink('agenda')">
+				<div class="dashboard-module-icon" aria-hidden="true">
+					<app-icon name="calendar-outline" />
+				</div>
+				<div class="dashboard-module-copy">
+					<span>Agenda</span>
+					<small>Cerimônia e recepção</small>
+				</div>
+			</a>
+			<a class="dashboard-module-link" [routerLink]="adminLink('presentes')">
+				<div class="dashboard-module-icon" aria-hidden="true">
+					<app-icon name="gift-outline" />
+				</div>
+				<div class="dashboard-module-copy">
+					<span>Presentes</span>
+					<small>Lista e links externos</small>
+				</div>
+			</a>
+			<a class="dashboard-module-link" [routerLink]="adminLink('musicas')">
+				<div class="dashboard-module-icon" aria-hidden="true">
+					<app-icon name="musical-notes-outline" />
+				</div>
+				<div class="dashboard-module-copy">
+					<span>Músicas</span>
+					<small>Entradas e trilha</small>
+				</div>
+			</a>
+			<a class="dashboard-module-link" [routerLink]="adminLink('mais')" [class.demo-disabled]="isDemoMode()"
+				[attr.aria-disabled]="isDemoMode()">
+				<div class="dashboard-module-icon" aria-hidden="true">
+					<app-icon name="ellipsis-horizontal-outline" />
+				</div>
+				<div class="dashboard-module-copy">
+					<span>Mais opções</span>
+					<small>Fornecedores, recados e configurações</small>
+				</div>
+			</a>
+		</nav>
 	</section>
 
 	@if ((weddings?.length || 0) > 1) {
@@ -190,5 +159,4 @@
 		}
 	</section>
 	}
-
 </main>

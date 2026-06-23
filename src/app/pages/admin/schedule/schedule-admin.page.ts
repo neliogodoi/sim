@@ -8,11 +8,12 @@ import { ScheduleItem } from '../../../core/models/wedding.models';
 import { WeddingContextService } from '../../../core/services/wedding-context.service';
 import { WeddingService } from '../../../core/services/wedding.service';
 import { AdminHeaderComponent } from '../../../layout/admin-header.component';
+import { AppIconComponent } from '../../../shared/ui/app-icon.component';
 import { FloatingAddButtonComponent } from '../../../shared/ui/floating-add-button.component';
 
 @Component({
   selector: 'app-schedule-admin-page',
-  imports: [AdminHeaderComponent, AsyncPipe, FormsModule, FloatingAddButtonComponent],
+  imports: [AdminHeaderComponent, AsyncPipe, FormsModule, FloatingAddButtonComponent, AppIconComponent],
   templateUrl: './schedule-admin.page.html',
 
   styleUrl: './schedule-admin.page.css',
@@ -25,6 +26,7 @@ export class ScheduleAdminPage {
   protected readonly weddingId$ = this.weddingContextService.activeWeddingId$;
   protected readonly schedule$ = this.weddingId$.pipe(switchMap((weddingId) => this.weddingService.schedule$(weddingId)));
   protected title = '';
+  protected date = '';
   protected startsAt = '';
   protected locationLabel = '';
   protected description = '';
@@ -45,13 +47,15 @@ export class ScheduleAdminPage {
       id: this.editingItemId || undefined,
       weddingId,
       title: this.title.trim(),
+      date: this.date || undefined,
       startsAt: this.startsAt.trim(),
       locationLabel: this.locationLabel.trim(),
       description: this.description.trim(),
-      sortOrder: Date.now(),
+      sortOrder: this.scheduleSortOrder(this.date, this.startsAt),
     }, weddingId);
 
     this.title = '';
+    this.date = '';
     this.startsAt = '';
     this.locationLabel = '';
     this.description = '';
@@ -66,6 +70,7 @@ export class ScheduleAdminPage {
     this.formExpanded = true;
     this.editingItemId = item.id;
     this.title = item.title;
+    this.date = item.date || '';
     this.startsAt = item.startsAt;
     this.locationLabel = item.locationLabel || '';
     this.description = item.description || '';
@@ -88,6 +93,7 @@ export class ScheduleAdminPage {
 
   protected closeForm(): void {
     this.title = '';
+    this.date = '';
     this.startsAt = '';
     this.locationLabel = '';
     this.description = '';
@@ -97,5 +103,32 @@ export class ScheduleAdminPage {
 
   protected shouldShowForm(items?: ScheduleItem[] | null): boolean {
     return items?.length === 0 || this.formExpanded || !!this.editingItemId;
+  }
+
+  protected formattedDate(date?: string): string {
+    if (!date) {
+      return 'Data a definir';
+    }
+
+    const parsed = new Date(`${date}T00:00:00`);
+    if (Number.isNaN(parsed.getTime())) {
+      return date;
+    }
+
+    return new Intl.DateTimeFormat('pt-BR', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    }).format(parsed);
+  }
+
+  private scheduleSortOrder(date?: string, startsAt?: string): number {
+    if (!date) {
+      return Date.now();
+    }
+
+    const normalizedTime = /^\d{2}:\d{2}$/.test(startsAt || '') ? `${startsAt}:00` : startsAt || '00:00:00';
+    const parsed = new Date(`${date}T${normalizedTime}`);
+    return Number.isNaN(parsed.getTime()) ? Date.now() : parsed.getTime();
   }
 }

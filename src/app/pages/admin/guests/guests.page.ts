@@ -9,12 +9,12 @@ import { Guest } from '../../../core/models/wedding.models';
 import { WeddingContextService } from '../../../core/services/wedding-context.service';
 import { WeddingService } from '../../../core/services/wedding.service';
 import { AdminHeaderComponent } from '../../../layout/admin-header.component';
+import { AppIconComponent } from '../../../shared/ui/app-icon.component';
 import { FloatingAddButtonComponent } from '../../../shared/ui/floating-add-button.component';
-import { StatusCheckComponent } from '../../../shared/ui/status-check.component';
 
 @Component({
   selector: 'app-guests-page',
-  imports: [AdminHeaderComponent, AsyncPipe, FormsModule, FloatingAddButtonComponent, StatusCheckComponent],
+  imports: [AdminHeaderComponent, AsyncPipe, FormsModule, FloatingAddButtonComponent, AppIconComponent],
   templateUrl: './guests.page.html',
 
   styleUrl: './guests.page.css',
@@ -34,6 +34,7 @@ export class GuestsPage {
   protected rsvpStatus: 'pending' | 'confirmed' | 'declined' | 'maybe' = 'pending';
   protected editingGuestId = '';
   protected formExpanded = false;
+  protected searchTerm = '';
 
   async addGuest(): Promise<void> {
     if (this.isDemoMode()) {
@@ -126,6 +127,29 @@ export class GuestsPage {
       .reduce((total, guest) => total + (Number(guest.guestCount) || 1), 0);
   }
 
+  protected attendanceRate(guests?: Guest[] | null): number {
+    const total = this.totalGuests(guests);
+    if (!total) {
+      return 0;
+    }
+
+    return Math.round((this.confirmedGuests(guests) / total) * 100);
+  }
+
+  protected filteredGuests(guests?: Guest[] | null): Guest[] {
+    const list = guests || [];
+    const term = this.normalizeSearch(this.searchTerm);
+    if (!term) {
+      return list;
+    }
+
+    return list.filter((guest) =>
+      [guest.name, guest.phone, guest.groupName, this.rsvpLabel(guest.rsvpStatus)]
+        .filter(Boolean)
+        .some((value) => this.normalizeSearch(value || '').includes(term)),
+    );
+  }
+
   protected rsvpLabel(status: Guest['rsvpStatus']): string {
     return {
       pending: 'Pendente',
@@ -135,9 +159,45 @@ export class GuestsPage {
     }[status];
   }
 
+  protected rsvpStatusClass(status: Guest['rsvpStatus']): string {
+    return `status-${status}`;
+  }
+
+  protected rsvpIcon(status: Guest['rsvpStatus']): string {
+    return {
+      pending: '•',
+      confirmed: '✓',
+      declined: '×',
+      maybe: '?',
+    }[status];
+  }
+
+  protected guestCountLabel(count: number): string {
+    const total = Number(count) || 1;
+    return total === 1 ? '1 convidado' : `${total} convidados`;
+  }
+
+  protected guestInitials(name: string): string {
+    const parts = name
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2);
+
+    return parts.map((part) => part[0]?.toUpperCase() || '').join('') || 'CV';
+  }
+
   protected whatsappInviteLink(guest: Guest): string {
     const invitationUrl = `${window.location.origin}/${this.weddingContextService.currentAdminWeddingId()}/convite/${guest.id}`;
     const text = `Ola, ${guest.name}! Segue seu convite para confirmar presenca: ${invitationUrl}`;
     return `https://wa.me/?text=${encodeURIComponent(text)}`;
+  }
+
+  private normalizeSearch(value: string): string {
+    return value
+      .trim()
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
   }
 }

@@ -3,10 +3,11 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { PublicNavComponent } from '../../../layout/public-nav.component';
 import { DEFAULT_WEDDING_ID } from '../../../core/services/wedding.service';
+import { AppIconComponent } from '../../../shared/ui/app-icon.component';
 
 @Component({
   selector: 'app-more-page',
-  imports: [PublicNavComponent, RouterLink],
+  imports: [PublicNavComponent, RouterLink, AppIconComponent],
   templateUrl: './more.page.html',
 
   styleUrl: './more.page.css',

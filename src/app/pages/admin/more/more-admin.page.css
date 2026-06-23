@@ -12,15 +12,40 @@
 }
 
 .more-admin-page .link-card {
-	padding: 12px 14px;
+	display: grid;
+	grid-template-columns: auto 1fr;
+	align-items: center;
+	gap: 14px;
+	padding: 16px 18px;
+}
+
+.more-admin-page .more-item-icon {
+	display: grid;
+	place-items: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--color-primary) 10%, white);
+	color: var(--color-primary);
+}
+
+.more-admin-page .more-item-icon app-icon {
+	font-size: 22px;
+	--app-icon-stroke: 28px;
+}
+
+.more-admin-page .more-item-copy {
+	display: grid;
+	gap: 3px;
 }
 
 .more-admin-page .link-card h2 {
+	margin: 0;
 	font-size: 1rem;
 }
 
 .more-admin-page .link-card p {
-	margin-top: 4px;
+	margin: 0;
 	font-size: 0.9rem;
 }
 

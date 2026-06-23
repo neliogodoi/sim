@@ -58,12 +58,14 @@
 }
 
 .home-content h1 {
+	max-width: 100%;
 	margin: 10px 0 0;
 	color: var(--color-text);
 	font-family: var(--font-script);
-	font-size: clamp(4rem, 16vw, 6.4rem);
+	font-size: clamp(3.2rem, 13vw, 6.4rem);
 	font-weight: 400;
 	line-height: 0.82;
+	white-space: nowrap;
 }
 
 .date {

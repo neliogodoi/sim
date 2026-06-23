@@ -5,18 +5,19 @@ import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs';
 
-import { Wedding } from '../../../core/models/wedding.models';
+import { Wedding, WeddingLocation } from '../../../core/models/wedding.models';
 import { R2UploadService } from '../../../core/services/r2-upload.service';
 import { WeddingContextService } from '../../../core/services/wedding-context.service';
 import { WeddingService } from '../../../core/services/wedding.service';
 import { toDisplayImageUrl } from '../../../core/utils/image-url';
 import { AdminHeaderComponent } from '../../../layout/admin-header.component';
 import { ImageUploadFieldComponent } from '../../../shared/ui/image-upload-field.component';
+import { LocationMapPickerComponent, MapPoint } from '../../../shared/ui/location-map-picker.component';
 import { ToastService } from '../../../shared/ui/toast.service';
 
 @Component({
 	selector: 'app-settings-page',
-	imports: [AdminHeaderComponent, AsyncPipe, FormsModule, ImageUploadFieldComponent],
+	imports: [AdminHeaderComponent, AsyncPipe, FormsModule, ImageUploadFieldComponent, LocationMapPickerComponent],
 	templateUrl: './settings.page.html',
 
 	styleUrl: './settings.page.css',
@@ -44,6 +45,7 @@ export class SettingsPage implements OnInit {
 
 	protected receptionAddress = '';
 	protected receptionMapUrl = '';
+	protected locations: WeddingLocation[] = this.defaultLocations();
 	protected isUploadingCover = false;
 	protected uploadMessage = '';
 	protected uploadError = '';
@@ -66,6 +68,10 @@ export class SettingsPage implements OnInit {
 			await this.weddingService.ensureOwner(uid, weddingId);
 		}
 
+		const locations = this.normalizedLocations();
+		const ceremony = locations[0];
+		const reception = locations[1];
+
 		await this.weddingService.saveWedding({
 			slug: weddingId,
 			coupleNames: this.coupleNames || 'Os noivos',
@@ -73,12 +79,52 @@ export class SettingsPage implements OnInit {
 			welcomeMessage: this.welcomeMessage,
 			coverImageUrl: this.coverImageUrl,
 			sharedAlbumUrl: this.sharedAlbumUrl,
-			ceremonyAddress: this.ceremonyAddress,
-			ceremonyMapUrl: this.ceremonyMapUrl,
-			receptionAddress: this.receptionAddress,
-			receptionMapUrl: this.receptionMapUrl,
+			ceremonyAddress: ceremony?.address || '',
+			ceremonyMapUrl: ceremony ? this.googleMapsUrl(ceremony) : '',
+			receptionAddress: reception?.address || '',
+			receptionMapUrl: reception ? this.googleMapsUrl(reception) : '',
+			locations,
 		}, weddingId);
 		this.toastService.success('Configurações salvas.');
+	}
+
+	protected addLocation(): void {
+		this.locations = [
+			...this.locations,
+			{
+				id: crypto.randomUUID(),
+				label: 'Novo local',
+				address: '',
+				sortOrder: this.locations.length,
+			},
+		];
+	}
+
+	protected removeLocation(locationId: string): void {
+		this.locations = this.locations
+			.filter((location) => location.id !== locationId)
+			.map((location, index) => ({ ...location, sortOrder: index }));
+	}
+
+	protected setLocationPoint(index: number, point: MapPoint): void {
+		this.locations = this.locations.map((location, locationIndex) =>
+			locationIndex === index
+				? {
+						...location,
+						lat: Number(point.lat.toFixed(6)),
+						lng: Number(point.lng.toFixed(6)),
+						mapUrl: this.googleMapsUrl(point),
+					}
+				: location,
+		);
+	}
+
+	protected googleMapsUrl(location: Pick<WeddingLocation, 'lat' | 'lng' | 'mapUrl'>): string {
+		if (Number.isFinite(Number(location.lat)) && Number.isFinite(Number(location.lng))) {
+			return `https://www.google.com/maps/search/?api=1&query=${location.lat},${location.lng}`;
+		}
+
+		return location.mapUrl || '';
 	}
 
 	protected imageUrl(url?: string): string {
@@ -136,5 +182,52 @@ export class SettingsPage implements OnInit {
 		this.ceremonyMapUrl = wedding.ceremonyMapUrl || '';
 		this.receptionAddress = wedding.receptionAddress || '';
 		this.receptionMapUrl = wedding.receptionMapUrl || '';
+		this.locations = this.locationsFromWedding(wedding);
+	}
+
+	private normalizedLocations(): WeddingLocation[] {
+		return this.locations
+			.map((location, index) => ({
+				...location,
+				id: location.id || crypto.randomUUID(),
+				label: location.label?.trim() || `Local ${index + 1}`,
+				address: location.address?.trim() || '',
+				mapUrl: this.googleMapsUrl(location),
+				sortOrder: index,
+			}))
+			.filter((location) => location.label || location.address || this.googleMapsUrl(location));
+	}
+
+	private locationsFromWedding(wedding: Wedding): WeddingLocation[] {
+		if (wedding.locations?.length) {
+			return [...wedding.locations]
+				.sort((first, second) => first.sortOrder - second.sortOrder)
+				.map((location, index) => ({
+					...location,
+					id: location.id || crypto.randomUUID(),
+					sortOrder: index,
+				}));
+		}
+
+		return this.defaultLocations(wedding);
+	}
+
+	private defaultLocations(wedding?: Wedding): WeddingLocation[] {
+		return [
+			{
+				id: 'ceremony',
+				label: 'Local da Cerimonia',
+				address: wedding?.ceremonyAddress || '',
+				mapUrl: wedding?.ceremonyMapUrl || '',
+				sortOrder: 0,
+			},
+			{
+				id: 'reception',
+				label: 'Local da Recepcao',
+				address: wedding?.receptionAddress || '',
+				mapUrl: wedding?.receptionMapUrl || '',
+				sortOrder: 1,
+			},
+		];
 	}
 }

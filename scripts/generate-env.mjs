@@ -11,6 +11,7 @@ const env = {
 
 const r2UploadUrl = env.R2_UPLOAD_URL || '';
 const r2UploadToken = env.R2_UPLOAD_TOKEN || '';
+const asaasApiUrl = env.ASAAS_API_URL || '';
 
 mkdirSync(dirname(outputPath), { recursive: true });
 
@@ -20,6 +21,9 @@ writeFileSync(
   r2Upload: {
     url: ${JSON.stringify(r2UploadUrl)},
     token: ${JSON.stringify(r2UploadToken)},
+  },
+  asaas: {
+    apiUrl: ${JSON.stringify(asaasApiUrl)},
   },
 };
 `,

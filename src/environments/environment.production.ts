@@ -11,5 +11,6 @@ export const environment = {
 		measurementId: 'G-K4B6NT8W3Z',
 	},
 	r2Upload: generatedEnvironment.r2Upload,
+	asaas: generatedEnvironment.asaas,
 	serviceWorkerEnabled: true,
 };

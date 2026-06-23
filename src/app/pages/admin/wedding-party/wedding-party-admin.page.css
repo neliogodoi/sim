@@ -1,3 +1,454 @@
 :host {
 	display: block;
 }
+
+.godparents-page {
+	--gp-bg: #f8f6f1;
+	--gp-surface: rgba(255, 255, 255, 0.88);
+	--gp-surface-soft: #f4f5ef;
+	--gp-primary-dark: color-mix(in srgb, var(--color-primary) 36%, #263522);
+	--gp-muted: color-mix(in srgb, var(--color-primary) 48%, #7e8579);
+	--gp-border: color-mix(in srgb, var(--color-primary) 10%, var(--color-border));
+	background: var(--gp-bg);
+	display: grid;
+	gap: 24px;
+	padding-top: 18px;
+}
+
+.godparents-header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 16px;
+}
+
+.godparents-title-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.godparents-header h1 {
+	margin: 0;
+	color: var(--gp-primary-dark);
+	font-family: var(--font-display);
+	font-size: clamp(2.8rem, 11vw, 4.2rem);
+	font-weight: 700;
+	line-height: 0.95;
+	letter-spacing: -0.04em;
+}
+
+.godparents-ornament {
+	color: var(--color-primary);
+	font-size: 1.5rem;
+	opacity: 0.58;
+}
+
+.godparents-header p {
+	margin: 10px 0 0;
+	color: var(--gp-muted);
+	font-size: 1rem;
+}
+
+.godparents-menu-button {
+	display: grid;
+	place-items: center;
+	width: 54px;
+	height: 54px;
+	border: 1px solid var(--gp-border);
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.72);
+	color: var(--gp-primary-dark);
+	box-shadow: 0 12px 30px rgba(var(--color-shadow), 0.06);
+	font-size: 1.6rem;
+}
+
+.godparents-toolbar {
+	display: grid;
+	grid-template-columns: 2fr auto;
+	gap: 16px;
+}
+
+.godparents-search {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	height: 60px;
+	padding: 0 20px;
+	border: 1px solid var(--gp-border);
+	border-radius: 28px;
+	background: rgba(255, 255, 255, 0.78);
+	color: var(--gp-muted);
+}
+
+.godparents-search app-icon {
+	font-size: 20px;
+	--app-icon-stroke: 28px;
+}
+
+.godparents-search input {
+	min-height: auto;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+.godparents-add-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	height: 60px;
+	padding: 0 24px;
+	border: 0;
+	border-radius: 28px;
+	background: var(--color-primary);
+	color: #fff;
+	box-shadow: 0 14px 30px rgba(var(--color-primary-rgb), 0.22);
+	font-size: 1rem;
+	font-weight: 700;
+}
+
+.godparents-form {
+	margin-top: -4px;
+}
+
+.godparents-form-actions {
+	display: grid;
+	gap: 10px;
+}
+
+.godparents-list-section {
+	display: grid;
+	gap: 18px;
+}
+
+.godparent-card-expanded {
+	position: relative;
+	overflow: hidden;
+	border: 1px solid var(--gp-border);
+	border-radius: 28px;
+	background: var(--gp-surface);
+	box-shadow: 0 18px 45px rgba(var(--color-shadow), 0.08);
+}
+
+.expanded-photo-wrapper {
+	position: relative;
+	width: 100%;
+	height: 248px;
+	overflow: hidden;
+	background: var(--gp-surface-soft);
+}
+
+.expanded-photo,
+.expanded-photo-placeholder {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.expanded-photo-placeholder {
+	display: grid;
+	place-items: center;
+	color: var(--color-primary);
+	font-family: var(--font-display);
+	font-size: 4rem;
+	font-weight: 700;
+}
+
+.category-badge {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	display: inline-flex;
+	align-items: center;
+	height: 40px;
+	padding: 0 16px;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.9);
+	backdrop-filter: blur(12px);
+	box-shadow: 0 8px 24px rgba(var(--color-shadow), 0.08);
+	font-size: 0.82rem;
+	font-weight: 700;
+}
+
+.badge-couple {
+	color: #c98700;
+	background: #fff4d8;
+}
+
+.badge-groom {
+	color: #5a80b8;
+	background: #eaf1fb;
+}
+
+.badge-bride {
+	color: #c76878;
+	background: #fce9ec;
+}
+
+.expanded-content {
+	padding: 24px 24px 0;
+}
+
+.expanded-title-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.expanded-title {
+	margin: 0;
+	color: var(--gp-primary-dark);
+	font-family: var(--font-display);
+	font-size: clamp(2rem, 8vw, 2.5rem);
+	line-height: 1;
+}
+
+.collapse-button,
+.expand-button {
+	display: grid;
+	place-items: center;
+	width: 44px;
+	height: 44px;
+	border: none;
+	border-radius: 50%;
+	background: #fff;
+	color: var(--color-border);
+	font-size: 1.5rem;
+}
+
+.info-line {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-top: 14px;
+	color: var(--gp-muted);
+	font-size: 0.96rem;
+}
+
+.info-line.success {
+	color: var(--color-success);
+	font-weight: 700;
+}
+
+.info-line.warning {
+	color: #c98700;
+	font-weight: 700;
+}
+
+.info-icon {
+	display: grid;
+	place-items: center;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background: #eaf5e7;
+	color: var(--color-success);
+	flex: none;
+	font-size: 0.82rem;
+}
+
+.info-icon.warning {
+	background: #fff4d8;
+	color: #c98700;
+}
+
+.info-icon.neutral {
+	background: color-mix(in srgb, var(--color-primary) 10%, white);
+	color: var(--color-primary);
+}
+
+.expanded-actions {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	margin-top: 22px;
+	border-top: 1px solid var(--gp-border);
+}
+
+.expanded-action {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	height: 62px;
+	border: 0;
+	background: transparent;
+	color: var(--gp-primary-dark);
+	font-size: 0.84rem;
+	font-weight: 300;
+}
+
+.expanded-more {
+	position: relative;
+}
+
+.expanded-more-menu {
+	position: absolute;
+	right: 12px;
+	bottom: calc(100% + 10px);
+	z-index: 4;
+	display: grid;
+	min-width: 180px;
+	padding: 8px;
+	border: 1px solid var(--gp-border);
+	border-radius: 16px;
+	background: rgba(255, 255, 255, 0.96);
+	box-shadow: 0 18px 36px rgba(var(--color-shadow), 0.1);
+}
+
+.expanded-more-menu a,
+.expanded-more-menu button {
+	padding: 10px 12px;
+	border: 0;
+	background: transparent;
+	color: var(--gp-primary-dark);
+	font-size: 0.88rem;
+	text-align: left;
+}
+
+.godparent-card-compact {
+	display: grid;
+	grid-template-columns: 92px 1fr auto;
+	align-items: center;
+	gap: 18px;
+	padding: 18px 20px;
+	border: 1px solid var(--gp-border);
+	border-radius: 24px;
+	background: rgba(255, 255, 255, 0.86);
+	box-shadow: 0 12px 32px rgba(var(--color-shadow), 0.055);
+	cursor: pointer;
+}
+
+.compact-photo {
+	width: 92px;
+	height: 82px;
+	border-radius: 16px;
+	object-fit: cover;
+	background: var(--gp-surface-soft);
+}
+
+.compact-photo.placeholder {
+	display: grid;
+	place-items: center;
+	color: var(--color-primary);
+	font-family: var(--font-display);
+	font-size: 2rem;
+	font-weight: 700;
+}
+
+.compact-copy {
+	display: grid;
+	gap: 4px;
+}
+
+.compact-title {
+	margin: 0 0 2px;
+	color: var(--gp-primary-dark);
+	font-family: var(--font-display);
+	font-size: clamp(1.45rem, 6vw, 2rem);
+	line-height: 1.05;
+}
+
+.compact-meta,
+.compact-status {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	color: var(--gp-muted);
+	font-size: 0.92rem;
+}
+
+.compact-meta.badge-couple,
+.compact-meta.badge-groom,
+.compact-meta.badge-bride {
+	background: none;
+}
+
+.compact-dot {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background: currentColor;
+}
+
+.compact-status.success {
+	color: var(--color-success);
+	font-weight: 700;
+}
+
+.compact-status.warning {
+	color: #c98700;
+	font-weight: 700;
+}
+
+.empty-state {
+	margin: 0;
+	padding: 26px;
+	border: 1px dashed var(--gp-border);
+	border-radius: 24px;
+	color: var(--gp-muted);
+	text-align: center;
+}
+
+@media (max-width: 640px) {
+	.godparents-toolbar {
+		grid-template-columns: 1fr;
+	}
+
+	.godparents-add-button {
+		width: 100%;
+	}
+
+	.expanded-actions {
+		grid-template-columns: repeat(4, 1fr);
+	}
+
+	.expanded-action:nth-child(3) {
+		border-left: 0;
+		border-top: 1px solid rgba(225, 221, 212, 0.7);
+	}
+
+	.expanded-action:nth-child(4) {
+		border-top: 1px solid rgba(225, 221, 212, 0.7);
+	}
+
+	.godparent-card-compact {
+		grid-template-columns: 72px 1fr auto;
+		padding: 16px;
+	}
+
+	.compact-photo {
+		width: 72px;
+		height: 72px;
+	}
+}
+
+@media (max-width: 430px) {
+	.godparents-page {
+		padding-top: 12px;
+		gap: 20px;
+	}
+
+	.godparents-header h1 {
+		font-size: clamp(2.4rem, 12vw, 3.5rem);
+	}
+
+	.expanded-photo-wrapper {
+		height: 220px;
+	}
+
+	.expanded-content {
+		padding: 20px 18px 0;
+	}
+
+	.godparent-card-compact {
+		grid-template-columns: 1fr auto;
+	}
+
+	.compact-photo {
+		display: none;
+	}
+}

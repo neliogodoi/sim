@@ -15,20 +15,20 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 			.ds-floating-add-button {
 				position: fixed;
-				right: max(22px, env(safe-area-inset-right));
-				bottom: calc(92px + env(safe-area-inset-bottom));
+				right: max(18px, env(safe-area-inset-right));
+				bottom: calc(86px + env(safe-area-inset-bottom));
 				z-index: 30;
 				display: grid;
 				place-items: center;
-				width: 62px;
-				height: 62px;
+				width: 53px;
+				height: 53px;
 				border: 0;
 				border-radius: 50%;
 				background: var(--color-primary);
-				color: #ffffff;
-				box-shadow: 0 10px 15px rgba(var(--color-shadow), 0.48);
+				color: var(--color-primary-contrast);
+				box-shadow: 0 10px 18px rgba(var(--color-primary-rgb), 0.18);
 				cursor: pointer;
-				font-size: 2.35rem;
+				font-size: 2rem;
 				font-weight: 500;
 				line-height: 1;
 				transition:
@@ -39,7 +39,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 			.ds-floating-add-button:active {
 				transform: scale(0.94);
-				box-shadow: 0 10px 24px rgba(var(--color-shadow), 0.24);
+				box-shadow: 0 10px 24px rgba(var(--color-primary-rgb), 0.24);
 			}
 
 			.ds-floating-add-button:disabled {

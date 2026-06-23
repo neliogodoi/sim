@@ -13,9 +13,36 @@ export interface Wedding {
   ceremonyMapUrl?: string;
   receptionAddress?: string;
   receptionMapUrl?: string;
+  locations?: WeddingLocation[];
   theme?: WeddingTheme;
+  billing?: WeddingBilling;
   createdAt?: string;
   updatedAt?: string;
+}
+
+export type WeddingBillingStatus = 'inactive' | 'pending' | 'active' | 'overdue' | 'canceled';
+
+export interface WeddingBilling {
+  status: WeddingBillingStatus;
+  provider: 'asaas';
+  planId?: string;
+  customerId?: string;
+  subscriptionId?: string;
+  paymentId?: string;
+  checkoutUrl?: string;
+  premiumUntil?: string;
+  lastSyncedAt?: string;
+  updatedAt?: string;
+}
+
+export interface WeddingLocation {
+  id: string;
+  label: string;
+  address?: string;
+  lat?: number;
+  lng?: number;
+  mapUrl?: string;
+  sortOrder: number;
 }
 
 export interface WeddingTheme {
@@ -30,6 +57,7 @@ export interface WeddingTheme {
   contrast?: string;
   contrastSoft?: string;
   contrastRule?: 'analogous' | 'complementary' | 'splitComplementary' | 'triadic' | 'tetradic' | 'square';
+  recipeId?: 'elegant' | 'romantic' | 'editorial' | 'ceremonial' | 'modern' | 'bold';
   scriptFont?: string;
   primaryContrast?: string;
   background?: string;
@@ -57,6 +85,7 @@ export interface ScheduleItem {
   id: string;
   weddingId: string;
   title: string;
+  date?: string;
   description?: string;
   startsAt: string;
   locationLabel?: string;

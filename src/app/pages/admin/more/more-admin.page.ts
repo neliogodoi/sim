@@ -3,10 +3,11 @@ import { Router, RouterLink } from '@angular/router';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { AdminHeaderComponent } from '../../../layout/admin-header.component';
+import { AppIconComponent } from '../../../shared/ui/app-icon.component';
 
 @Component({
 	selector: 'app-more-admin-page',
-	imports: [AdminHeaderComponent, RouterLink],
+	imports: [AdminHeaderComponent, RouterLink, AppIconComponent],
 	templateUrl: './more-admin.page.html',
 
 	styleUrl: './more-admin.page.css',

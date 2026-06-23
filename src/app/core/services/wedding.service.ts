@@ -89,7 +89,7 @@ export class WeddingService {
 
   schedule$(weddingId = DEFAULT_WEDDING_ID): Observable<ScheduleItem[]> {
     return this.col$<ScheduleItem>(`weddings/${weddingId}/scheduleItems`).pipe(
-      map((items) => items.sort((first, second) => first.sortOrder - second.sortOrder)),
+      map((items) => items.sort((first, second) => this.scheduleSortValue(first) - this.scheduleSortValue(second))),
     );
   }
 
@@ -379,5 +379,28 @@ export class WeddingService {
 
   private cleanData(data: DocumentData): DocumentData {
     return Object.fromEntries(Object.entries(data).filter(([, value]) => value !== undefined));
+  }
+
+  private scheduleSortValue(item: ScheduleItem): number {
+    if (item.date) {
+      const dateTime = new Date(`${item.date}T${this.normalizeTime(item.startsAt)}`);
+      if (!Number.isNaN(dateTime.getTime())) {
+        return dateTime.getTime();
+      }
+    }
+
+    return item.sortOrder;
+  }
+
+  private normalizeTime(value?: string): string {
+    if (!value) {
+      return '00:00:00';
+    }
+
+    if (/^\d{2}:\d{2}$/.test(value)) {
+      return `${value}:00`;
+    }
+
+    return value;
   }
 }

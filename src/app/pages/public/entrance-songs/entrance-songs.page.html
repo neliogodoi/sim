@@ -1,21 +1,48 @@
     @let songs = songs$ | async;
 
-    <main class="public-page content-page">
-      <h1>Musicas</h1>
+    <main class="public-page content-page simple-themed-page">
+      <header class="simple-page-header">
+        <div>
+          <p class="simple-page-kicker">Cerimonia e festa</p>
+          <h1>Musicas</h1>
+          <p class="simple-page-description">Selecao musical para cada momento importante do casamento.</p>
+        </div>
+        <div class="simple-page-badge" aria-hidden="true">
+          <app-icon name="musical-notes-outline" />
+        </div>
+      </header>
       @if (songs?.length) {
-        <div class="list-stack">
+        <div class="songs-list">
           @for (song of songs; track song.id) {
-            <article class="info-card">
-              <h2>{{ song.moment }}</h2>
-              <p>{{ song.songTitle }}</p>
+            <article class="song-item">
+              <div class="song-item-leading">
+                <div class="song-item-icon" aria-hidden="true">
+                  <app-icon name="play-circle-outline" />
+                </div>
+                <div class="song-item-body">
+                  <h2>{{ song.moment }}</h2>
+                  <p>{{ song.songTitle }}</p>
+                </div>
+              </div>
               @if (song.url) {
-                <a class="secondary-action" [href]="song.url" target="_blank" rel="noreferrer">Ouvir</a>
+                <a class="song-item-action" [href]="song.url" target="_blank" rel="noreferrer">
+                  <span>Ouvir</span>
+                  <app-icon name="open-outline" />
+                </a>
               }
             </article>
           }
         </div>
       } @else {
-        <p>Lista de musicas ainda nao configurada.</p>
+        <article class="empty-simple-state">
+          <div class="song-item-icon" aria-hidden="true">
+            <app-icon name="musical-note-outline" />
+          </div>
+          <div>
+            <h2>Nenhuma musica cadastrada</h2>
+            <p>As escolhas para a cerimonia e a festa ainda nao foram configuradas.</p>
+          </div>
+        </article>
       }
     </main>
 
